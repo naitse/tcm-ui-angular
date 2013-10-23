@@ -1,0 +1,32 @@
+<div >
+    <div>
+        <div>
+            <div>
+                <h1><a href="#">Test Cases Manager</a></h1>
+            </div>
+            <div>
+                <div>
+                    <h2>Login</h2>
+                    <form id="login-form" method="post" class="form-horizontal" ng:submit="login()">
+                        <div class="control-group">
+                            <div class="inputs" style="position: relative">
+
+                                <input id="username" placeholder="Username" type="text" value="" style="border:none;" ng-model="username">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="inputs" style="position: relative">
+
+                                <input id="password"  placeholder="Password" type="password" value="" style="border:none;" ng-model="password">
+                            </div>
+                        </div>
+                        <div ng-class="alertClass">{{loginErrorMessage}}</div>
+                        <input id="login-button" type="submit" class="btn btn-primary " data-loading-text="Logging in..." value="Login"/>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
