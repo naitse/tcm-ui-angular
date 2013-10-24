@@ -1,7 +1,7 @@
-var  basePath =  "http://tcm-backend.herokuapp.com/";
+//var  basePath =  "http://tcm-backend.herokuapp.com/";
+var  basePath =  "http://localhost:9000/";
 
-
-tcmModule.factory('Auth', function($http, $cookieStore){
+tcmModule.service('Auth', ['$http', '$cookieStore' , function($http, $cookieStore){
 
     var accessLevels = routingConfig.accessLevels
         , userRoles = routingConfig.userRoles
@@ -14,6 +14,7 @@ tcmModule.factory('Auth', function($http, $cookieStore){
     };
 
     return {
+
         authorize: function(accessLevel, role) {
             if(role === undefined)
                 role = currentUser.role;
@@ -28,7 +29,7 @@ tcmModule.factory('Auth', function($http, $cookieStore){
 
             $http.defaults.headers.common['Authorization'] = "Basic " + $.base64.encode(user.username + ':' + user.password);
 
-            $http.get(basePath + 'api/login').success(function(data){
+            $http.post(basePath + 'api/login').success(function(data){
                 changeUser(user);
                 success(user);
 
@@ -47,14 +48,24 @@ tcmModule.factory('Auth', function($http, $cookieStore){
         userRoles: userRoles,
         user: currentUser
     };
-});
+}]);
 
-tcmModule.factory('tcm_model', ['$http', '$routeParams', 'Auth', function($http, $routeParams, Auth) {
+tcmModule.service('tcm_model', ['$http', '$routeParams', 'Auth', '$cookieStore', function($http, $routeParams, Auth, $cookieStore) {
+
+        //set headers if cookies found
+        var user = $cookieStore.get('user');
+        if(user != null){
+            $http.defaults.headers.common['Authorization'] = "Basic " + $.base64.encode(user.username + ':' + user.password);
+        }
+
 
         return {
 
             getProjects: function(success, error){
-                $http.get( basePath + 'api/users/' + Auth.user.username + '/projects?apiKey=' + Auth.user.apiKey).success(success).error(error);
+                $http.get( basePath + 'api/projects').success(success).error(error);
+            },
+            updateProject: function(projectId, requestBody, success, error){
+                $http.put( basePath + 'api/projects/'+projectId, requestBody).success(success).error(error);
             },
             getReleasesIterations: function(success, error) {
                 $http.get( basePath + 'api/releases_iterations?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId ).success(success).error(error);

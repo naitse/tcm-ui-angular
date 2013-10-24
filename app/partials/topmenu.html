@@ -1,0 +1,52 @@
+<link href="assets/css/topmenu.css" rel="stylesheet" media="screen">
+<div class="navbar navbar-default" role="navigation">
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li class="dropdown" ng-repeat="menu in menuList">
+                    <a class="dropdown-toggle" ng-class="menu.active" data-toggle="dropdown">{{menu.name}} <b class="caret"></b></a>
+                    <ul class="dropdown-menu pull-left">
+                        <li ng-repeat="submenu in menu.subMenuList">
+                            <a tabindex="-1" ng-class="submenu.active" href="{{submenu.link}}">{{submenu.name}}</a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav pull-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <span id="username">{{userName}}@{{currentProject}}</span> <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ><a tabindex="-1" id="switchProject" data-toggle="modal" data-target="#modal-switchProject">Switch Project</a></li>
+                        <li ><a tabindex="-1" href="#project">Project Settings</a></li>
+                        <li ><a tabindex="-1" href="#plugins-settings">Project Plugins Settings</a></li>
+                        <li  class="divider"></li>
+                        <li ><a tabindex="-1" ng-click="logout()">Log out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="modal-switchProject" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Switch Project</h3>
+            </div>
+            <div class="modal-body" style="overflow: visible">
+                <div class="list-group">
+                    <a class="list-group-item" ng-class="currentProject==p.name?'active':''" ng-repeat="p in projects" ng-click="switchProject(p)">{{p.name}}</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Switch</button>
+            </div>
+        </div>
+    </div>
+</div>

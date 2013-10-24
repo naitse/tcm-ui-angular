@@ -1,0 +1,27 @@
+html{
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:50;
+    overflow:hidden
+}
+
+body{
+     width:100%;
+    height:100%;
+    margin:0;
+    padding-top:0px;
+    font-family:"CambridgeRound","Helvetica Neue",
+    Helvetica,Arial,sans-serif;
+    color:#454545
+}
+
+pre{
+    white-space:pre-wrap;
+    white-space:-moz-pre-wrap;
+    white-space:-pre-wrap;
+    white-space:-o-pre-wrap;
+    word-wrap:break-word
+}
+
+
