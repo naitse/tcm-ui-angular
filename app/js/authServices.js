@@ -50,28 +50,3 @@ tcmModule.service('Auth', ['$http', '$cookieStore' , function($http, $cookieStor
     };
 }]);
 
-tcmModule.service('tcm_model', ['$http', '$routeParams', 'Auth', '$cookieStore', function($http, $routeParams, Auth, $cookieStore) {
-
-        //set headers if cookies found
-        var user = $cookieStore.get('user');
-        if(user != null){
-            $http.defaults.headers.common['Authorization'] = "Basic " + $.base64.encode(user.username + ':' + user.password);
-        }
-
-
-        return {
-
-            getProjects: function(success, error){
-                $http.get( basePath + 'api/projects').success(success).error(error);
-            },
-            updateProject: function(projectId, requestBody, success, error){
-                $http.put( basePath + 'api/projects/'+projectId, requestBody).success(success).error(error);
-            },
-            getProjectPlugins: function(projectId, success, error){
-                $http.get( basePath + 'api/projects/'+$routeParams.projectId + '/plugins').success(success).error(error);
-            },
-            updatePluginProperty: function(pluginId, prop, value, success, error){
-                $http.put( basePath + 'api/projects/'+$routeParams.projectId + '/plugins/'+ pluginId, {'prop': prop, 'value': value}).success(success).error(error);
-            }
-        };
-    }]);

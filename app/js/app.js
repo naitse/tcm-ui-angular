@@ -13,6 +13,10 @@ var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies']).
                                 {templateUrl: '/app/partials/plugin_settings.html',
                                     controller: 'PluginsCntl',
                                     access: access.user
+                                }).when('/project/:projectId',
+                                {templateUrl: '/app/partials/project_settings.html',
+                                    controller: 'ProjectSettingsCntl',
+                                    access: access.user
                                 }).when('/login',
                                 {
                                     templateUrl: 'app/partials/login.html',
@@ -82,3 +86,27 @@ tcmModule.run(['$rootScope', '$location', 'Auth', function ($rootScope, $locatio
     });
 
 }]);
+
+tcmModule.directive('ngModelOnblur', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elm, attr, ngModelCtrl) {
+
+            if (attr.type === 'radio' || attr.type === 'checkbox') return;
+
+            elm.unbind('input').unbind('keydown').unbind('change');
+
+            //elm.bind("keydown keypress", function(event) {
+            elm.bind("keydown", function(event) {
+                if (event.which === 13) {
+                    scope.$apply(function(){
+                        scope.$eval(attr.ngModelOnblur);
+                    });
+                }
+            });
+
+
+        }
+    };
+});
