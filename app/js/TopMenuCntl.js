@@ -1,4 +1,4 @@
-function TopMenuCntl($scope, $route, $routeParams, $location, $cookieStore, Auth, tcm_model) {
+function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cookieStore, Auth, tcm_model) {
     $scope.$route = $route;
     $scope.$location = $location;
     $scope.$routeParams = $routeParams;
@@ -15,7 +15,7 @@ function TopMenuCntl($scope, $route, $routeParams, $location, $cookieStore, Auth
                     },
                     {
                         name: "Suites",
-                        link: '#/suites',
+                        link: '#/suites/'+$routeParams.projectId,
                         active: $location.path().indexOf('suites') >=0 ? 'active':''
                     }
                 ]
@@ -62,11 +62,10 @@ function TopMenuCntl($scope, $route, $routeParams, $location, $cookieStore, Auth
 
     tcm_model.getProjects(function(data){
         $scope.projects = data;
-        $scope.currentProject = data[0].name;
 
         for(var i=0; i < data.length; i++){
 
-            if(data[i].active === '1'){
+            if(data[i].id.toString() === $routeParams.projectId){
 
                 $scope.currentProject = data[i].name;
             }
@@ -76,8 +75,8 @@ function TopMenuCntl($scope, $route, $routeParams, $location, $cookieStore, Auth
 
     $scope.switchProject = function(project){
 
-        $scope.currentProject = project.name;
         tcm_model.updateProject(project.id, {active: '1'}, function(){})
+        $location.path('/manager/' + project.id);
     };
 
     $scope.logout = function(){
@@ -93,4 +92,4 @@ function TopMenuCntl($scope, $route, $routeParams, $location, $cookieStore, Auth
     }
 }
 
-TopMenuCntl.$inject = ['$scope', '$route', '$routeParams', '$location', '$cookieStore', 'Auth', 'tcm_model'];
+TopMenuCntl.$inject = ['$rootScope', '$scope', '$route', '$routeParams', '$location', '$cookieStore', 'Auth', 'tcm_model'];

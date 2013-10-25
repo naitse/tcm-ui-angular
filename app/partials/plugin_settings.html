@@ -1,0 +1,20 @@
+<div ng-controller="TopMenuCntl">
+    <ng-include src="topmenu"></ng-include>
+</div>
+<div>
+    <ul class="nav nav-tabs" style="padding-top: 15; margin-right: 150;margin-left: 150;">
+        <li><a data-target="#Jira" data-toggle="tab">Jira</a></li>
+    </ul>
+
+    <div class="tab-content" style="padding-top: 15; padding-left: 150; padding-right: 150;">
+        <div class="tab-pane active" id="Jira">
+            <div class="input-group input-group-sm" ng-repeat='jiraProp in plugins.jira.props' style='width: 100%;'>
+                <span class="input-group-addon" style="width: 120px;">{{jiraProp.prop}}</span>
+                <input type="text" class="form-control" placeholder="{{jiraProp.value}}" ng-model="plugins.jira.props[$index].value"></input>
+            </div>
+        </div>
+        <button type="button" data-loading-text="Saving..." data-toggle="button" class="btn btn-primary" style="margin-top: 15px" ng-click="saveJira();">
+            Save
+        </button>
+    </div>
+</div>

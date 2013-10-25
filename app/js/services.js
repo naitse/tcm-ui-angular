@@ -67,41 +67,11 @@ tcmModule.service('tcm_model', ['$http', '$routeParams', 'Auth', '$cookieStore',
             updateProject: function(projectId, requestBody, success, error){
                 $http.put( basePath + 'api/projects/'+projectId, requestBody).success(success).error(error);
             },
-            getReleasesIterations: function(success, error) {
-                $http.get( basePath + 'api/releases_iterations?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId ).success(success).error(error);
+            getProjectPlugins: function(projectId, success, error){
+                $http.get( basePath + 'api/projects/'+$routeParams.projectId + '/plugins').success(success).error(error);
             },
-            getFeatures: function(release, iteration, success, error){
-                $http.get( basePath + 'api/releases/'+release.id+'/iterations/'+iteration.id+'/features?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId).success(success).error(error);
-            },
-            getTestCases: function(featureid, success, error){
-                $http.get( basePath + 'api/releases/1/iterations/0/features/'+featureid+'/testcases?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId).success(success).error(error);
-            },
-            getExecutedTestCases: function(featureId, success, error){
-                $http.get( basePath + 'api/releases/0/iterations/0/features/' + featureId + '/executedtestcases?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId).success(success).error(error);
-            },
-
-           getProjectConfiguration: function(success, error){
-               $http.get( basePath + 'getProjectConfig?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId).success(success).error(error);
-           },
-           updateTCStatus: function(tc, newStatus, success, error){
-               $http.put( basePath + 'api/releases/1/iterations/0/features/0/testcases/' + tc.tcId + '/status?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId, newStatus).success(success).error(error);
-
-           },
-            getIterations: function(success, error){
-                $http.get( basePath + 'api/releases_iterations?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId).success(success).error(error);
-
-            },
-            getIterationPlan: function(iterId, success, error){
-                $http.get(basePath + 'api/releases/0/iterations/'+iterId+'/plan?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId).success(success).error(error);
-            },
-            getReleases: function(success, error) {
-                $http.get( basePath + 'api/releases?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId ).success(success).error(error);
-            },
-            metrics_iter_trend: function(rlsId, success, error){
-                $http.get( basePath + 'releases/'+rlsId+'/metricgetIterationsTrend?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId ).success(success).error(error);
-            },
-            metrics_carried_over: function(rlsId, success, error){
-                $http.get( basePath + 'releases/'+rlsId+'/metricGetCarriedOverFeatures?apiKey='+Auth.user.apiKey+'&projectId='+$routeParams.projectId ).success(success).error(error);
+            updatePluginProperty: function(pluginId, prop, value, success, error){
+                $http.put( basePath + 'api/projects/'+$routeParams.projectId + '/plugins/'+ pluginId, {'prop': prop, 'value': value}).success(success).error(error);
             }
         };
     }]);

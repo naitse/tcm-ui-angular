@@ -5,10 +5,14 @@ var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies']).
         function($routeProvider, $locationProvider, $httpProvider ) {
             var access = routingConfig.accessLevels;
 
-            $routeProvider.when('/manager',
+            $routeProvider.when('/manager/:projectId',
                                 {templateUrl: '/app/partials/manager.html',
                                  controller: 'ManagerCntl',
                                  access: access.user
+                                }).when('/plugins/:projectId',
+                                {templateUrl: '/app/partials/plugin_settings.html',
+                                    controller: 'PluginsCntl',
+                                    access: access.user
                                 }).when('/login',
                                 {
                                     templateUrl: 'app/partials/login.html',

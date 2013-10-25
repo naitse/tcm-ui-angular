@@ -14,7 +14,18 @@ tcmModule.controller('LoginCtrl',
                     $cookieStore.put('user', res);
 
                     if(Auth.isLoggedIn){
-                        $location.path('/manager');
+                        tcm_model.getProjects(function(data){
+
+
+                            for(var i = 0; i < data.length; i++){
+                                if(data[i].active === '1'){
+                                    $location.path('/manager/' + data[i].id);
+                                }
+                            }
+
+                            $location.path('/manager/' + data[0].id);
+                        });
+
                     }
 
                 },
