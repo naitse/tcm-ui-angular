@@ -86,6 +86,7 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
 
     };
 
+    $scope.isAdmin = Auth.user.role.bitMask === routingConfig.userRoles.admin.bitMask;
     $scope.isActiveMenu = function(element){
         console.log(element);
         return 'active';

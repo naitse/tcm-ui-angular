@@ -30,6 +30,10 @@ tcmModule.service('Auth', ['$http', '$cookieStore' , function($http, $cookieStor
             $http.defaults.headers.common['Authorization'] = "Basic " + $.base64.encode(user.username + ':' + user.password);
 
             $http.post(basePath + 'api/login').success(function(data){
+
+                if(data.admin === 1){
+                    user.role = userRoles.admin;
+                }
                 changeUser(user);
                 success(user);
 

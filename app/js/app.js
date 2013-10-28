@@ -1,6 +1,6 @@
 'use strict';
 
-var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies']).
+var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies', 'ui.bootstrap']).
     config(['$routeProvider', '$locationProvider', '$httpProvider',
         function($routeProvider, $locationProvider, $httpProvider ) {
             var access = routingConfig.accessLevels;
@@ -17,6 +17,10 @@ var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies']).
                                 {templateUrl: '/app/partials/project_settings.html',
                                     controller: 'ProjectSettingsCntl',
                                     access: access.user
+                                }).when('/admin/:projectId',
+                                {templateUrl: '/app/partials/tcm_settings.html',
+                                    controller: 'TCMSettingsCntl',
+                                    access: access.admin
                                 }).when('/login',
                                 {
                                     templateUrl: 'app/partials/login.html',
