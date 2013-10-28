@@ -10,7 +10,8 @@ tcmModule.controller('LoginCtrl',
                     role: Auth.userRoles.user
                 },
                 function(res) {
-
+                    $scope.loginErrorMessage = '';
+                    
                     $cookieStore.put('user', res);
 
                     if(Auth.isLoggedIn){

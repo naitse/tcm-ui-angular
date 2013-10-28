@@ -1,32 +1,17 @@
-<div >
-    <div>
-        <div>
-            <div>
-                <h1><a href="#">Test Cases Manager</a></h1>
-            </div>
-            <div>
-                <div>
-                    <h2>Login</h2>
-                    <form id="login-form" method="post" class="form-horizontal" ng:submit="login()">
-                        <div class="control-group">
-                            <div class="inputs" style="position: relative">
-
-                                <input id="username" placeholder="Username" type="text" value="" style="border:none;" ng-model="username">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="inputs" style="position: relative">
-
-                                <input id="password"  placeholder="Password" type="password" value="" style="border:none;" ng-model="password">
-                            </div>
-                        </div>
-                        <div ng-class="alertClass">{{loginErrorMessage}}</div>
-                        <input id="login-button" type="submit" class="btn btn-primary " data-loading-text="Logging in..." value="Login"/>
-                    </form>
-
+<link rel="stylesheet" href="assets/css/login.css">
+<div class="form-container">
+    <h2>TCM</h2>
+    <form id="login-form" method="post" class="form-horizontal" ng:submit="login()">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"/></span>
+                    <input id="username" placeholder="Username" type="text" value=""  class="form-control" ng-model="username">
                 </div>
-            </div>
-        </div>
-    </div>
-
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"/></span>
+                    <input id="password"  placeholder="Password" type="password" value=""  class="form-control" ng-model="password">
+                </div>
+        <div ng-hide="loginErrorMessage == '' " class="alert alert-danger">{{loginErrorMessage}}</div>
+        <input id="login-button" type="submit" class="btn btn-primary pull-right" data-loading-text="Logging in..." value="Login"/>
+    </form>
 </div>
+
