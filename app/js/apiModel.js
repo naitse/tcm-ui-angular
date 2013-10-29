@@ -1,15 +1,31 @@
-tcmModule.service('tcm_model', ['$http', '$routeParams', 'Auth', '$cookieStore', function($http, $routeParams, Auth, $cookieStore) {
+tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$cookieStore', function($resource, $http, $routeParams, Auth, $cookieStore) {
 
-    //set headers if cookies found
-    var user = $cookieStore.get('user');
-    if(user != null){
-        $http.defaults.headers.common['Authorization'] = "Basic " + $.base64.encode(user.username + ':' + user.password);
-    }
+     var Projects = $resource(basePath + 'api/projects', {}, {
+         getProj: { method: "GET",
+             withCredentials:true
+         }
+
+     })
+
+    //$http.defaults.headers.common['connect.sess'] = document.cookie.replace('connect.sess=', '');
+    //$http.defaults.withCredentials = true;
+
+    //$http.defaults.headers.common['Cookie'] = document.cookie;
 
 
     return {
+        /*getResource: $resource(basePath + 'api/projects', {}, {
+                getProj: { method: "GET",
+                    withCredentials:true
+                }
 
+        }),*/
+        getProfile: function(success, error){
+            $http.get( basePath + 'api/profile').success(success).error(error);
+        },
         getProjects: function(success, error){
+            //Projects.getProj(success);
+            //console.log(Projects.getProj());
             $http.get( basePath + 'api/projects').success(success).error(error);
         },
         getProjectConfig: function( success, error){

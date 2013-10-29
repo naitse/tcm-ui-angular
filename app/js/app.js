@@ -1,11 +1,15 @@
 'use strict';
 
-var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies', 'ui.bootstrap']).
+var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ngResource']).
     config(['$routeProvider', '$locationProvider', '$httpProvider',
         function($routeProvider, $locationProvider, $httpProvider ) {
             var access = routingConfig.accessLevels;
 
-            $routeProvider.when('/manager/:projectId',
+            $routeProvider.when('/manager',
+                                {templateUrl: '/app/partials/manager.html',
+                                    controller: 'ManagerCntl',
+                                    access: access.user
+                                }).when('/manager/:projectId',
                                 {templateUrl: '/app/partials/manager.html',
                                  controller: 'ManagerCntl',
                                  access: access.user
@@ -51,6 +55,7 @@ var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies', 'ui.bootstrap']).
             }];
 
             $httpProvider.responseInterceptors.push(interceptor);
+            $httpProvider.defaults.withCredentials = true;
 
         }]).filter('range', function() {
         return function(input, total) {
