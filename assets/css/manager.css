@@ -1,0 +1,16 @@
+.panel {
+	/*display: inline-block;*/
+	height: 100%;
+	margin-left: 326px;
+}
+
+.panels {
+	padding-bottom: 74px;
+	height: 100%;
+}
+
+.panel:first-of-type{
+	float:left;
+	width: 325px;
+	margin-left: 0px;
+};
