@@ -56,7 +56,7 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
     $scope.topmenu = 'app/partials/topmenu.html';
 
     $scope.loadProjects = function(){
-        tcm_model.getProjects(function(data){
+        tcm_model.Projects.query(function(data){
             $scope.projects = data;
 
             for(var i=0; i < data.length; i++){
@@ -82,8 +82,8 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
     }
 
     $scope.getProfile = function(){
-        tcm_model.getProfile(function(data){
-            // console.log(data);
+        tcm_model.Profile.get(function(data){
+
             $scope.userName = data.displayName;
             $scope.avatar = data._json.avatar_url;
             Auth.user = data;
@@ -94,7 +94,7 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
 
     if($routeParams.projectId == null){
 
-        tcm_model.getProjects(function(data){
+        tcm_model.Projects.query(function(data){
             $scope.projects = data;
 
             for(var i=0; i < data.length; i++){

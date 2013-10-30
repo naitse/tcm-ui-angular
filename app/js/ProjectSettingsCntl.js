@@ -7,45 +7,44 @@ function ProjectSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model
         'name': ''
     };
 
-    $scope.projectConfig = {}
-
     $scope.updateReleases = function(){
-        tcm_model.getReleases(function(dataReleases){
-            $scope.releases = dataReleases[0];
+        $scope.releases = tcm_model.Releases.query(function(data){
+                if($scope.selectedRelease.id ===0){
 
-            if($scope.selectedRelease.id ===0){
+                    $scope.selectedRelease.id = data[0].id;
+                    $scope.selectedRelease.name = data[0].releaseName;
 
-                $scope.selectedRelease.id = dataReleases[0][0].id;
-                $scope.selectedRelease.name = dataReleases[0][0].releaseName;
+                }
 
+                $scope.updateIterations($scope.selectedRelease.id,  $scope.selectedRelease.name);
             }
+        );
 
-            $scope.updateIterations(dataReleases[0][0].id, dataReleases[0][0].releaseName);
-
-        });
     };
 
     $scope.updateIterations = function(rid, name){
         $scope.selectedRelease.id = rid;
         $scope.selectedRelease.name = name;
 
-        tcm_model.getIterations($scope.selectedRelease.id, function(dataIter){
-            $scope.iterations = dataIter;
-        })
+        $scope.iterations = tcm_model.Iterations.query({releaseId:$scope.selectedRelease.id});
     }
 
     $scope.addNew = function(){
 
-      tcm_model.createRelease($scope.newRelease, function(data){
+      var newRel = new tcm_model.Releases();
+
+      newRel.releaseName = $scope.newRelease;
+      newRel.$save(function(){
           $scope.newRelease = "";
-          $scope.selectedRelease = data[0].releaseId;
+          $scope.selectedRelease.id = 0;
           $scope.updateReleases();
-      })
+      });
+
     };
 
-    $scope.deleteRelease = function(releaseId){
+    $scope.deleteRelease = function(release){
 
-       tcm_model.deleteRelease(releaseId, function(data){
+        release.$delete(function(){
            $scope.selectedRelease.id = 0;
            $scope.selectedRelease.name = '';
            $scope.updateReleases();
@@ -54,49 +53,38 @@ function ProjectSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model
     };
 
     $scope.addNewIteration = function(){
-        tcm_model.createIteration($scope.selectedRelease.id, $scope.newIteration, function(data){
+
+        var newIter = new tcm_model.Iterations({releaseId:$scope.selectedRelease.id});
+
+        newIter.iterationName = $scope.newIteration;
+        console.log(newIter);
+        newIter.$save(function(){
             $scope.newIteration = "";
             $scope.updateIterations($scope.selectedRelease.id, $scope.selectedRelease.name);
         });
+
     };
 
-    $scope.deleteIteration = function(iterId){
+    $scope.deleteIteration = function(iter){
 
-        tcm_model.deleteIteration(iterId, function(data){
+        iter.$delete(function(data){
 
             $scope.updateIterations($scope.selectedRelease.id, $scope.selectedRelease.name);
         });
 
     };
 
-    $scope.updateIteration = function(iterId, name){
 
-        tcm_model.updateIteration(iterId, name, function(){
+    $scope.updateRelease = function(release){
 
+        release.$update(function(){
+            $scope.updateReleases();
         });
 
-    };
-
-    $scope.updateRelease = function(rId, name){
-        tcm_model.updateRelease(rId, name, function(){
-
-        });
     }
 
     $scope.updateReleases();
 
-    $scope.loadProjectConfig = function(){
-        tcm_model.getProjectConfig(function(data){
-            $scope.projectConfig = data[0];
-        });
-    };
-
-    $scope.updateProjectConfig = function(){
-        tcm_model.updateProjectConfig($scope.projectConfig, function(){
-
-        });
-    };
-
-    $scope.loadProjectConfig();
+    $scope.projectConfig = tcm_model.ProjectConfig.get();
 }
 ProjectSettingsCntl.$inject = [ '$scope', '$routeParams', '$http', '$rootScope', 'tcm_model'];

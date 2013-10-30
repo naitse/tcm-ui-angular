@@ -3,8 +3,8 @@
 function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.features = [];
 
-	tcm_model.getFeatures(32).then(function(data){
-		$scope.features = data.data;
+	tcm_model.Features.query({iterationId:32}, function(data){
+		$scope.features = data;
 		_.each($scope.features, function(obj){
 			_.extend(obj, {editMode: false, featureTemp:{}});
 		});
