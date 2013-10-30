@@ -11,8 +11,10 @@
 			  <div class="panel-heading panel-heading-tcm">
 			  	{{feature.jiraKey}}
 				<div class="btn-group btn-group-xs pull-right">
-					<div class="btn"><span class="glyphicon glyphicon-pencil" ng-click="editMode=true"></span></div>
-					<div class="btn"><span class="glyphicon glyphicon-remove"></span></div>
+                    <div class="btn" class="no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="feature.editMode = false; cancelEditFeature(feature);"></span></div>
+					<div class="btn" ng-hide="feature.editMode"><span class="glyphicon glyphicon-pencil" ng-click="feature.editMode = true; angular.copy(feature.featureName,feature.featureTemp)"></span></div>
+                    <div class="btn" class="no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="feature.editMode = false; saveFeature(feature)"></span></div>
+					<div class="btn"><span class="glyphicon glyphicon-trash"></span></div>
 				</div>
 			  </div>
 			<div class="progress progress-tcm">
@@ -27,7 +29,7 @@
 				<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 10%"/>
 				<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 10%"/>
 			</div>
-			  <div class="panel-body" contenteditable="{{editMode}}">
+			  <div class="panel-body" contentEditable="{{feature.editMode}}">
 			  	{{feature.featureName}}
 			  </div>
 			</div>

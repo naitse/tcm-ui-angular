@@ -83,7 +83,7 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
 
     $scope.getProfile = function(){
         tcm_model.getProfile(function(data){
-            console.log(data);
+            // console.log(data);
             $scope.userName = data.displayName;
             $scope.avatar = data._json.avatar_url;
             Auth.user = data;
