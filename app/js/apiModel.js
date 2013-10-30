@@ -51,6 +51,10 @@ tcmModule.service('tcm_model', ['$http', '$routeParams', 'Auth', '$cookieStore',
         updateProjectConfig: function(config, success, error){
             $http.put(basePath + 'api/projects/' + $routeParams.projectId + '/config', config).success(success).error(error);
         },
+        //Features
+        getFeatures: function(iterId) {
+            return $http.get( basePath + 'api/features/' + iterId);
+        },
         admin: {
             getProjects: function(success, error){
                 $http.get( basePath + 'api/admin/projects').success(success).error(error);

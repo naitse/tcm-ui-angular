@@ -4,13 +4,39 @@
 </div>
 <div class="manager">
 	<div class="panels">
-		<div class="panel panel-default">
-		  <div class="panel-body">
-		    Basic panel example
+		<div class="panel panel-default panel-tcm">
+		  <div class="panel-body panel-body-tcm">
+		    
+			<div ng-repeat="feature in features" class="panel panel-default feature" id="{{feature.featureId}}">
+			  <div class="panel-heading panel-heading-tcm">
+			  	{{feature.jiraKey}}
+				<div class="btn-group btn-group-xs pull-right">
+					<div class="btn"><span class="glyphicon glyphicon-pencil" ng-click="editMode=true"></span></div>
+					<div class="btn"><span class="glyphicon glyphicon-remove"></span></div>
+				</div>
+			  </div>
+			<div class="progress progress-tcm">
+			  <div class="progress-bar progress-bar-success" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-success" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-success" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-success" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-success" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-warning" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-warning" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 10%"/>
+				<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 10%"/>
+			</div>
+			  <div class="panel-body" contenteditable="{{editMode}}">
+			  	{{feature.featureName}}
+			  </div>
+			</div>
+
+
 		  </div>
 		</div>
-		<div class="panel panel-default">
-		  <div class="panel-body">
+		<div class="panel panel-default panel-tcm">
+		  <div class="panel-body panel-body-tcm">
 		    Basic panel example
 		  </div>
 		</div>

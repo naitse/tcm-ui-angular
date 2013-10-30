@@ -1,7 +1,11 @@
-.panel {
-	/*display: inline-block;*/
+.panel-tcm {
 	height: 100%;
 	margin-left: 326px;
+	overflow-y: auto;
+}
+
+.panel-body-tcm {
+	padding: 3px;
 }
 
 .panels {
@@ -9,8 +13,44 @@
 	height: 100%;
 }
 
-.panel:first-of-type{
+.panel-tcm:first-of-type{
 	float:left;
 	width: 325px;
 	margin-left: 0px;
-};
+	border: none;
+}
+
+.progress.progress-tcm {
+	margin-bottom: 0px;
+	height: 5px;
+	border-radius: 0px;
+	opacity: 0.6;
+}
+
+.feature {
+	margin-bottom: 6px;
+	/*width: 95%;*/
+}
+
+.feature .btn-group div{
+	opacity: 0.5;
+}
+
+.feature .btn-group div:hover{
+	opacity: 1;
+}
+.panel-heading.panel-heading-tcm {
+	padding: 4px 9px;
+	padding-right: 0px;
+}
+
+.feature .panel-body {
+	padding: 9px;
+}
+
+.feature:hover{
+	width: 100%;
+}
+.feature:hover .panel-heading-tcm{
+	background-color: #e2f2ff;
+}
