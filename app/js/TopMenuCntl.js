@@ -53,24 +53,22 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
         }
     ];
 
-    function isActive(){
-        //$routeParams
-    }
     $scope.topmenu = 'app/partials/topmenu.html';
 
-    $scope.userName = Auth.user.username;
+    $scope.loadProjects = function(){
+        tcm_model.getProjects(function(data){
+            $scope.projects = data;
 
-    tcm_model.getProjects(function(data){
-        $scope.projects = data;
+            for(var i=0; i < data.length; i++){
 
-        for(var i=0; i < data.length; i++){
+                if(data[i].id.toString() === $routeParams.projectId){
 
-            if(data[i].id.toString() === $routeParams.projectId){
-
-                $scope.currentProject = data[i].name;
+                    $scope.currentProject = data[i].name;
+                }
             }
-        }
-    });
+        });
+    }
+
 
 
     $scope.switchProject = function(project){
@@ -79,18 +77,44 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
         $location.path('/manager/' + project.id);
     };
 
-    $scope.logout = function(){
-        Auth.logout(function(){
-            $location.path('/login');
-        });
-
-    };
-
-    $scope.isAdmin = Auth.user.role.bitMask === routingConfig.userRoles.admin.bitMask;
     $scope.isActiveMenu = function(element){
-        console.log(element);
         return 'active';
     }
+
+    $scope.getProfile = function(){
+        tcm_model.getProfile(function(data){
+            console.log(data);
+            $scope.userName = data.displayName;
+            $scope.avatar = data._json.avatar_url;
+            Auth.user = data;
+            $scope.isAdmin = data.admin === 1;
+        })
+
+    }
+
+    if($routeParams.projectId == null){
+
+        tcm_model.getProjects(function(data){
+            $scope.projects = data;
+
+            for(var i=0; i < data.length; i++){
+
+                if(data[i].active === '1'){
+
+                    $location.path('/manager/' + data[i].id);
+                }
+            }
+
+            $location.path('/manager/' + data[0].id);
+        });
+
+
+    }else{
+        $scope.getProfile();
+        $scope.loadProjects();
+    }
+
+
 }
 
 TopMenuCntl.$inject = ['$rootScope', '$scope', '$route', '$routeParams', '$location', '$cookieStore', 'Auth', 'tcm_model'];

@@ -27,8 +27,6 @@ tcmModule.service('Auth', ['$http', '$cookieStore' , function($http, $cookieStor
         },
         login: function(user, success, error) {
 
-            $http.defaults.headers.common['Authorization'] = "Basic " + $.base64.encode(user.username + ':' + user.password);
-
             $http.post(basePath + 'api/login').success(function(data){
 
                 if(data.admin === 1){

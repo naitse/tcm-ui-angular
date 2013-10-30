@@ -13,3 +13,32 @@
 .alert {
 	text-align: center;
 }
+
+
+.githubLoginButtonLink {
+
+    color: #444;
+    margin-top: 30px;
+}
+.githubLoginButtonLink {
+    -webkit-border-radius: 2em;
+    border-radius: 2em;
+    padding: 1em 0 1em 54px;
+    background-color: #948cf1;
+    display: inline-block;
+    overflow: hidden;
+    color: #fff;
+    font-family: TitilliumText,sans-serif;
+    font-weight: 200;
+}
+
+.githubLoginButtonLink .githubLoginButtonInside {
+    border-left-color: rgba(51,51,51,0.3);
+}
+
+.githubLoginButtonLink .githubLoginButtonInside {
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 12px;
+    padding-right: 20px;
+    position: relative;
+}
