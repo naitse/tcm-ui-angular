@@ -20,10 +20,10 @@
                                 <span class="input-group-addon" >Release</span>
                             </div>
                             <div style="display: table-cell; width: 100%;">
-                                <input type="text" class="form-control" ng-model="r.releaseName" ng-model-onblur="updateRelease(r.id, r.releaseName)"></input>
+                                <input type="text" class="form-control" ng-model="r.releaseName" ng-model-onblur="r.$update()"></input>
                             </div>
                         </td>
-                        <td style="width: 26;"><span class="glyphicon glyphicon-ban-circle" ng-click="deleteRelease(r.id)" ng-show="r.id == selectedRelease.id"></span></td>
+                        <td style="width: 26;"><span class="glyphicon glyphicon-ban-circle" ng-click="deleteRelease(r)" ng-show="r.id == selectedRelease.id"></span></td>
                     </tr>
 
                 </table>
@@ -36,16 +36,15 @@
                         <td ><input type="text" class="form-control" placeholder="Add new iteration for  Release {{selectedRelease.name}} ..." ng-model="newIteration" ng-model-onblur="addNewIteration()"></input></td>
                     </tr>
                     <tr ng-repeat="i in iterations">
-                        <td ><input type="text" class="form-control" placeholder="{{i.iterationName}}" ng-model="i.iterationName" ng-model-onblur="updateIteration(i.IterId, i.iterationName)"></input></td>
-                        <td style="width: 26;"><span class="glyphicon glyphicon-ban-circle" ng-click="deleteIteration(i.IterId)" ></span></td>
+                        <td ><input type="text" class="form-control" placeholder="{{i.iterationName}}" ng-model="i.iterationName" ng-model-onblur="i.$update()"></input></td>
+                        <td style="width: 26;"><span class="glyphicon glyphicon-ban-circle" ng-click="deleteIteration(i)" ></span></td>
                     </tr>
 
                 </table>
             </div>
         </div>
         <div class="tab-pane table-responsive" style="margin-left: 100; margin-right: 100;" id="Misc">
-
-            <form role="form" ng-submit="updateProjectConfig()">
+            <form role="form" ng-submit="projectConfig.$update();">
                 <div class="form-group">
                     <label for="bugsURL">Bugs URL</label>
                     <input type="text" class="form-control" id="bugsURL" placeholder="URL" ng-model="projectConfig.bugurl">
