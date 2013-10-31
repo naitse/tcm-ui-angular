@@ -10,8 +10,8 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
     $scope.arrprojects = new Array();
 
     $scope.loadProjects = function(){
-        tcm_model.admin.getProjects(function(data){
-            $scope.projects = data;
+        $scope.projects = tcm_model.admin.Projects.query(function(data){
+
             $scope.arrprojects = new Array();
 
             data.forEach(function(elmn, index){
@@ -21,8 +21,8 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
     };
 
     $scope.loadUsers = function(selectFirst){
-        tcm_model.admin.getUsers(function(data){
-            $scope.users = data;
+        $scope.users = tcm_model.admin.Users.query(function(data){
+
             if(selectFirst != null){
                 $scope.loadUserProjects(data[0].id);
             }
@@ -30,40 +30,33 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
     };
 
     $scope.loadUserProjects = function(id){
-        $scope.selectedUser.id = id;
-        tcm_model.admin.getUserProjects(id, function(data){
 
-            $scope.userProjects = data;
-        });
+        $scope.selectedUser.id = id;
+        $scope.refreshProjects();
+    }
+
+    $scope.refreshProjects = function(){
+        $scope.userProjects = tcm_model.admin.UserProjects.query({'id': $scope.selectedUser.id});
     }
 
     $scope.addProject = function(){
-        tcm_model.admin.addProject($scope.newProjectName, $scope.newProjectDescription, function(data){
-            $scope.newProjectName = "";
-            $scope.newProjectDescription = "";
-            $scope.loadProjects();
-        });
+       var proj = new tcm_model.admin.Projects();
+       proj.name =  $scope.newProjectName;
+       proj.description = $scope.newProjectDescription;
+
+       proj.$save(function(){
+           $scope.newProjectName = "";
+           $scope.newProjectDescription = "";
+           $scope.loadProjects();
+       });
     }
 
-    $scope.deleteProject = function(id){
-        tcm_model.admin.deleteProject(id, function(data){
-            $scope.newProjectName = "";
-            $scope.newProjectDescription = "";
-            $scope.loadProjects();
-        });
-    }
 
-    $scope.saveProject = function(id, name, desc){
-        tcm_model.admin.saveProject(id, name, desc, function(data){
-            $scope.newProjectName = "";
-            $scope.newProjectDescription = "";
-            $scope.loadProjects();
-        });
-    }
 
     $scope.addProjectToUser = function(){
+        var UP = new tcm_model.admin.UserProjects({id: $scope.selectedUser.id, projectId: $scope.getProjectId($scope.newUserProject)});
 
-        tcm_model.admin.assignProjectToUser($scope.selectedUser.id, $scope.getProjectId($scope.newUserProject), function(data){
+        UP.$save(function(){
             $scope.newUserProject = "";
             $scope.loadUserProjects ($scope.selectedUser.id);
         });
@@ -82,12 +75,7 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
         return projectId;
     }
 
-    $scope.deleteUserProject = function(projId){
-       tcm_model.admin.deleteUserProject($scope.selectedUser.id, projId, function(data){
-           $scope.newUserProject = "";
-           $scope.loadUserProjects ($scope.selectedUser.id);
-       });
-    }
+
 
     $scope.saveUser = function(user){
         tcm_model.admin.updateUser(user, function(data){
@@ -103,10 +91,16 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
 
     $scope.addUser = function(){
 
-        tcm_model.admin.addUser($scope.newUserName, $scope.newUserIsEnabled, $scope.newUserIsAdmin, function(data){
+        var user = new tcm_model.admin.Users();
+        user.user_name = $scope.newUserName;
+        user.enabled = ($scope.newUserIsAdmin)?'1':'0';
+        user.admin = ($scope.newUserIsEnabled)?'1':'0';
+
+        user.$save(function(){
             $scope.newUserName="";
             $scope.newUserIsAdmin = "";
             $scope.newUserIsEnabled="";
+            $scope.loadUsers(true);
         });
 
     }
