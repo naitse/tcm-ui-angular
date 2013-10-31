@@ -119,25 +119,84 @@ tcmModule.directive('ngModelOnblur', function() {
         }
     };
 });
+/*
+To add the disabled attribute on an element
+*/
+tcmModule.directive('ngDisabled', function() {
+    return function(scope, element, attrs) {
+        var expr = attrs.readonly;
+        scope.$watch(expr, function(val) {
+            if (val == true) {
+                element.attr('disabled', 'disabled');
+            } else {
+                element.removeAttr('disabled');
+            }
+        });
 
-tcmModule.directive('contentEditable', function() {
+    };
+});
+
+/*
+To autoresize textareas
+*/
+tcmModule.directive('textarea', function() {
     return {
-        require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
-            // view -> model
-            elm.bind('blur', function() {
-                scope.$apply(function() {
-                    ctrl.$setViewValue(elm.html());
-                });
+        restrict: 'E',
+        link: function( scope , element , attributes ) {
+
+            var threshold    = 15,
+                minHeight    = element[0].offsetHeight,
+                paddingLeft  = element.css('paddingLeft'),
+                paddingTop  = element.css('paddingTop'),
+                paddingBottom  = element.css('paddingBottom'),
+                paddingRight = element.css('paddingRight');
+
+            var $shadow = angular.element('<div></div>').css({
+                position:   'absolute',
+                top:        -10000,
+                left:       -10000,
+                width:      element[0].offsetWidth - parseInt(paddingLeft || 0) - parseInt(paddingRight || 0),
+                fontSize:   element.css('fontSize'),
+                fontFamily: element.css('fontFamily'),
+                lineHeight: element.css('lineHeight'),
+                resize:     'none'
             });
 
-            // model -> view
-            ctrl.$render = function() {
-                elm.html(attrs.content);
-            };
+            angular.element( document.body ).append( $shadow );
 
-            // load init value from DOM
-            //ctrl.$setViewValue(elm.html());
+            var update = function() {
+
+                var times = function(string, number) {
+                    for (var i = 0, r = ''; i < number; i++) {
+                        r += string;
+                    }
+                    return r;
+                }
+
+                var val = element.val().trim().replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/&/g, '&amp;')
+                    .replace(/\n$/, '<br/>&nbsp;')
+                    .replace(/\n/g, '<br/>')
+                    .replace(/\s{2,}/g, function( space ) {
+                        return times('&nbsp;', space.length - 1) + ' ';
+                    });
+
+                $shadow.html( val );
+
+                var paddingTB = parseInt(paddingTop || 0) + parseInt(paddingBottom || 0)
+
+                console.log(Math.max( ($shadow[0].offsetHeight + threshold) - paddingTB, minHeight - paddingTB))
+
+                element.css( 'height' , Math.max( ($shadow[0].offsetHeight + threshold) - paddingTB, minHeight - paddingTB) );
+            }
+
+            scope.$on('$destroy', function() {
+                $shadow.remove();
+            });
+
+            element.bind( 'keyup keydown keypress change' , update );
+            update();
         }
-    };
+    }
 });

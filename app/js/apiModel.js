@@ -26,7 +26,7 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                 }
         }),
 
-        Features: $resource(basePath + 'api/iterations/:iterationId/features', {iterationId: '@iterationId'},{
+        Features: $resource(basePath + 'api/iterations/:iterationId/features/:featureId', {iterationId: '@iterationId', featureId:'@featureId'},{
                 update: {
                     method: 'PUT'
                 }

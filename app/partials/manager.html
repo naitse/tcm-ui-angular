@@ -11,10 +11,11 @@
 			  <div class="panel-heading panel-heading-tcm">
 			  	{{feature.jiraKey}}
 				<div class="btn-group btn-group-xs pull-right">
-                    <div class="btn" class="no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="feature.editMode = false; cancelEditFeature(feature);"></span></div>
-					<div class="btn" ng-hide="feature.editMode"><span class="glyphicon glyphicon-pencil" ng-click="feature.editMode = true; angular.copy(feature.featureName,feature.featureTemp)"></span></div>
-                    <div class="btn" class="no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="feature.editMode = false; saveFeature(feature)"></span></div>
-					<div class="btn"><span class="glyphicon glyphicon-trash"></span></div>
+                    <div class="btn" class="no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="cancelEditFeature(feature, element);"></span></div>
+					<div class="btn" ng-hide="feature.editMode"><span class="glyphicon glyphicon-pencil" ng-click="editFeature(feature)"></span></div>
+                    <div class="btn" class="no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="saveFeature(feature)"></span></div>
+					<div class="btn" ng-hide="feature.delete"><span class="glyphicon glyphicon-trash" ng-click="feature.delete = true"></span></div>
+					<div class="btn btn-danger btn-delete" ng-show="feature.delete" ng-click="deleteFeature(feature)" ng-mouseleave="feature.delete = false">Sure?</div>
 				</div>
 			  </div>
 			<div class="progress progress-tcm">
@@ -29,9 +30,9 @@
 				<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 10%"/>
 				<div class="progress-bar progress-bar-danger" role="progressbar" style="width: 10%"/>
 			</div>
-			  <div class="panel-body" contentEditable="{{feature.editMode}}">
+			  <textarea class="panel-body textarea-tcm" ng-class="feature.editMode==true?'editable':''" ng-model="feature.featureName" ng-disabled="feature.editMode==false?true:''">
 			  	{{feature.featureName}}
-			  </div>
+			  </textarea>
 			</div>
 
 

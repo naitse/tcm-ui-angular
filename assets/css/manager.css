@@ -69,3 +69,20 @@
 	background-color: #e2f2ff;
 }
 
+.feature .btn-delete {
+	border-radius: 20px !important;
+	margin-right: 5px;
+}
+
+.feature .editable {
+	border-top: none !important;
+}
+
+.feature .textarea-tcm {
+	width: 100% !important;
+	border: none;
+	resize: none !important;
+	border-radius: 4px !important;
+	color: #333 !important;
+	max-height: 118px;
+}
