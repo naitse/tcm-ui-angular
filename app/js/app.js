@@ -186,8 +186,6 @@ tcmModule.directive('textarea', function() {
 
                 var paddingTB = parseInt(paddingTop || 0) + parseInt(paddingBottom || 0)
 
-                console.log(Math.max( $shadow[0].offsetHeight + threshold, minHeight))
-
                 element.css( 'height' , Math.max( $shadow[0].offsetHeight + threshold, minHeight) );
             }
 

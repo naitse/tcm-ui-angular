@@ -32,6 +32,18 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                 }
         }),
 
+        FeatureExecutedTC: $resource(basePath + 'api/getFeatureExecutedTestCases/:featureId', {featureId:'@featureId'},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+
+        TestCases: $resource(basePath + 'api/features/:featureId/testcases/:tcId', {featureId:'@featureId', tcId: '@tcId'},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+
         admin: {
 
             Projects: $resource(basePath + 'api/admin/projects/:id', {id:'@id'}, {

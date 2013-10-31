@@ -30,6 +30,22 @@ pre{
     word-wrap:break-word
 }
 
+input, textarea {
+    border-radius: 4px;
+}
+
 .editable {
-    border: yellow solid 1px !important;
+    border: #DDD dashed 1px !important;
+}
+
+.btn-group div{
+    opacity: 0.5;
+}
+
+.no-opacity {
+    opacity: 1 !important;
+}
+
+.btn-group div:hover{
+    opacity: 1 !important;
 }

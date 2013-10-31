@@ -36,22 +36,15 @@
 	opacity: 0.6;
 }
 
+.progress-bar-notrun {
+	background-color: whitesmoke;
+}
+
 .feature {
 	margin-bottom: 6px;
 	/*width: 95%;*/
 }
 
-.feature .btn-group div{
-	opacity: 0.5;
-}
-
-.feature .no-opacity {
-	opacity: 1;
-}
-
-.feature .btn-group div:hover{
-	opacity: 1;
-}
 .panel-heading.panel-heading-tcm {
 	padding: 4px 9px;
 	padding-right: 0px;
@@ -65,12 +58,13 @@
 .feature:hover{
 	width: 100%;
 }
+
 .feature:hover .panel-heading-tcm{
-	background-color: #e2f2ff;
+	background-color: #DDD;
 }
 
 .feature .btn-delete {
-	border-radius: 20px !important;
+	border-radius: 4px !important;
 	margin-right: 5px;
 }
 
@@ -78,11 +72,39 @@
 	border-top: none !important;
 }
 
-.feature .textarea-tcm {
+.textarea-tcm {
 	width: 100% !important;
 	border: none;
 	resize: none !important;
 	border-radius: 4px !important;
 	color: #333 !important;
+}
+
+.feature .textarea-tcm {
 	max-height: 118px;
+}
+
+.feature.active .panel-heading-tcm {
+	background-color: #e2f2ff;
+}
+
+
+
+.testcase {
+	/*border:1px solid;*/
+}
+
+.testcase .name {
+	width: 80%;
+	border: none;
+	background: transparent;
+}
+
+.testcase .name.editable {
+	background: white;
+}
+
+.testcase .btn-delete {
+	border-radius: 4px !important;
+	margin-right: 5px;
 }
