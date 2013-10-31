@@ -78,6 +78,15 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 	//TCs
 
+	$scope.selectTc= function(tc){
+		_.each($scope.testcases, function(obj){
+			obj.current = false;
+		})
+
+		var setCurrent = _.findWhere($scope.testcases, {tcId: tc.tcId});
+		setCurrent.current = true;
+	}
+
 	$scope.editTC = function(tc){
 		tc.editMode = true; 
 		var temp = angular.copy(tc);

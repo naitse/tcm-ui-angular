@@ -108,3 +108,15 @@
 	border-radius: 4px !important;
 	margin-right: 5px;
 }
+
+.testcase:hover .panel-heading{
+	background-color: #DDD;
+}
+
+.testcase.active .panel-heading {
+	background-color: #e2f2ff;
+}
+
+.testcase.panel {
+	margin-bottom: 2px;
+}
