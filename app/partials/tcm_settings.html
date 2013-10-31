@@ -27,8 +27,8 @@
                             <input type="text" class="form-control" ng-model="p.description" ng-model-onblur="updateRelease(r.id, r.releaseName)" ng-change="editMode = true"></input>
                         </td>
                         <td style="width: 26;">
-                            <span class="glyphicon glyphicon-floppy-disk" ng-show="editMode" ng-click="saveProject(p.id, p.name, p.description)"></span>
-                            <span class="glyphicon glyphicon-ban-circle" ng-hide="editMode" ng-click="deleteProject(p.id)"></span>
+                            <span class="glyphicon glyphicon-floppy-disk" ng-show="editMode" ng-click="p.$update(); editMode = false;"></span>
+                            <span class="glyphicon glyphicon-ban-circle" ng-hide="editMode" ng-click="p.$delete(loadProjects);"></span>
                         </td>
                     </tr>
 
@@ -72,8 +72,8 @@
                             </label>
                         </td>
                         <td style="width: 26;">
-                            <span class="glyphicon glyphicon-floppy-disk" ng-show="editMode" ng-click="saveUser(u)"></span>
-                            <span class="glyphicon glyphicon-ban-circle" ng-hide="editMode" ng-click="deleteUser(u)"></span>
+                            <span class="glyphicon glyphicon-floppy-disk" ng-show="editMode" ng-click="u.$update()"></span>
+                            <span class="glyphicon glyphicon-ban-circle" ng-hide="editMode" ng-click="u.$delete(loadUsers)"></span>
                         </td>
                     </tr>
 
@@ -96,7 +96,7 @@
                             <span class="input-group-addon" >{{up.name}}</span>
                         </td>
                         <td style="width: 26;">
-                            <span class="glyphicon glyphicon-ban-circle" ng-click="deleteUserProject(up.id)" ></span>
+                            <span class="glyphicon glyphicon-ban-circle" ng-click="up.$delete(refreshProjects)" ></span>
                         </td>
                     </tr>
 
