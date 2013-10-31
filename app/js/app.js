@@ -186,9 +186,9 @@ tcmModule.directive('textarea', function() {
 
                 var paddingTB = parseInt(paddingTop || 0) + parseInt(paddingBottom || 0)
 
-                console.log(Math.max( ($shadow[0].offsetHeight + threshold) - paddingTB, minHeight - paddingTB))
+                console.log(Math.max( $shadow[0].offsetHeight + threshold, minHeight))
 
-                element.css( 'height' , Math.max( ($shadow[0].offsetHeight + threshold) - paddingTB, minHeight - paddingTB) );
+                element.css( 'height' , Math.max( $shadow[0].offsetHeight + threshold, minHeight) );
             }
 
             scope.$on('$destroy', function() {

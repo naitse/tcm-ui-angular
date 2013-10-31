@@ -15,17 +15,17 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		feature.editMode = true; 
 		var temp = angular.copy(feature);
 		feature.featureTemp = temp;
-		// console.log(feature.featureTemp);
-
 	}
 	$scope.cancelEditFeature = function(feature){
 		feature.editMode = false; 
 		feature.featureName = feature.featureTemp.featureName
-		// element.triggerHandler('change');
 	}
 	$scope.saveFeature = function(feature){
 		feature.editMode = false;
-		// console.log(feature) 
+		var temp = angular.copy(feature);
+		console.log(temp)
+
+		feature.$update();
 	}
 
 	$scope.deleteFeature = function(feature){
