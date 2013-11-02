@@ -25,6 +25,10 @@ var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies', 'ui.bootstrap', '
                                 {templateUrl: '/app/partials/tcm_settings.html',
                                     controller: 'TCMSettingsCntl',
                                     access: access.admin
+                                }).when('/jira/:projectId',
+                                {templateUrl: '/app/partials/jira_sync.html',
+                                    controller: 'JiraPluginCntl',
+                                    access: access.user
                                 }).when('/login',
                                 {
                                     templateUrl: 'app/partials/login.html',

@@ -43,7 +43,7 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
             subMenuList:[
                 { name: 'JIRA Sync',
                   active: $location.path().indexOf('sync') >=0 ? 'active':'',
-                    link: '#/sync'
+                    link: '#/jira/'+$routeParams.projectId
                 },
                 { name: 'Import/Export',
                     active: $location.path().indexOf('import-export') >=0 ? 'active':'',

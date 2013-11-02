@@ -1,0 +1,96 @@
+<div ng-controller="TopMenuCntl">
+    <ng-include src="topmenu"></ng-include>
+</div>
+<div style="margin-left: 20px;">
+    <div class="form-group">
+        <label for="JiraIterations">Jira Iteration</label>
+        <select id="JiraIterations" class="form-control input-lg" ng-model="iteration" ng-options="sprint.id as sprint.name for sprint in iterations.sprints" style="width: 20em;">
+        </select>
+    </div>
+    <div>
+        <div class="panel-group" id="accordion" style="width: 700px; display: table-cell;vertical-align: top; " >
+
+            <div class="panel panel-default" ng-init="incompletedCollapsed = true">
+                <div class="panel-heading" ng-click="incompletedCollapsed = !incompletedCollapsed">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion">
+                            Incompleted Issues
+                        </a>
+                    </h4>
+                </div>
+                <div id="incompletedItems" class="panel-collapse collapse" ng-class="(incompletedCollapsed)?'in':''" style="overflow-y: scroll; overflow-x: hidden;">
+                    <div class="panel-body">
+                        <div class="table-responsive" >
+                            <table class="table table-condensed">
+                                <tr ng-repeat="cissues in issues.contents.incompletedIssues" >
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" ng-model="cissues.selected">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <img src="{{cissues.typeUrl}}"/>
+                                    </td>
+                                    <td>{{cissues.key}}
+                                    </td>
+                                    <td>{{cissues.summary}}
+                                    </td>
+                                    <td>
+                                        <span class="glyphicon glyphicon-chevron-up" popover="Type: {{cissues.typeName}}\npriorityName: {{cissues.priorityName}}" popover-title="{{cissues.key}}"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" ng-init="completedCollapsed = false">
+                <div class="panel-heading" ng-click="completedCollapsed = !completedCollapsed">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion">
+                            Completed Issues
+                        </a>
+                    </h4>
+                </div>
+                <div id="completedItems" class="panel-collapse collapse" ng-class="(completedCollapsed)?'in':''" style="overflow-y: scroll; overflow-x: hidden;">
+                    <div class="panel-body">
+                        <div class="table-responsive" >
+                            <table class="table table-condensed">
+                                <tr ng-repeat="cissues in issues.contents.completedIssues" >
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" ng-model="cissues.selected">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <img src="{{cissues.typeUrl}}"/>
+                                    </td>
+                                    <td>{{cissues.key}}
+                                    </td>
+                                    <td>{{cissues.summary}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="glyphicon glyphicon-share-alt"   style="font-size: 70px; padding: 8px 8px 8px 10px; display: table-cell; vertical-align: top;"></span>
+        <div class="well" style="width: 500px; margin: 8px 0; display: table-cell">
+            <div style="overflow-y: scroll; overflow-x: hidden; height: 500px;">
+                <ul class="nav nav-list">
+                    <li><label class="tree-toggler nav-header">Release 1</label>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">iter 1</a></li>
+                            <li><a href="#">iter 2</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="divider"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
