@@ -1,0 +1,12 @@
+<div class="btn-group btn-group-sm no-opacity" ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();">
+	<div ng-click="$event.stopPropagation(); openDD();" class="btn btn-default no-opacity">
+	{{test.statusName}} <span class="caret"></span>
+	</div>
+	<ul class="dropdown-menu dropdown-pull-left" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; dropDownClose = true;">
+		<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(0)">Not Run</a></li>
+		<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(1)">In Progress</a></li>
+		<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(2)">Blocked</a></li>
+		<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(3)">Failed</a></li>
+		<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(4)">Pass</a></li>
+	</ul>
+</div>
