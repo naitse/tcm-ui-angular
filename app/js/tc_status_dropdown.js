@@ -6,7 +6,7 @@ tcmModule.directive('tcStatusDropdown', function(){
        scope:{ 
           test: '='
         },
-       controller: ["$scope", "$element", "$attrs", 'tcm_model', function($scope, element, $attrs, tcm_model){
+       controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
         $scope.buttonSatusClass = 'default';
 
@@ -49,7 +49,6 @@ tcmModule.directive('tcStatusDropdown', function(){
               $scope.$apply(
                 function(){
                   if(!$(element).find('.dropdown-menu').hasClass('hovered')){
-                    console.log('cerrar')
                     $scope.setDefaults();
                   }
                 }
@@ -61,6 +60,7 @@ tcmModule.directive('tcStatusDropdown', function(){
 
         $scope.updateTCstatus = function(statusId){
           tcm_model.TestCasesUpdateStatus.update({tcId: $scope.test.tcId, statusId: statusId, actualResult:''}, function(data){
+            $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.test.featureId});
             $scope.test.statusName = data.name;
             $scope.setButtonColor(data.statusId);
             $scope.setDefaults();

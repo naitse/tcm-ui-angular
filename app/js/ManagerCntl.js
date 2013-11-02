@@ -108,13 +108,21 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 	}
 
+	$scope.featureUpdateTCsatus = function(featureId){
+		tcm_model.FeatureExecutedTC.query({featureId:featureId},function(executed){
+			var data = executed[0];
+			var obj = _.findWhere($scope.features, {featureId: featureId})
+			_.extend(obj, data);
+		})
+	}
+
+	$rootScope.$on('tcStatusUpdated', function(event, parameters){
+		$scope.featureUpdateTCsatus(parameters.featureId);
+	});
+
 	$scope.extendFeatures = function(){
 		_.each($scope.features, function(obj){
 			_.extend(obj, {editMode: false, featureTemp:{}, delete:false, current:false});
-			// tcm_model.FeatureExecutedTC.query({featureId:obj.featureId},function(executed){
-			// 	var data = executed[0];
-			// 	_.extend(obj, {executed: data});
-			// })
 		});
 	}
 
