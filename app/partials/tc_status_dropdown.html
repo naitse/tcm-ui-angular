@@ -1,5 +1,14 @@
+<style>
+	
+	.status-button {
+		border-radius: 4px !important;
+		padding: 1px 3px 1px 5px !important;
+	}
+
+</style>
+
 <div class="btn-group btn-group-sm no-opacity" ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();">
-	<div ng-click="$event.stopPropagation(); openDD();" class="btn btn-default no-opacity">
+	<div ng-click="$event.stopPropagation(); openDD();" class="btn btn-{{buttonSatusClass}} no-opacity status-button">
 	{{test.statusName}} <span class="caret"></span>
 	</div>
 	<ul class="dropdown-menu dropdown-pull-left" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; dropDownClose = true;">

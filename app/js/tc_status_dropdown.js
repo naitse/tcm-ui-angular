@@ -8,12 +8,35 @@ tcmModule.directive('tcStatusDropdown', function(){
         },
        controller: ["$scope", "$element", "$attrs", 'tcm_model', function($scope, element, $attrs, tcm_model){
 
+        $scope.buttonSatusClass = 'default';
+
         $scope.setDefaults = function(){
           $scope.dropDownClose = true;
           $scope.hovered = false
         }
 
+        $scope.setButtonColor = function(statusId){
+          switch(statusId){
+              case 0:
+                $scope.buttonSatusClass = 'default'
+                break;
+              case 1:
+                $scope.buttonSatusClass = 'info'
+                break;
+              case 2:
+                $scope.buttonSatusClass = 'warning'
+                break;
+              case 3:
+                $scope.buttonSatusClass = 'danger'
+                break;
+              case 4:
+                $scope.buttonSatusClass = 'success'
+                break;
+            }
+        }
+
         $scope.setDefaults();
+        $scope.setButtonColor($scope.test.statusId);
 
         $scope.openDD = function(){
           $scope.dropDownClose = false
@@ -39,6 +62,7 @@ tcmModule.directive('tcStatusDropdown', function(){
         $scope.updateTCstatus = function(statusId){
           tcm_model.TestCasesUpdateStatus.update({tcId: $scope.test.tcId, statusId: statusId, actualResult:''}, function(data){
             $scope.test.statusName = data.name;
+            $scope.setButtonColor(data.statusId);
             $scope.setDefaults();
           })
         }  
