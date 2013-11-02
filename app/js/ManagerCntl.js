@@ -195,7 +195,10 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 	}
 
-
+	$scope.isEmpty = function(string){
+		var result = /^\s*$/.test(string) || (string === null);
+		return result;
+	}
 
 	$scope.loguea = function(item){
 		console.log(item)
