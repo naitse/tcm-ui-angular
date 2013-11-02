@@ -62,3 +62,8 @@ input, textarea {
     font-size: 16px;
     text-decoration: none !important;
 }
+
+.dropdown-pull-left {
+    left: inherit !important;
+    right: 0px !important;
+}

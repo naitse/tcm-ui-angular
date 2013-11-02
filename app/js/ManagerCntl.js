@@ -3,6 +3,7 @@
 function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.features = [];
 	$scope.testcases = [];
+	$scope.closeUpdatedd = true;
 
 	$scope.clearFtrTests = function(){
 		$scope.features = [];
@@ -135,7 +136,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 	$scope.extendTcs = function(data){
 		_.each($scope.testcases, function(obj){
-			_.extend(obj, {editMode: false, tcTemp:{}, delete:false, current:false});
+			_.extend(obj, {editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
 		});
 		
 	}
@@ -158,12 +159,12 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		tc.tcTemp = temp;
 	}
 
-	$scope.updateTCstatus = function(tc, statusId){
-		tcm_model.TestCasesUpdateStatus.update({tcId: tc.tcId, statusId: statusId, actualResult:''}, function(data){
-			tc.statusName = data.name;
-			// console.log(data)
-		})
-	}
+	// $scope.updateTCstatus = function(tc, statusId){
+	// 	tcm_model.TestCasesUpdateStatus.update({tcId: tc.tcId, statusId: statusId, actualResult:''}, function(data){
+	// 		tc.statusName = data.name;
+	// 		// console.log(data)
+	// 	})
+	// }
 
 	$scope.cancelEditTC = function(tc){
 		tc.editMode = false; 
@@ -187,6 +188,11 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	}
 
 
+
+	$scope.loguea = function(item){
+		console.log(item)
+		item.dropDownClose = false;
+	}
 
 }
 ManagerCntl.$inject = ['$scope', '$routeParams', '$http', '$rootScope', 'tcm_model'];

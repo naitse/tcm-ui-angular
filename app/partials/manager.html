@@ -83,20 +83,8 @@
 	                    <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveTC(tc)"></span></div>
 						<div class="btn" ng-hide="tc.delete"><span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); tc.delete = true"></span></div>
 						<div class="btn btn-danger btn-delete" ng-show="tc.delete" ng-click="deleteTC(tc)" ng-mouseleave="$event.stopPropagation(); tc.delete = false">{{placeholders.testcase.delete}}</div>
-
-						<div class="btn-group no-opacity">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							{{tc.statusName}} <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(tc, 0)">Not Run</a></li>
-								<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(tc, 1)">In Progress</a></li>
-								<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(tc, 2)">Blocked</a></li>
-								<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(tc, 3)">Failed</a></li>
-								<li><a href="" ng-click="$event.stopPropagation(); updateTCstatus(tc, 4)">Pass</a></li>
-							</ul>
-						</div>
-
+						
+						<tc-status-dropdown test="tc"></tc-status-dropdown>
 
 					</div>
 				</div>
