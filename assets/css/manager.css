@@ -17,7 +17,7 @@
 }
 
 .panels {
-	padding-bottom: 80px;  /*ADJUST PANELS HEIGHT*/
+	padding-bottom: 136px;  /*ADJUST PANELS HEIGHT*/
 	height: 100%;
 }
 
@@ -88,6 +88,11 @@
 	background-color: #e2f2ff;
 }
 
+.feature .closed {
+    display: inline-block;
+    margin-left: 10px;
+}
+
 
 
 .testcase {
@@ -117,6 +122,22 @@
 	background-color: #e2f2ff;
 }
 
+.testcase.active .panel-footer {
+	background-color: #e2f2ff;
+}
+
 .testcase.panel {
 	margin-bottom: 2px;
+}
+
+.panel .action-bar {
+
+}
+
+.panel .action-bar .btn-group {
+	top: -12px;
+}
+
+.panel .action-bar .btn-group span{
+	font-size: 16px;
 }

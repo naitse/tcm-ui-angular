@@ -4,6 +4,66 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.features = [];
 	$scope.testcases = [];
 
+	$scope.clearFtrTests = function(){
+		$scope.features = [];
+		$scope.featureSelected = false;
+		$scope.testcases = [];
+	}
+
+	$scope.featureSelected = false;
+
+	//export to a directive
+
+	$scope.releases = [];
+
+	$scope.clearIterations = function(){
+		$scope.iterations = [];
+		$scope.iteration = {
+			open:false,
+			iterationName: 'Select Iteration',
+			IterId:null		
+		}
+	}
+
+	$scope.clearRelease = function(){
+		$scope.release = {
+			open:false,
+			releaseName:'',
+			id:null		
+		}
+	}
+
+	$scope.clearRelease();
+	$scope.clearIterations();
+
+	$scope.selectRelease = function(rel){
+		$scope.clearRelease();
+		$scope.clearIterations();
+		$scope.clearFtrTests();
+		$scope.release.open = false;
+		$scope.release.releaseName =  rel.releaseName;
+		$scope.release.id =  rel.id;
+		
+		tcm_model.Iterations.query({releaseId: $scope.release.id}).$promise.then(function(data){
+			$scope.iterations = data;
+		})
+
+	}
+
+	$scope.selectIteration = function(iter){
+		$scope.clearFtrTests();
+		$scope.iteration.open = false;
+		$scope.iteration.iterationName =  iter.iterationName;
+		$scope.iteration.IterId =  iter.IterId;
+		$scope.getFeatures();
+	}
+	
+	tcm_model.Releases.query(function(data){
+		$scope.releases = data;
+	});
+	
+	//
+
 	$scope.placeholders = {
 		feature : {
 			delete:'Sure?'
@@ -13,10 +73,12 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		}
 	}
 
-	tcm_model.Features.query({iterationId:15}, function(data){
-		$scope.features = data;
-		$scope.extendFeatures()
-	})
+	$scope.getFeatures = function(){
+		tcm_model.Features.query({iterationId:$scope.iteration.IterId}, function(data){
+			$scope.features = data;
+			$scope.extendFeatures()
+		})
+	}
 
 	$scope.editFeature = function(feature){
 		feature.editMode = true; 
@@ -39,6 +101,8 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		feature.$delete(function(){
 			$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: feature.featureId}));
 			$scope.placeholders.feature.delete = "Sure?";
+			$scope.testcases = [];
+			$scope.featureSelected = false;
 		})
 
 	}
@@ -46,10 +110,10 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.extendFeatures = function(){
 		_.each($scope.features, function(obj){
 			_.extend(obj, {editMode: false, featureTemp:{}, delete:false, current:false});
-			tcm_model.FeatureExecutedTC.query({featureId:obj.featureId},function(executed){
-				var data = executed[0];
-				_.extend(obj, {executed: data});
-			})
+			// tcm_model.FeatureExecutedTC.query({featureId:obj.featureId},function(executed){
+			// 	var data = executed[0];
+			// 	_.extend(obj, {executed: data});
+			// })
 		});
 	}
 
@@ -63,7 +127,8 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 		tcm_model.TestCases.query({featureId: feature.featureId},function(data){
 			$scope.testcases = data;
-			$scope.extendTcs()
+			$scope.extendTcs();
+			$scope.featureSelected = true;
 		})
 
 	}
@@ -92,6 +157,14 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		var temp = angular.copy(tc);
 		tc.tcTemp = temp;
 	}
+
+	$scope.updateTCstatus = function(tc, statusId){
+		tcm_model.TestCasesUpdateStatus.update({tcId: tc.tcId, statusId: statusId, actualResult:''}, function(data){
+			tc.statusName = data.name;
+			// console.log(data)
+		})
+	}
+
 	$scope.cancelEditTC = function(tc){
 		tc.editMode = false; 
 		tc.name = tc.tcTemp.name

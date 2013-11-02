@@ -44,6 +44,12 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                 }
         }),
 
+        TestCasesUpdateStatus: $resource(basePath + 'api/testcases/:tcId/updateStatus', {tcId: '@tcId', statusId: '@statusId', actualResult:'@actualResult'},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+
         admin: {
 
             Projects: $resource(basePath + 'api/admin/projects/:id', {id:'@id'}, {
