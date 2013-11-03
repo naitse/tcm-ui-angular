@@ -94,6 +94,15 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		$scope.featureUpdateTCsatus(parameters.featureId);
 	});
 
+	$rootScope.$on('tcDeleted', function(event, parameters){
+		$scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: parameters.tcId}));
+	});
+
+	$rootScope.$on('featureDeleted', function(event, parameters){
+		$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: parameters.featureId}));
+		$scope.testcases = [];
+	});
+
 	$scope.getTestCases = function(feature){
 		_.each($scope.features, function(obj){
 			obj.current = false;

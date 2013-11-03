@@ -1,12 +1,12 @@
 tcmModule.directive('ngTestcase', function(){
    return {
        restrict: 'E',
-       transclude: true,
+       transclude: false,
        templateUrl: 'app/partials/testcase.html',
        // scope:{ 
        //    tc: '='
        //  },
-       controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
 
         $scope.selectTc= function(tc){
@@ -39,7 +39,7 @@ tcmModule.directive('ngTestcase', function(){
         $scope.deleteTC = function(tc){
           $scope.placeholders.testcase.delete = "Deletting...";
           tc.$delete(function(){
-            $scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: tc.tcId}));
+            $rootScope.$broadcast('tcDeleted', {tcId: tc.tcId});
             $scope.placeholders.testcase.delete = "Sure?";
           })
 

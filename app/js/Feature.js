@@ -27,9 +27,8 @@ tcmModule.directive('ngFeature', function(){
                 $scope.placeholders.feature.delete = "Deletting...";
 
                 feature.$delete(function(){
-                  $scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: feature.featureId}));
+                  $rootScope.$broadcast('featureDeleted', {featureId: feature.featureId});
                   $scope.placeholders.feature.delete = "Sure?";
-                  $scope.testcases = [];
                   $scope.featureSelected = false;
                 })
 
