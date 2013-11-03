@@ -1,0 +1,21 @@
+<div class="panel panel-default feature" ng-class="(feature.current == true)?'active':''" id="{{feature.featureId}}" ng-click="getTestCases(feature)">
+  <div class="panel-heading panel-heading-tcm">
+    {{feature.jiraKey}}
+      <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div>
+    <div class="btn-group btn-group-xs pull-right">
+        <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditFeature(feature, element);"></span></div>
+      <div class="btn" ng-hide="feature.editMode"><span class="glyphicon glyphicon-pencil" ng-click="$event.stopPropagation(); editFeature(feature)"></span></div>
+        <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveFeature(feature)"></span></div>
+      <div class="btn" ng-hide="feature.delete"><span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); feature.delete = true"></span></div>
+      <div class="btn btn-danger btn-delete" ng-show="feature.delete" ng-click="deleteFeature(feature)" ng-mouseleave="$event.stopPropagation(); feature.delete = false">{{placeholders.feature.delete}}</div>
+    </div>
+  </div>
+  <div class="progress progress-tcm">
+      <div class="progress-bar progress-bar-success" role="progressbar" style="width: {{(feature.pass * 100) / feature.total}}%"/>
+    <div class="progress-bar progress-bar-warning" role="progressbar" style="width: {{(feature.blocked * 100) / feature.total}}%"/>
+    <div class="progress-bar progress-bar-danger" role="progressbar" style="width: {{(feature.failed * 100) / feature.total}}%"/>
+    <div class="progress-bar progress-bar-info" role="progressbar" style="width: {{(feature.inprogress * 100) / feature.total}}%"/>
+    <div class="progress-bar progress-bar-notrun" role="progressbar" style="width: {{(feature.notrun * 100) / feature.total}}%"/>
+  </div>
+  <textarea class="panel-body textarea-tcm" ng-class="feature.editMode==true?'editable':''" ng-click="(feature.editMode == true)?$event.stopPropagation():'feature.current == true'" ng-model="feature.featureName" ng-disabled="feature.editMode==false?true:''"></textarea>
+</div>

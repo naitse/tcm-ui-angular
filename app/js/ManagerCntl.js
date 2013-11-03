@@ -3,7 +3,7 @@
 function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.features = [];
 	$scope.testcases = [];
-	$scope.closeUpdatedd = true;
+	// $scope.closeUpdatedd = true;
 
 	$scope.clearFtrTests = function(){
 		$scope.features = [];
@@ -59,6 +59,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		$scope.getFeatures();
 	}
 	
+
 	tcm_model.Releases.query(function(data){
 		$scope.releases = data;
 	});
@@ -81,33 +82,6 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		})
 	}
 
-	$scope.editFeature = function(feature){
-		feature.editMode = true; 
-		var temp = angular.copy(feature);
-		feature.featureTemp = temp;
-	}
-	$scope.cancelEditFeature = function(feature){
-		feature.editMode = false; 
-		feature.featureName = feature.featureTemp.featureName
-	}
-	$scope.saveFeature = function(feature){
-		feature.editMode = false;
-		var temp = angular.copy(feature);
-		feature.$update();
-	}
-
-	$scope.deleteFeature = function(feature){
-		$scope.placeholders.feature.delete = "Deletting...";
-
-		feature.$delete(function(){
-			$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: feature.featureId}));
-			$scope.placeholders.feature.delete = "Sure?";
-			$scope.testcases = [];
-			$scope.featureSelected = false;
-		})
-
-	}
-
 	$scope.featureUpdateTCsatus = function(featureId){
 		tcm_model.FeatureExecutedTC.query({featureId:featureId},function(executed){
 			var data = executed[0];
@@ -119,12 +93,6 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$rootScope.$on('tcStatusUpdated', function(event, parameters){
 		$scope.featureUpdateTCsatus(parameters.featureId);
 	});
-
-	$scope.extendFeatures = function(){
-		_.each($scope.features, function(obj){
-			_.extend(obj, {editMode: false, featureTemp:{}, delete:false, current:false});
-		});
-	}
 
 	$scope.getTestCases = function(feature){
 		_.each($scope.features, function(obj){
@@ -142,57 +110,17 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 	}
 
-	$scope.extendTcs = function(data){
-		_.each($scope.testcases, function(obj){
-			_.extend(obj, {editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
+      $scope.extendTcs = function(data){
+        _.each($scope.testcases, function(obj){
+          _.extend(obj, {editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
+        });
+        
+      }
+
+	$scope.extendFeatures = function(){
+		_.each($scope.features, function(obj){
+			_.extend(obj, {editMode: false, featureTemp:{}, delete:false, current:false});
 		});
-		
-	}
-
-
-	//TCs
-
-	$scope.selectTc= function(tc){
-		_.each($scope.testcases, function(obj){
-			obj.current = false;
-		})
-
-		var setCurrent = _.findWhere($scope.testcases, {tcId: tc.tcId});
-		setCurrent.current = true;
-	}
-
-	$scope.editTC = function(tc){
-		tc.editMode = true; 
-		var temp = angular.copy(tc);
-		tc.tcTemp = temp;
-	}
-
-	// $scope.updateTCstatus = function(tc, statusId){
-	// 	tcm_model.TestCasesUpdateStatus.update({tcId: tc.tcId, statusId: statusId, actualResult:''}, function(data){
-	// 		tc.statusName = data.name;
-	// 		// console.log(data)
-	// 	})
-	// }
-
-	$scope.cancelEditTC = function(tc){
-		tc.editMode = false; 
-		tc.name = tc.tcTemp.name
-		tc.description = tc.tcTemp.description
-	}
-
-	$scope.saveTC = function(tc){
-		tc.editMode = false;
-		var temp = angular.copy(tc);
-		tc.$update();
-	}
-
-	$scope.deleteTC = function(tc){
-		$scope.placeholders.testcase.delete = "Deletting...";
-		tc.$delete(function(){
-			$scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: tc.tcId}));
-			$scope.placeholders.testcase.delete = "Sure?";
-		})
-
 	}
 
 	$scope.isEmpty = function(string){
