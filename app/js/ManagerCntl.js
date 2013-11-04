@@ -112,7 +112,6 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 
 	$scope.updateTestCasesList = function(featureId, tc){
-
 		var extended = tc
 		extended.featureId = featureId;
 		$scope.extendSingleTC(extended);

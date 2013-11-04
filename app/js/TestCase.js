@@ -9,7 +9,12 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.selectTc= function(tc){
 
-          if($scope.checked == 'checked'){
+          if($scope.checked == true){
+            return false;
+          }
+
+          if(tc.current == true){
+            tc.current = false;
             return false;
           }
 
@@ -41,8 +46,10 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.deleteTC = function(tc){
           $scope.placeholders.testcase.delete = "Deletting...";
+          var tcId = angular.copy(tc.tcId)
+          var featureId = angular.copy(tc.featureId)
           tc.$delete(function(){
-            $rootScope.$broadcast('tcDeleted', {tcId: tc.tcId});
+            $rootScope.$broadcast('tcDeleted', {tcId: tcId, featureId: featureId});
             $scope.placeholders.testcase.delete = "Sure?";
           })
 
