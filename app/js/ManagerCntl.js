@@ -3,6 +3,7 @@
 function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.features = [];
 	$scope.testcases = [];
+	$rootScope.dragedObjects = [];
 	// $scope.closeUpdatedd = true;
 
 	$scope.clearFtrTests = function(){
@@ -12,6 +13,8 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	}
 
 	$scope.featureSelected = false;
+
+	$('.testcase').draggable({revert:true,helper:'clone'})
 
 	//export to a directive
 
@@ -59,10 +62,9 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		$scope.getFeatures();
 	}
 	
-
-	tcm_model.Releases.query(function(data){
-		$scope.releases = data;
-	});
+	if($routeParams.projectId !== null){
+		$scope.releases =  tcm_model.Releases.query();
+	}
 	
 	//
 
@@ -96,12 +98,26 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 	$rootScope.$on('tcDeleted', function(event, parameters){
 		$scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: parameters.tcId}));
+		$scope.featureUpdateTCsatus(parameters.featureId);
 	});
 
 	$rootScope.$on('featureDeleted', function(event, parameters){
 		$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: parameters.featureId}));
 		$scope.testcases = [];
 	});
+
+	$rootScope.$on('featureCurrentTCadded', function(event, parameters){
+		$scope.updateTestCasesList(parameters.featureId, parameters.tc)
+	});
+
+
+	$scope.updateTestCasesList = function(featureId, tc){
+
+		var extended = tc
+		$scope.extendSingleTC(extended);
+		$scope.testcases.push(extended);
+	}
+
 
 	$scope.getTestCases = function(feature){
 		_.each($scope.features, function(obj){
@@ -121,14 +137,17 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
       $scope.extendTcs = function(data){
         _.each($scope.testcases, function(obj){
-          _.extend(obj, {editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
+          $scope.extendSingleTC(obj);//_.extend(obj, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true, checked: false});
         });
-        
+      }
+
+      $scope.extendSingleTC = function(singletc) {
+      	_.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true, checked: false});
       }
 
 	$scope.extendFeatures = function(){
 		_.each($scope.features, function(obj){
-			_.extend(obj, {editMode: false, featureTemp:{}, delete:false, current:false});
+			_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false});
 		});
 	}
 

@@ -1,15 +1,18 @@
 tcmModule.directive('ngTestcase', function(){
    return {
-       restrict: 'E',
-       transclude: false,
+      restrict: 'E',
+      transclude: false,
        templateUrl: 'app/partials/testcase.html',
-       // scope:{ 
-       //    tc: '='
-       //  },
        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
+        $scope.checked = false;
 
         $scope.selectTc= function(tc){
+
+          if($scope.checked == 'checked'){
+            return false;
+          }
+
           _.each($scope.testcases, function(obj){
             obj.current = false;
           })
@@ -45,10 +48,15 @@ tcmModule.directive('ngTestcase', function(){
 
         }
 
+
+        $scope.handleDragStart = function(tc){
+          $rootScope.dragedObjects.push(tc);
+        }
+
        }],
 
-       link: function (scope) {
-  
+       link: function (scope, element, attrs) {
+              
        }
    }
 });

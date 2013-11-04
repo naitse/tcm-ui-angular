@@ -8,6 +8,26 @@ tcmModule.directive('ngFeature', function(){
        //  },
        controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
+            $scope.handleDrop = function(feature){
+              console.log(feature, $rootScope.dragedObjects)
+
+              _.each($rootScope.dragedObjects, function(object){
+                if(object.type == 'test'){
+                  var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
+                  newTc.featureId = feature.featureId;
+                  newTc.$save(function(data){
+                    $rootScope.$broadcast('tcStatusUpdated', {featureId: feature.featureId});
+                    if(feature.current == true){
+                      $rootScope.$broadcast('featureCurrentTCadded', {featureId: feature.featureId, tc: data});
+                    }
+                  })
+                }
+              })
+
+
+              $rootScope.dragedObjects = [];
+            }
+
             $scope.editFeature = function(feature){
                 feature.editMode = true; 
                 var temp = angular.copy(feature);
