@@ -9,8 +9,6 @@ tcmModule.directive('ngFeature', function(){
        controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
             $scope.handleDrop = function(feature){
-              console.log(feature, $rootScope.dragedObjects)
-
               _.each($rootScope.dragedObjects, function(object){
                 if(object.type == 'test'){
                   var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
@@ -23,7 +21,6 @@ tcmModule.directive('ngFeature', function(){
                   })
                 }
               })
-
 
               $rootScope.dragedObjects = [];
             }

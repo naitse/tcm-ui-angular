@@ -149,7 +149,14 @@ tcmModule.directive('tcmDraggable', function() {
             scope.$watch(draggable, function(val) {
                 if (val == true) {
                     $(element).draggable({
-                        revert:true,
+                        revert:function () {
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDragRevert) {
+                                  scope.$eval(element.context.attributes.tcmDragRevert.nodeValue);
+                                }
+                            });
+                            return true;
+                        },
                         helper:'clone',
                         drag: function(evt, ui){
                             scope.$apply(function(scope, attrs){

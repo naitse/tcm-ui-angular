@@ -53,6 +53,10 @@ tcmModule.directive('ngTestcase', function(){
           $rootScope.dragedObjects.push(tc);
         }
 
+        $scope.handleDragRevert = function(tc){
+          $rootScope.dragedObjects = [];
+        }
+
        }],
 
        link: function (scope, element, attrs) {
