@@ -4,6 +4,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.features = [];
 	$scope.testcases = [];
 	$rootScope.dragedObjects = [];
+	$rootScope.tcsMultipleObjects = [];
 	// $scope.closeUpdatedd = true;
 
 	$scope.clearFtrTests = function(){

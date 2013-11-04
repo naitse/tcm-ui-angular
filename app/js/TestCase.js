@@ -7,6 +7,17 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.checked = false;
 
+
+        $scope.checkTc = function(tc) {
+          $scope.checked = ($scope.checked == true)?false:true;
+          if($scope.checked == true){
+            $rootScope.tcsMultipleObjects.push(tc);
+          }else{
+             $rootScope.tcsMultipleObjects = _.without( $rootScope.tcsMultipleObjects, _.findWhere( $rootScope.tcsMultipleObjects, {tcId: tc.tcId}));            
+          }
+        }
+
+
         $scope.selectTc= function(tc){
 
           if($scope.checked == true){
@@ -57,7 +68,11 @@ tcmModule.directive('ngTestcase', function(){
 
 
         $scope.handleDragStart = function(tc){
-          $rootScope.dragedObjects.push(tc);
+          if($rootScope.tcsMultipleObjects.length > 0){
+            $rootScope.dragedObjects = $rootScope.tcsMultipleObjects
+          } else {
+            $rootScope.dragedObjects.push(tc);
+          }
         }
 
         $scope.handleDragRevert = function(tc){

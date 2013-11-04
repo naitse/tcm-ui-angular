@@ -1,6 +1,6 @@
 <div class="panel panel-default testcase  {{(checked == true)?'tcmselected':''}}" ng-class="(tc.current == true)?'active':''" ng-click="selectTc(tc)" tcm-draggable drag="true" tcmDragStart="handleDragStart(tc)" tcmDragRevert="handleDragRevert()" >
 	<div class="panel-heading">
-		<input type="checkbox" ng-model="checked" ng-click="$event.stopPropagation(); checked = (checked == true)?false:true;"/>
+		<input type="checkbox" ng-model="checked" ng-click="$event.stopPropagation(); checkTc(tc)"/>
 		<input class="name" ng-class="tc.editMode==true?'editable':''" ng-model="tc.name" ng-disabled="tc.editMode==false?true:''"/>
 		<div class="btn-group btn-group-xs pull-right">
             <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditTC(tc, element);"></span></div>

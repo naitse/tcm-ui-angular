@@ -139,7 +139,7 @@ tcmModule.directive('ngDisabled', function() {
     };
 });
 
-tcmModule.directive('tcmDraggable', function() {
+tcmModule.directive('tcmDraggable', function($rootScope) {
     return{
     transclude:false,
     link: function(scope, element, attrs) {
@@ -157,7 +157,16 @@ tcmModule.directive('tcmDraggable', function() {
                             });
                             return true;
                         },
-                        helper:'clone',
+                        helper:function(){
+                                var ret = $(this).clone();
+                                scope.$apply(function(scope, attrs){
+                                    if($rootScope.tcsMultipleObjects.length > 0){
+                                        ret = $('<div>Dragging '+ $rootScope.tcsMultipleObjects.length +' Objects</div>')
+                                    }
+                                    console.log($rootScope.dragedObjects);
+                                })
+                                return ret
+                        },
                         drag: function(evt, ui){
                             scope.$apply(function(scope, attrs){
                                 if ('undefined' !== typeof element.context.attributes.tcmDrag) {
