@@ -44,11 +44,13 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.deleteTC = function(tc){
           $scope.placeholders.testcase.delete = "Deletting...";
-          var tcId = angular.copy(tc.tcId)
-          var featureId = angular.copy(tc.featureId)
+          var deletedTc = angular.copy(tc)
           tc.$delete(function(){
-            $rootScope.$broadcast('tcDeleted', {tcId: tcId, featureId: featureId});
+            $rootScope.$broadcast('tcDeleted', {tcId: deletedTc.tcId, featureId: deletedTc.featureId});
             $scope.placeholders.testcase.delete = "Sure?";
+            if(deletedTc.checked = true){
+              $scope.removeTcFromArrays(deletedTc)
+            }
           })
 
         }
@@ -64,12 +66,17 @@ tcmModule.directive('ngTestcase', function(){
             $rootScope.dragedObjects.push(tc)
           }else{
             tc.checked = false;
-             $rootScope.tcsMultipleObjects = _.without( $rootScope.tcsMultipleObjects, _.findWhere( $rootScope.tcsMultipleObjects, {tcId: tc.tcId}));            
-             $rootScope.dragedObjects = _.without( $rootScope.dragedObjects, _.findWhere( $rootScope.dragedObjects, {tcId: tc.tcId}));            
+            $scope.removeTcFromArrays(tc)
           }
 
           $scope.draggable = $scope.checked
         }
+
+        $scope.removeTcFromArrays = function(tc){
+           $rootScope.tcsMultipleObjects = _.without( $rootScope.tcsMultipleObjects, _.findWhere( $rootScope.tcsMultipleObjects, {tcId: tc.tcId}));            
+           $rootScope.dragedObjects = _.without( $rootScope.dragedObjects, _.findWhere( $rootScope.dragedObjects, {tcId: tc.tcId}));
+        }
+
 
         $scope.handleDragStart = function(tc){
           if($rootScope.dragedObjects.length > 0){
