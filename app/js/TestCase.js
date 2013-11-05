@@ -1,22 +1,9 @@
 tcmModule.directive('ngTestcase', function(){
    return {
       restrict: 'E',
-      transclude: false,
+      transclude: true,
        templateUrl: 'app/partials/testcase.html',
        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
-
-        $scope.checked = false;
-
-
-        $scope.checkTc = function(tc) {
-          $scope.checked = ($scope.checked == true)?false:true;
-          if($scope.checked == true){
-            $rootScope.tcsMultipleObjects.push(tc);
-          }else{
-             $rootScope.tcsMultipleObjects = _.without( $rootScope.tcsMultipleObjects, _.findWhere( $rootScope.tcsMultipleObjects, {tcId: tc.tcId}));            
-          }
-        }
-
 
         $scope.selectTc= function(tc){
 
@@ -66,17 +53,34 @@ tcmModule.directive('ngTestcase', function(){
 
         }
 
+        $scope.checked = false;
+        $scope.draggable = false;
+
+        $scope.checkTc = function(tc) {
+          $scope.draggable = $scope.checked = ($scope.checked == true)?false:true;
+          if($scope.checked == true){
+            tc.checked = true;
+            $rootScope.tcsMultipleObjects.push(tc);
+            $rootScope.dragedObjects.push(tc)
+          }else{
+            tc.checked = false;
+             $rootScope.tcsMultipleObjects = _.without( $rootScope.tcsMultipleObjects, _.findWhere( $rootScope.tcsMultipleObjects, {tcId: tc.tcId}));            
+             $rootScope.dragedObjects = _.without( $rootScope.dragedObjects, _.findWhere( $rootScope.dragedObjects, {tcId: tc.tcId}));            
+          }
+
+          $scope.draggable = $scope.checked
+        }
 
         $scope.handleDragStart = function(tc){
-          if($rootScope.tcsMultipleObjects.length > 0){
-            $rootScope.dragedObjects = $rootScope.tcsMultipleObjects
+          if($rootScope.dragedObjects.length > 0){
+              $rootScope.dragedObjects = $rootScope.tcsMultipleObjects
           } else {
             $rootScope.dragedObjects.push(tc);
           }
         }
 
         $scope.handleDragRevert = function(tc){
-          $rootScope.dragedObjects = [];
+          $rootScope.dragedObjects = _.without( $rootScope.dragedObjects, _.findWhere( $rootScope.dragedObjects, {tcId: tc.tcId}));
         }
 
        }],

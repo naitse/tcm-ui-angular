@@ -143,7 +143,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
       }
 
       $scope.extendSingleTC = function(singletc) {
-      	_.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true, checked: false});
+      	_.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
       }
 
 	$scope.extendFeatures = function(){
