@@ -67,3 +67,7 @@ input, textarea {
     left: inherit !important;
     right: 0px !important;
 }
+
+.tcm-drag-helper span{
+    font-size: 32px;
+}

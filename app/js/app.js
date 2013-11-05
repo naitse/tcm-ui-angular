@@ -141,12 +141,13 @@ tcmModule.directive('ngDisabled', function() {
 
 tcmModule.directive('tcmDraggable', function($rootScope) {
     return{
-    transclude:false,
+    // transclude:true,
+    controller: function(){
+
+    },
     link: function(scope, element, attrs) {
 
-            var draggable = attrs.drag;
-
-            scope.$watch(draggable, function(val) {
+            scope.$watch('draggable', function(val) {
                 if (val == true) {
                     $(element).draggable({
                         revert:function () {
@@ -158,14 +159,7 @@ tcmModule.directive('tcmDraggable', function($rootScope) {
                             return true;
                         },
                         helper:function(){
-                                var ret = $(this).clone();
-                                scope.$apply(function(scope, attrs){
-                                    if($rootScope.tcsMultipleObjects.length > 0){
-                                        ret = $('<div>Dragging '+ $rootScope.tcsMultipleObjects.length +' Objects</div>')
-                                    }
-                                    console.log($rootScope.dragedObjects);
-                                })
-                                return ret
+                                return $('<div class="tcm-drag-helper"><span class="glyphicon glyphicon-file"></span></div>')
                         },
                         drag: function(evt, ui){
                             scope.$apply(function(scope, attrs){
@@ -190,7 +184,9 @@ tcmModule.directive('tcmDraggable', function($rootScope) {
                         }
                     })
                 } else {
-                    $(element).draggable('disable')
+                    try{
+                        $(element).draggable('destroy');
+                    }catch(e){}
                 }
             });
         }
