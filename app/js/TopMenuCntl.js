@@ -73,7 +73,7 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
 
     $scope.switchProject = function(project){
 
-        tcm_model.updateProject(project.id, {active: '1'}, function(){})
+        tcm_model.Projects.update(project.id, {active: '1'}, function(){})
         $location.path('/manager/' + project.id);
     };
 

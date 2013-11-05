@@ -52,8 +52,15 @@ tcmModule.directive('ngTestcase', function(){
               $scope.removeTcFromArrays(deletedTc)
             }
           })
-
         }
+
+
+      $rootScope.$on('tcDeleteBulk', function(event, parameters){
+        _.each($rootScope.tcsMultipleObjects, function(object){
+            $scope.deleteTC(object)
+        })
+      });
+
 
         $scope.checked = false;
         $scope.draggable = false;
@@ -62,8 +69,10 @@ tcmModule.directive('ngTestcase', function(){
           $scope.draggable = $scope.checked = ($scope.checked == true)?false:true;
           if($scope.checked == true){
             tc.checked = true;
-            $rootScope.tcsMultipleObjects.push(tc);
+            $rootScope.tcsMultipleObjects.push(tc)
             $rootScope.dragedObjects.push(tc)
+            $rootScope.tcsMultipleObjects = angular.copy($rootScope.tcsMultipleObjects);
+            $rootScope.dragedObjects = angular.copy($rootScope.dragedObjects);
           }else{
             tc.checked = false;
             $scope.removeTcFromArrays(tc)
@@ -82,7 +91,8 @@ tcmModule.directive('ngTestcase', function(){
           if($rootScope.dragedObjects.length > 0){
               $rootScope.dragedObjects = $rootScope.tcsMultipleObjects
           } else {
-            $rootScope.dragedObjects.push(tc);
+            $rootScope.dragedObjects.push(tc)
+            $rootScope.dragedObjects = angular.copy($rootScope.dragedObjects);
           }
         }
 

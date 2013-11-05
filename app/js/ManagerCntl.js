@@ -5,6 +5,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.testcases = [];
 	$rootScope.dragedObjects = [];
 	$rootScope.tcsMultipleObjects = [];
+	$scope.showTCdelete = false
 	// $scope.closeUpdatedd = true;
 
 	$scope.clearFtrTests = function(){
@@ -102,6 +103,10 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		$scope.featureUpdateTCsatus(parameters.featureId);
 	});
 
+	$scope.deleteTCsBulk = function(){
+		$rootScope.$broadcast('tcDeleteBulk');
+	}
+
 	$rootScope.$on('featureDeleted', function(event, parameters){
 		$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: parameters.featureId}));
 		$scope.testcases = [];
@@ -110,6 +115,14 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$rootScope.$on('featureCurrentTCadded', function(event, parameters){
 		$scope.updateTestCasesList(parameters.featureId, parameters.tc)
 	});
+
+	$rootScope.$watch('tcsMultipleObjects', function(value){
+		if(value.length > 0){
+			$scope.showTCdelete = true;
+		} else {
+			$scope.showTCdelete = false;
+		}
+	})
 
 
 	$scope.updateTestCasesList = function(featureId, tc){
@@ -157,10 +170,6 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		return result;
 	}
 
-	$scope.loguea = function(item){
-		console.log(item)
-		item.dropDownClose = false;
-	}
 
 }
 ManagerCntl.$inject = ['$scope', '$routeParams', '$http', '$rootScope', 'tcm_model'];
