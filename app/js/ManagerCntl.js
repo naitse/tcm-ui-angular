@@ -95,6 +95,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	}
 
 	$rootScope.$on('tcStatusUpdated', function(event, parameters){
+		// console.log(parameters)
 		$scope.featureUpdateTCsatus(parameters.featureId);
 	});
 
@@ -158,6 +159,46 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
       $scope.extendSingleTC = function(singletc) {
       	_.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
       }
+
+
+
+      $scope.newTC = {
+      	create:false,
+      	name:'',
+      	description:''
+      }
+
+
+      $scope.createTC =  function(){
+
+      	if($scope.newTC.create == true){
+      		return false;
+      	}
+
+      	$scope.newTC.create = true;
+
+      }
+
+
+      $scope.saveNewTC = function(){
+
+      	var currentFeature = _.findWhere($scope.features, {current: true})
+
+      	$scope.newTC.featureId = currentFeature.featureId
+
+      	var temp = new tcm_model.TestCases($scope.newTC)
+
+      	temp.$save(function(data){
+      		$scope.updateTestCasesList($scope.newTC.featureId, data)
+  		      $scope.newTC = {
+		      	create:false,
+		      	name:'',
+		      	description:''
+		      }
+      	})
+
+      }
+
 
 	$scope.extendFeatures = function(){
 		_.each($scope.features, function(obj){
