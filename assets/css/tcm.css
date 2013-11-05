@@ -71,3 +71,7 @@ input, textarea {
 .tcm-drag-helper span{
     font-size: 32px;
 }
+
+.tcmselected .panel-heading{
+    background-color: #ddd;
+}
