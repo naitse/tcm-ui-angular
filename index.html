@@ -1,5 +1,10 @@
 <html ng-app="tcm">
 <head>
+  <style>
+/** {
+  zoom: 0.98;
+}*/
+  </style>
     <meta charset="utf-8">
 
     <meta http-equiv="cache-control" content="no-cache">
@@ -10,6 +15,7 @@
     <script src="lib/jquery.base64.js"></script>
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular/angular-route.js"></script>
     <script src="lib/angular/angular-cookies.js"></script>
@@ -27,8 +33,12 @@
     <script src="app/js/ProjectSettingsCntl.js"></script>
     <script src="app/js/TCMSettingsCntl.js"></script>
     <script src="app/js/JiraPluginCntl.js"></script>
+    <script src="app/js/tc_status_dropdown.js"></script>
+    <script src="app/js/TestCase.js"></script>
+    <script src="app/js/Feature.js"></script>
 
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/tcm.css" rel="stylesheet" media="screen">
 </head>
 <body ng-view>

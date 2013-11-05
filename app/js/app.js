@@ -136,8 +136,105 @@ tcmModule.directive('ngDisabled', function() {
                 element.removeAttr('disabled');
             }
         });
-
     };
+});
+
+tcmModule.directive('tcmDraggable', function($rootScope) {
+    return{
+    transclude:false,
+    link: function(scope, element, attrs) {
+
+            var draggable = attrs.drag;
+
+            scope.$watch(draggable, function(val) {
+                if (val == true) {
+                    $(element).draggable({
+                        revert:function () {
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDragRevert) {
+                                  scope.$eval(element.context.attributes.tcmDragRevert.nodeValue);
+                                }
+                            });
+                            return true;
+                        },
+                        helper:function(){
+                                var ret = $(this).clone();
+                                scope.$apply(function(scope, attrs){
+                                    if($rootScope.tcsMultipleObjects.length > 0){
+                                        ret = $('<div>Dragging '+ $rootScope.tcsMultipleObjects.length +' Objects</div>')
+                                    }
+                                    console.log($rootScope.dragedObjects);
+                                })
+                                return ret
+                        },
+                        drag: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDrag) {
+                                  scope.$eval(element.context.attributes.tcmDrag.nodeValue);
+                                }
+                            });
+                        },
+                        start: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDragStart) {
+                                  scope.$eval(element.context.attributes.tcmDragStart.nodeValue);
+                                }
+                            });
+                        },
+                        stop: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDragStop) {
+                                  scope.$eval(element.context.attributes.tcmDragStop.nodeValue);
+                                }
+                            });
+                        }
+                    })
+                } else {
+                    $(element).draggable('disable')
+                }
+            });
+        }
+    }
+});
+
+tcmModule.directive('tcmDroppable', function() {
+    return{
+    transclude:false,
+    link: function(scope, element, attrs) {
+
+            var draggable = attrs.drop;
+
+            scope.$watch(draggable, function(val) {
+                if (val == true) {
+                    $(element).droppable({
+                        drop: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDrop) {
+                                  scope.$eval(element.context.attributes.tcmDrop.nodeValue);
+                                }
+                            });
+                        },
+                        over: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDragStart) {
+                                  scope.$eval(element.context.attributes.tcmDropOver.nodeValue);
+                                }
+                            });
+                        },
+                        out: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDragStop) {
+                                  scope.$eval(element.context.attributes.tcmDropOut.nodeValue);
+                                }
+                            });
+                        }
+                    })
+                } else {
+                    $(element).droppable('disable')
+                }
+            });
+        }
+    }
 });
 
 /*

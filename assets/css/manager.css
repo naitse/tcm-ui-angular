@@ -17,7 +17,7 @@
 }
 
 .panels {
-	padding-bottom: 80px;  /*ADJUST PANELS HEIGHT*/
+	padding-bottom: 136px;  /*ADJUST PANELS HEIGHT*/
 	height: 100%;
 }
 
@@ -88,6 +88,11 @@
 	background-color: #e2f2ff;
 }
 
+.feature .closed {
+    display: inline-block;
+    margin-left: 10px;
+}
+
 
 
 .testcase {
@@ -117,6 +122,46 @@
 	background-color: #e2f2ff;
 }
 
+.testcase.active .panel-footer {
+	background-color: #e2f2ff;
+}
+
 .testcase.panel {
 	margin-bottom: 2px;
+}
+
+.testcase .field-label {
+	border: 1px solid;
+	padding: 0px 0px 2px 0px;
+	width: 130px;
+	position: absolute;
+	top: -1;
+	left: -1;
+	border-radius: 0px 0px 4px 0px;
+	border-color: white;
+	z-index: 200;
+	border-bottom-color: #e7e7e7;
+	border-right-color: #e7e7e7;
+	text-align: center;
+}
+
+.testcase .textarea-tcm {
+	margin-top: 22px;
+}
+
+.testcase .panel-body .panel-body {
+	position: relative;
+}
+
+
+.panel .action-bar {
+
+}
+
+.panel .action-bar .btn-group {
+	top: -12px;
+}
+
+.panel .action-bar .btn-group span{
+	font-size: 16px;
 }

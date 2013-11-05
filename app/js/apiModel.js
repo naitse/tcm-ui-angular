@@ -43,6 +43,19 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     method: 'PUT'
                 }
         }),
+
+        TestCasesUpdateStatus: $resource(basePath + 'api/testcases/:tcId/updateStatus', {tcId: '@tcId', statusId: '@statusId', actualResult:'@actualResult'},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+
+        TestCasesCloneTC: $resource(basePath + 'api/testcases/:tcId/cloneTC', {tcId: '@tcId'},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+
         JiraIterations: $resource(basePath + 'api/projects/:id/jira/iterations', {id: $routeParams.projectId}),
         JiraIssues: $resource(basePath + 'api/projects/:projectId/jira/iteration/:id/issues', {projectId: $routeParams.projectId, id: '@id'}),
         ReleasesIterations: $resource(basePath + 'api/projects/:id/releasesiterations', {id: $routeParams.projectId}),
