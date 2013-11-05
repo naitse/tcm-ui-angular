@@ -2,12 +2,29 @@
     <ng-include src="topmenu"></ng-include>
 </div>
 <div style="margin-left: 20px;">
-    <div class="form-group">
-        <label for="JiraIterations">Jira Iteration</label>
-        <select id="JiraIterations" class="form-control input-lg" ng-model="iteration" ng-options="sprint.id as sprint.name for sprint in iterations.sprints" style="width: 20em;">
-        </select>
+    <div class="container">
+        <div class="row" >
+            <div class="col-md-4" >
+                <ul class="list-group">
+                    <li>
+                        <div class="">
+                            <input type="input"  id="searchIteration" placeholder="Search Iteration" ng-model="iterationFilter">
+                        </div>
+                    </li>
+                    <il class="list-group-item" ng-repeat="sprint in iterations.sprints | filter:iterationFilter | orderBy:sprint.id">
+                        {{sprint.name}}
+                    </il>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div ng-hide="(issues != null)" style="text-align: center; margin-top: 100px;">
+                    <img src="assets/images/jirasync.png" style="width: 400px;">
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
+
+    <div ng-show="(issues != null)">
         <div class="panel-group" id="accordion" style="width: 700px; display: table-cell;vertical-align: top; " >
 
             <div class="panel panel-default" ng-init="incompletedCollapsed = true">
@@ -20,7 +37,7 @@
                 </div>
                 <div id="incompletedItems" class="panel-collapse collapse" ng-class="(incompletedCollapsed)?'in':''" style="overflow-y: scroll; overflow-x: hidden;">
                     <div class="panel-body">
-                        <div class="table-responsive" >
+                        <div class="table-responsive" style="overflow-y: scroll; overflow-x: hidden;">
                             <table class="table table-condensed">
                                 <tr ng-repeat="cissues in issues.contents.incompletedIssues" >
                                     <td>
@@ -55,7 +72,7 @@
                 </div>
                 <div id="completedItems" class="panel-collapse collapse" ng-class="(completedCollapsed)?'in':''" style="overflow-y: scroll; overflow-x: hidden;">
                     <div class="panel-body">
-                        <div class="table-responsive" >
+                        <div class="table-responsive" style="overflow-y: scroll; overflow-x: hidden;">
                             <table class="table table-condensed">
                                 <tr ng-repeat="cissues in issues.contents.completedIssues" >
                                     <td>
@@ -81,11 +98,17 @@
         <div class="well" style="width: 500px; margin: 8px 0; display: table-cell">
             <div style="overflow-y: scroll; overflow-x: hidden; height: 500px;">
                 <ul class="nav nav-list">
-                    <li><label class="tree-toggler nav-header">Release 1</label>
+                    <li ng-repeat="r in releasesIterations">
+                        <label>Release {{r.releaseName}}</label>
                         <ul class="nav nav-list tree">
-                            <li><a href="#">iter 1</a></li>
-                            <li><a href="#">iter 2</a></li>
-
+                            <li ng-repeat="i in r.iterations">
+                                <div class="input-group">
+                                  <span class="input-group-addon">
+                                    <input type="checkbox">
+                                  </span>
+                                  {{i.iterationName}}
+                                </div>
+                            </li>
                         </ul>
                     </li>
                     <li class="divider"></li>

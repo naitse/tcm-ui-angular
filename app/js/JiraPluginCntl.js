@@ -18,6 +18,7 @@ function JiraPluginCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
    }
 
 
+   $scope.releasesIterations = tcm_model.ReleasesIterations.query();
 
 
 }
