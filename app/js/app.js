@@ -149,6 +149,15 @@ tcmModule.directive('tcmDraggable', function($rootScope) {
 
             scope.$watch('draggable', function(val) {
                 if (val == true) {
+                    makeDraggable();
+                    } else {
+                    try{
+                        $(element).draggable('destroy');
+                    }catch(e){}
+                }
+            });
+                
+                function makeDraggable(){
                     $(element).draggable({
                         revert:function () {
                             scope.$apply(function(scope, attrs){
@@ -158,6 +167,7 @@ tcmModule.directive('tcmDraggable', function($rootScope) {
                             });
                             return true;
                         },
+                        handle: ".draggable-handle",
                         helper:function(){
                                 return $('<div class="tcm-drag-helper"><span class="glyphicon glyphicon-file"></span></div>')
                         },
@@ -183,12 +193,8 @@ tcmModule.directive('tcmDraggable', function($rootScope) {
                             });
                         }
                     })
-                } else {
-                    try{
-                        $(element).draggable('destroy');
-                    }catch(e){}
-                }
-            });
+            }//function make draggable
+            makeDraggable();
         }
     }
 });

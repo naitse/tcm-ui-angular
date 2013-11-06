@@ -1,6 +1,84 @@
+<style>
+	.draggable-handle {
+		width: 12px;
+		height: 45px;
+		float: left;
+		margin-right: 10px;
+		position: relative;
+		left: -15px;
+		top: -11px;
+		background-color: darkcyan;
+		cursor: pointer;
+		cursor: -webkit-grab;
+		cursor: -moz-grab;
+		opacity: 0.7;
+		border-radius: 2px 0px 0px 2px;
+		border-right: 1px solid #999;
+	}
+
+.testcase input.checkbox {
+	margin-left: -8px;
+}
+	.testcase .name {
+	width: 80%;
+	margin-left: 10px;
+	border: none;
+	background: transparent;
+}
+
+.testcase .name.editable {
+	background: white;
+}
+
+.testcase .btn-delete {
+	border-radius: 4px !important;
+	margin-right: 5px;
+}
+
+.testcase:hover .panel-heading{
+	background-color: #DDD;
+}
+
+.testcase.active .panel-heading {
+	background-color: #e2f2ff;
+}
+
+.testcase.active .panel-footer {
+	background-color: #e2f2ff;
+}
+
+.testcase.panel {
+	margin-bottom: 2px;
+}
+
+.testcase .field-label {
+	border: 1px solid;
+	padding: 0px 0px 2px 0px;
+	width: 130px;
+	position: absolute;
+	top: -1;
+	left: -1;
+	border-radius: 0px 0px 4px 0px;
+	border-color: white;
+	z-index: 200;
+	border-bottom-color: #e7e7e7;
+	border-right-color: #e7e7e7;
+	text-align: center;
+}
+
+.testcase .textarea-tcm {
+	margin-top: 22px;
+}
+
+.testcase .panel-body .panel-body {
+	position: relative;
+}
+
+</style>
 <div class="panel panel-default testcase  {{(checked == true)?'tcmselected':''}}" ng-class="(tc.current == true)?'active':''" ng-click="selectTc(tc)" tcm-draggable  tcmDragStart="handleDragStart(tc)" tcmDragRevert="handleDragRevert(tc)" >
 	<div class="panel-heading" >
-		<input type="checkbox" ng-model="checked" ng-click="$event.stopPropagation(); checkTc(tc)"/>
+		<div class="draggable-handle"></div>
+		<input style="margin-left:-8px;" type="checkbox" ng-model="checked" ng-click="$event.stopPropagation(); checkTc(tc)"/>
 		<input class="name" ng-class="tc.editMode==true?'editable':''" ng-model="tc.name" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>
 		<div class="btn-group btn-group-xs pull-right">
             <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditTC(tc, element);"></span></div>

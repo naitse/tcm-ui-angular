@@ -6,6 +6,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$rootScope.dragedObjects = [];
 	$rootScope.tcsMultipleObjects = [];
 	$scope.showTCdelete = false
+	$scope.allTcChecked = false
 	// $scope.closeUpdatedd = true;
 
 	$scope.clearFtrTests = function(){
@@ -159,7 +160,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
       }
 
       $scope.extendSingleTC = function(singletc) {
-      	_.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
+      	_.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true, draggable:true, checked:false});
       }
 
 
@@ -201,6 +202,20 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
       }
 
+
+      $scope.selectAllTC = function(){
+      	$scope.allTcChecked = ($scope.allTcChecked == true)?false:true;
+
+      	if($scope.allTcChecked == true){
+      		$rootScope.$broadcast('tcBulkSelected')	
+      	}else{
+      		$rootScope.$broadcast('tcBulkDeselected')
+      	}
+
+          // _.each($scope.$parent.testcases,function(testcase){
+          //     testcase.checked = $scope.allTcChecked
+          // })
+      }
 
 	$scope.extendFeatures = function(){
 		_.each($scope.features, function(obj){

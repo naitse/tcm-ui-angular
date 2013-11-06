@@ -5,6 +5,22 @@ tcmModule.directive('ngTestcase', function(){
        templateUrl: 'app/partials/testcase.html',
        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
+
+      // $rootScope.$on('tcBulkSelected', function(event, parameters){
+      //   $scope.checked = true;
+      //   $scope.tcSelected($scope.tc)
+      // });
+
+      // $rootScope.$on('tcBulkDeselected', function(event, parameters){
+      //   $scope.checked = false;
+      //   $scope.tcDeselected($scope.tc)
+      // });
+
+        $scope.$watch('tc.draggable',function(vale){
+          console.log('hola', vale)
+          $scope.draggable = vale
+        })
+
         $scope.selectTc= function(tc){
 
           if($scope.checked == true){
@@ -63,10 +79,11 @@ tcmModule.directive('ngTestcase', function(){
 
 
         $scope.checked = false;
-        $scope.draggable = false;
+        $scope.draggable = true;
 
         $scope.checkTc = function(tc) {
-          $scope.draggable = $scope.checked = ($scope.checked == true)?false:true;
+
+          tc.draggable = $scope.checked = ($scope.checked == true)?false:true;
           if($scope.checked == true){
             tc.checked = true;
             $rootScope.tcsMultipleObjects.push(tc)
@@ -78,7 +95,23 @@ tcmModule.directive('ngTestcase', function(){
             $scope.removeTcFromArrays(tc)
           }
 
-          $scope.draggable = $scope.checked
+          $scope.draggable = tc.draggable
+
+          _.each($scope.$parent.testcases,function(testcase){
+            if(testcase.checked == false){
+              testcase.draggable = false
+            }
+          })
+
+          if($rootScope.tcsMultipleObjects.length == 0){
+            _.each($scope.$parent.testcases,function(testcase){
+                testcase.draggable = true
+                if(testcase.tcId = $scope.tc.tcId){
+                  $scope.draggable = true;
+                }
+            })
+          }
+
         }
 
         $scope.removeTcFromArrays = function(tc){
