@@ -1,6 +1,6 @@
 
 
-function JiraPluginCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
+function JiraPluginCntl( $scope, $routeParams, $http, $location, tcm_model) {
 
     $scope.iterations = tcm_model.JiraIterations.get();
     $scope.iteration = null;
@@ -14,10 +14,32 @@ function JiraPluginCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
 
     $scope.releasesIterations = tcm_model.ReleasesIterations.query();
 
-
     $scope.syncronize = function(){
-        console.log($scope.issues);
-        console.log($scope.releasesIterations)
+
+        $scope.issues.contents.completedIssues.forEach(syncItem);
+        $scope.issues.contents.incompletedIssues.forEach(syncItem);
+    }
+
+    function syncItem(feature){
+        if(feature.selected != null && feature.selected){
+
+            $scope.releasesIterations.forEach(function(release){
+
+                release.iterations.forEach(function(iteration){
+
+                    if(iteration.selected != null && iteration.selected){
+                        var newFeature = new tcm_model.Features({iterationId: iteration.iterId});
+
+                        newFeature.key = feature.key
+                        newFeature.name = feature.summary
+                        newFeature.$save();
+                    }
+                })
+            });
+        }
+
+        //$location.path('/manager/' + $routeParams.projectId);
+
     }
 }
-JiraPluginCntl.$inject = [ '$scope', '$routeParams', '$http', '$rootScope', 'tcm_model'];
+JiraPluginCntl.$inject = [ '$scope', '$routeParams', '$http', '$location', 'tcm_model'];
