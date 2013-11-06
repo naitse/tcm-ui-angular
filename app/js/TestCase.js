@@ -56,7 +56,6 @@ tcmModule.directive('ngTestcase', function(){
 
 
       $rootScope.$on('tcDeleteBulk', function(event, parameters){
-        console.log($rootScope.tcsMultipleObjects)
         _.each($rootScope.tcsMultipleObjects, function(object){
             $scope.deleteTC(object)
         })
