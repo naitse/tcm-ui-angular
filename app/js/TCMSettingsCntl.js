@@ -7,6 +7,8 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
         id: 0
     };
 
+    $scope.loginTypes = tcm_model.admin.LoginTypes.query();
+
     $scope.arrprojects = new Array();
 
     $scope.loadProjects = function(){
@@ -32,6 +34,7 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
     $scope.loadUserProjects = function(id){
 
         $scope.selectedUser.id = id;
+        $scope.usersPassports = tcm_model.admin.UsersPassports.query({userId: $scope.selectedUser.id});
         $scope.refreshProjects();
     }
 
