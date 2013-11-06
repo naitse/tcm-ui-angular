@@ -5,6 +5,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.testcases = [];
 	$rootScope.dragedObjects = [];
 	$rootScope.tcsMultipleObjects = [];
+	$scope.showTCdelete = false
 	// $scope.closeUpdatedd = true;
 
 	$scope.clearFtrTests = function(){
@@ -94,6 +95,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	}
 
 	$rootScope.$on('tcStatusUpdated', function(event, parameters){
+		// console.log(parameters)
 		$scope.featureUpdateTCsatus(parameters.featureId);
 	});
 
@@ -101,6 +103,10 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		$scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: parameters.tcId}));
 		$scope.featureUpdateTCsatus(parameters.featureId);
 	});
+
+	$scope.deleteTCsBulk = function(){
+		$rootScope.$broadcast('tcDeleteBulk');
+	}
 
 	$rootScope.$on('featureDeleted', function(event, parameters){
 		$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: parameters.featureId}));
@@ -110,6 +116,14 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$rootScope.$on('featureCurrentTCadded', function(event, parameters){
 		$scope.updateTestCasesList(parameters.featureId, parameters.tc)
 	});
+
+	$rootScope.$watch('tcsMultipleObjects', function(value){
+		if(value.length > 0){
+			$scope.showTCdelete = true;
+		} else {
+			$scope.showTCdelete = false;
+		}
+	})
 
 
 	$scope.updateTestCasesList = function(featureId, tc){
@@ -146,6 +160,46 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
       	_.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
       }
 
+
+
+      $scope.newTC = {
+      	create:false,
+      	name:'',
+      	description:''
+      }
+
+
+      $scope.createTC =  function(){
+
+      	if($scope.newTC.create == true){
+      		return false;
+      	}
+
+      	$scope.newTC.create = true;
+
+      }
+
+
+      $scope.saveNewTC = function(){
+
+      	var currentFeature = _.findWhere($scope.features, {current: true})
+
+      	$scope.newTC.featureId = currentFeature.featureId
+
+      	var temp = new tcm_model.TestCases($scope.newTC)
+
+      	temp.$save(function(data){
+      		$scope.updateTestCasesList($scope.newTC.featureId, data)
+  		      $scope.newTC = {
+		      	create:false,
+		      	name:'',
+		      	description:''
+		      }
+      	})
+
+      }
+
+
 	$scope.extendFeatures = function(){
 		_.each($scope.features, function(obj){
 			_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false});
@@ -157,10 +211,6 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		return result;
 	}
 
-	$scope.loguea = function(item){
-		console.log(item)
-		item.dropDownClose = false;
-	}
 
 }
 ManagerCntl.$inject = ['$scope', '$routeParams', '$http', '$rootScope', 'tcm_model'];

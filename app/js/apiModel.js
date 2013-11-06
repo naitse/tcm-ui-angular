@@ -3,7 +3,7 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
 
     return {
         Profile: $resource(basePath + 'api/profile'),
-        Projects:  $resource(basePath + 'api/projects', {},{
+        Projects:  $resource(basePath + 'api/projects/:id', {id:'@id'},{
                     update: { method: 'PUT'}
 
         }),
