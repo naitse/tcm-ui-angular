@@ -75,3 +75,24 @@ input, textarea {
 .tcmselected .panel-heading{
     background-color: #ddd;
 }
+.draggable-over {
+    border: 2px dashed #777;
+}
+
+.draggable-dropped {
+    -webkit-animation: cssAnimation 0.300s 1 linear;
+    -moz-animation: cssAnimation 0.300s 1 linear;
+    -o-animation: cssAnimation 0.300s 1 linear;
+    }
+    @-webkit-keyframes cssAnimation {
+    from { -webkit-transform: rotate(0deg) scale(1.000) skew(0deg) translate(0px); }
+    to { -webkit-transform: rotate(0deg) scale(1.050) skew(0deg) translate(0px); }
+    }
+    @-moz-keyframes cssAnimation {
+    from { -moz-transform: rotate(0deg) scale(1.000) skew(0deg) translate(0px); }
+    to { -moz-transform: rotate(0deg) scale(1.050) skew(0deg) translate(0px); }
+    }
+    @-o-keyframes cssAnimation {
+    from { -o-transform: rotate(0deg) scale(1.000) skew(0deg) translate(0px); }
+    to { -o-transform: rotate(0deg) scale(1.050) skew(0deg) translate(0px); }
+}

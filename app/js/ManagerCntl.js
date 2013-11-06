@@ -135,6 +135,8 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 
 	$scope.getTestCases = function(feature){
+		$rootScope.dragedObjects = [];
+		$rootScope.tcsMultipleObjects = [];
 		_.each($scope.features, function(obj){
 			obj.current = false;
 		})

@@ -1,15 +1,38 @@
+<style>
+.jira-sync {
+    height: 100%;
+    overflow: hidden;
+    padding-bottom: 122px;
+}
+
+.iterations-list {
+    height: 100%;
+    overflow-y: auto;
+}
+.accordion-container{
+    height: 100%;
+    overflow-y: auto;
+}
+.modal-content {
+    height: 90%;
+    padding-bottom: 80px;
+}
+.modal-body {
+    height: 100%;
+}    
+</style>
 <div ng-controller="TopMenuCntl">
     <ng-include src="topmenu"></ng-include>
 </div>
 <div style="margin-left: 20px;">
-    <div class="container">
+    <div class="container jira-sync">
         <div class="row" >
             <div class="col-md-4" class="bs-sidebar hidden-print affix" role="complementary">
                 <div style="width: 100%; padding-bottom: 12;">
                     <input style="width: 100%" type="input"  id="searchIteration" placeholder="Search JIRA Iteration" ng-model="iterationFilter">
                 </div>
 
-                <div class="list-group" >
+                <div class="list-group iterations-list" >
                     <div ng-show="(iterations.sprints == null)">
                         <img src="assets/images/loading1.gif" style="width: 400;">
                     </div>
@@ -25,7 +48,7 @@
                 </div>
                 <div ng-show="(issues.contents != null)">
                     <div ><button type="button" class="btn btn-primary" style="margin-bottom: 5;" data-toggle="modal" data-target="#modal-sync">Syncronize selected items</button></div>
-                    <div >
+                    <div class="accordion-container">
                         <div class="panel-group" id="accordion" style="width: 700px; display: table-cell;vertical-align: top; " >
                             <div class="panel panel-default" ng-init="incompletedCollapsed = true">
                                 <div class="panel-heading" ng-click="incompletedCollapsed = !incompletedCollapsed">
@@ -108,7 +131,7 @@
                     <div style="width: 100%; padding-bottom: 12;">
                         <input style="width: 100%" type="input"  placeholder="Search TCM Iteration" ng-model="tcm_iterationFilter">
                     </div>
-                    <div class="list-group" >
+                    <div class="list-group" style=" height: 100%; overflow-y: auto; padding-bottom: 10px;">
                         <ul class="nav nav-list">
                             <li ng-repeat="r in releasesIterations  | orderBy:'-id'">
                                 <label>Release {{r.releaseName}}</label>
