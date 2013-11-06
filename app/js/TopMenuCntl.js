@@ -85,34 +85,17 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
         tcm_model.Profile.get(function(data){
 
             $scope.userName = data.displayName;
-            $scope.avatar = data._json.avatar_url;
+            $scope.avatar = data.avatar;
             Auth.user = data;
             $scope.isAdmin = data.admin === 1;
         })
 
     }
 
-    if($routeParams.projectId == null){
 
-        tcm_model.Projects.query(function(data){
-            $scope.projects = data;
+    $scope.getProfile();
+    $scope.loadProjects();
 
-            for(var i=0; i < data.length; i++){
-
-                if(data[i].active === '1'){
-
-                    $location.path('/manager/' + data[i].id);
-                }
-            }
-
-            $location.path('/manager/' + data[0].id);
-        });
-
-
-    }else{
-        $scope.getProfile();
-        $scope.loadProjects();
-    }
 
 
 }

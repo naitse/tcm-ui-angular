@@ -40,6 +40,8 @@
             <div style="display: table-cell;">
                 <table class="table table-hover table-condensed" style="width: 400px;">
                     <tr>
+
+                        <td></td>
                         <td >
                             <input type="text" class="form-control" placeholder="Username ..." ng-model="newUserName"></input>
                         </td>
@@ -58,6 +60,9 @@
                         </td>
                     </tr>
                     <tr ng-repeat="u in users" ng-class="(u.id == selectedUser.id)?'active':''" ng-click="loadUserProjects(u.id)">
+                        <td>
+                            <span class="glyphicon glyphicon-user" data-toggle="modal" data-target="#modal-passport"></span>
+                        </td>
                         <td>
                             <input type="text" class="form-control" ng-model="u.user_name" ng-change="editMode = true"></input>
                         </td>
@@ -103,6 +108,58 @@
                 </table>
             </div>
 
+        </div>
+    </div>
+
+    <div id="modal-passport" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table class="table table-hover table-condensed" >
+                        <tr>
+                            <td >
+                                <input type="text" class="form-control" placeholder="Username ..." ng-model="newPassportUserName"></input>
+                            </td>
+                            <td>
+                                <select ng-model="newPassportLoginType" ng-options="types.id as types.name for types in loginTypes">
+                                    <option style="display:none" value="">select a login type</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="checkbox" ng-model="newPassportUserIsEnabled"> enabled
+                                </label>
+                            </td>
+                            <td style="width: 26;">
+                                <span class="glyphicon glyphicon-plus-sign" ng-click="addPassportUser()"></span>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="up in usersPassports" ng-class="(up.id == selectedPassportId)?'active':''" ng-click="selectedPassportId = up.id">
+                            <td>
+                                <input type="text" class="form-control" ng-model="up.username" ng-change="editMode = true"></input>
+                            </td>
+                            <td>
+                                <select ng-model="up.loginTypeId" ng-options="types.id as types.name for types in loginTypes">
+                                    <option style="display:none" value="">select a login type</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="checkbox" ng-model="up.enabled" ng-checked="up.enabled" ng-change="editMode = true">
+                                </label>
+                            </td>
+                            <td style="width: 26;">
+                                <span class="glyphicon glyphicon-floppy-disk" ng-show="editMode" ng-click="up.$update()"></span>
+                                <span class="glyphicon glyphicon-ban-circle" ng-hide="editMode" ng-click="up.$delete()"></span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
