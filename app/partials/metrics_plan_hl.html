@@ -1,34 +1,20 @@
-<div ng-controller="TopMenuCntl">
-    <ng-include src="topmenu"></ng-include>
+<link href="assets/css/topmenu.css" rel="stylesheet" media="screen">
+<div class="navbar navbar-default navbar-tcm" role="navigation">
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <div class="container">
+            <ul class="nav navbar-nav">
+
+            </ul>
+            <ul class="nav navbar-nav pull-right">
+                <li ><a tabindex="-1" href="/">Log In</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 <div style="margin-left: 20px;">
     <div class="container jira-sync">
         <div class="row" >
-            <div class="col-md-4" class="bs-sidebar hidden-print affix" role="complementary">
-                <div style="width: 100%; padding-bottom: 12;">
-                    <input style="width: 100%" type="input"  placeholder="Search Iteration" ng-model="iterationFilter">
-                </div>
-                <div class="list-group" style=" height: 100%; overflow-y: auto; padding-bottom: 10px;">
-                    <ul class="nav nav-list">
-                        <li ng-repeat="r in releasesIterations  | orderBy:'-id'">
-                            <label>Release {{r.releaseName}}</label>
-                            <ul class="nav nav-list tree">
-                                <li ng-repeat="i in r.iterations | filter:iterationFilter">
-                                    <a class="list-group-item" ng-class="(selectedIteration===i.iterId)?'active':''" ng-click="selectedIteration=i.iterId; getPlan(i.iterId)">{{i.iterationName}}
-                                       <span class="badge pull-right" ng-show="(selectedIteration===i.iterId)">
-                                           <img src="assets/images/icon-permalink.png" ng-click="openHotLink(i.iterId)"/>
-                                       </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div ng-show="plan == null" style="text-align: center;" class="col-md-8">
-                    <img src="assets/images/plan.jpeg" style="margin-top: 160px;">
-                </div>
+            <div class="col-md-12">
                 <div ng-show="plan != null && plan.length == 0 " style="width: 100%">
                     <div class="jumbotron">
                         <h1>No Plan Found!</h1>
@@ -36,7 +22,6 @@
                     </div>
                 </div>
                 <div ng-show="plan != null && plan.length > 0 " style="width: 100%">
-
                     <div class="row">
                         <div class="col-md-2">
                             <label >Issue</label>

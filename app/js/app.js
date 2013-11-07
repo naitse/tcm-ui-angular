@@ -34,6 +34,11 @@ var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies', 'ui.bootstrap', '
                                     controller: 'MetricsPlanCntl',
                                     access: access.user
                                 }
+                                ).when('/metrics/plan/:projectId/:iterationId',
+                                    {templateUrl: '/app/partials/metrics_plan_hl.html',
+                                        controller: 'MetricsPlanCntl',
+                                        access: access.user
+                                    }
                                 ).when('/login',
                                 {
                                     templateUrl: 'app/partials/login.html',
