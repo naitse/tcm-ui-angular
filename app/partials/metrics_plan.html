@@ -1,0 +1,71 @@
+<div ng-controller="TopMenuCntl">
+    <ng-include src="topmenu"></ng-include>
+</div>
+<div style="margin-left: 20px;">
+    <div class="container jira-sync">
+        <div class="row" >
+            <div class="col-md-4" class="bs-sidebar hidden-print affix" role="complementary">
+                <div style="width: 100%; padding-bottom: 12;">
+                    <input style="width: 100%" type="input"  placeholder="Search Iteration" ng-model="iterationFilter">
+                </div>
+                <div class="list-group" style=" height: 100%; overflow-y: auto; padding-bottom: 10px;">
+                    <ul class="nav nav-list">
+                        <li ng-repeat="r in releasesIterations  | orderBy:'-id'">
+                            <label>Release {{r.releaseName}}</label>
+                            <ul class="nav nav-list tree">
+                                <li ng-repeat="i in r.iterations | filter:iterationFilter">
+                                    <a class="list-group-item" ng-class="(selectedIteration===i.iterId)?'active':''" ng-click="selectedIteration=i.iterId; getPlan(i.iterId)">{{i.iterationName}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div ng-show="plan == null" style="text-align: center;" class="col-md-8">
+                    <img src="assets/images/plan.jpeg" style="margin-top: 160px;">
+                </div>
+                <div ng-show="plan != null && plan.length == 0 " style="width: 100%">
+                    <div class="jumbotron">
+                        <h1>No Plan Found!</h1>
+                        <p>Please try another iteration.</p>
+                    </div>
+                </div>
+                <div ng-show="plan != null && plan.length > 0 " style="width: 100%">
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label >Issue</label>
+                        </div>
+                        <div class="col-md-8">
+                            <label >Summary</label>
+                        </div>
+                        <div class="col-md-2" style="text-align: center">
+                            <label >TCs Count</label>
+                        </div>
+                    </div>
+                    <div ng-repeat="item in plan">
+                        <div class="row list-group-item" ng-click="item.selected = (item.selected == null)?true:!item.selected">
+                            <div class="col-md-2">
+                                <span class="caret"></span>
+                                {{item.jiraKey}}
+                            </div>
+                            <div class="col-md-8">
+                                {{item.FtrName}}
+                            </div>
+                            <div class="col-md-2" style="text-align: center">
+                                <span class="badge">{{item.tests.length}}</span>
+                            </div>
+                        </div>
+                        <div  class="list-group-item" ng-show="item.selected" style="background-color: floralwhite;">
+                            <div class="row" ng-repeat="tc in item.tests" >
+                                <div class="col-md-8"><p class="text-primary">{{tc.name}}</p></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

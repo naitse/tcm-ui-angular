@@ -85,6 +85,9 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
             }),
             LoginTypes: $resource(basePath + 'api/logintypes')
 
+        },
+        metrics:{
+            Plan: $resource(basePath + 'api/metrics/iterations/:id/plan')
         }
     };
 }]);
