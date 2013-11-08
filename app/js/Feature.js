@@ -10,21 +10,36 @@ tcmModule.directive('ngFeature', function(){
 
             $scope.handleDrop = function(feature){
               $('.tcm-drag-helper').remove();
-              _.each($rootScope.dragedObjects, function(object){
-                if(object.type == 'test'){
+
+              var dragSingle = _.findWhere($scope['testcases'], {dragSingle: true})
+              
+
+
+              if(typeof dragSingle == 'undefined'){
+                  $scope.manageDropObjects(feature, 'draggable');
+              }else{
+                  $scope.manageDropObjects(feature, 'dragSingle');
+              }
+            
+            }
+
+            $scope.manageDropObjects = function(feature, key){
+              _.each($scope['testcases'], function(object){
+
+                if(object.type == 'test' && object[key]){
+
                   var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
                   newTc.featureId = feature.featureId;
                   newTc.$save(function(data){
+                    object.dragSingle = false;
                     $rootScope.$broadcast('tcStatusUpdated', {featureId: feature.featureId});
                     if(feature.current == true){
-                      $rootScope.$broadcast('featureCurrentTCadded', {featureId: feature.featureId, tc: data});
+                      $rootScope.$broadcast('featureCurrentTCadded', {tc: data});
                     }
                   })
                 }
+
               })
-              
-              $rootScope.dragedObjects = _.without( $rootScope.dragedObjects, _.findWhere( $rootScope.dragedObjects, {checked: false}));
-              // $rootScope.dragedObjects = [];
             }
 
             $scope.editFeature = function(feature){

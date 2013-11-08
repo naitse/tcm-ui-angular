@@ -1,0 +1,28 @@
+<div class="well action-bar">
+	<div ng-hide="hideButtons == true">
+		
+		<input style="float: left; position: relative;top: -9px;" type="checkbox" ng-model="selectall" ng-click="$event.stopPropagation(); selectAll()"/>
+		<div class="btn-group btn-group-xs pull-right">
+			<div class="btn" ng-show="showTCdelete" ng-click="deleteTCsBulk()"><span class="glyphicon glyphicon-trash"></span></div>
+			<div class="btn" ng-click="createTC()"><span class="glyphicon glyphicon-plus-sign"></span></div>
+		</div>
+	</div>
+</div>
+<div ng-show="newTC.create" class="panel panel-default current testcase" ng-class="">
+	<div class="panel-heading" >
+		<input class="name editable" ng-model="newTC.name"/>
+	</div>
+	<div class="panel-body" ng-click="$event.stopPropagation()">
+		<div class="panel panel-default">
+				<div class="panel-body">
+				<div class="description-label field-label">Description</div>
+				<textarea class="panel-body textarea-tcm editable" ng-model="newTC.description"></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="btn btn-default" ng-click="saveNewTC()">Save</div>
+</div>
+<div class="well" ng-show="testcases.length == 0 && featureSelected == true && features.length > 0">No Items Found</div>
+
+
+<ng-testcase ng-repeat="tc in testcases"></ng-testcase>
