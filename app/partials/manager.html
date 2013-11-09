@@ -23,12 +23,13 @@
 				</ul>
 			</div>
 		</li>
+		<input type="checkbox" ng-model="showRight">
 	</ol>
 
 <!-- separate into directive -->
 
 	<div class="panels">
-		<div class="panel panel-default panel-tcm">
+		<div class="panel panel-default panel-tcm left-panel">
 		  <div class="panel-body panel-body-tcm">
 		    <div class="well action-bar">
 		    	<div class="btn-group btn-group-xs pull-right">
@@ -42,12 +43,17 @@
 
 		  </div>
 		</div>
-		<div class="panel panel-default panel-tcm">
+		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth">
 <!-- TESTCASE -->
-			<ng-testcases requester="currentRequester">
+			<ng-testcases requester="currentRequester"></ng-testcases>
+<!-- TESTCASE -->
+		</div>
 
-			</ng-testcases>
-<!-- TESTCASE -->
+		<ng-right-nav-panel ng-show="showRight == true"/>
+
+<!-- FEATURE -->
+				<!-- <ng-feature ng-repeat="feature in features" testcases="testcases"></ng-feature> -->
+<!-- FEATURE -->
 
 		  </div>
 		</div>

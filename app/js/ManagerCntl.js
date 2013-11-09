@@ -2,6 +2,45 @@
 
 function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	
+	$scope.showRight = true;
+	$scope.middleWidth = {
+		width: window.innerWidth - 325
+	};
+
+
+    $scope.getWidth = function() {
+        return window.innerWidth;
+    };
+
+    $scope.$watch($scope.getWidth, function(newValue, oldValue) {
+    	newWidth = ($scope.showRight == false)? newValue - 325: newValue - 661;
+        $scope.middleWidth = {
+			width: newWidth
+		};
+    });
+
+    $scope.$watch('showRight', function(value, old){
+    	if(value == old){
+    		return false;
+    	}
+
+    	newWidth = ($scope.showRight == false)? $scope.getWidth() - 325: $scope.getWidth() - 661;
+
+        $scope.middleWidth = {
+			width: newWidth
+		};
+		$scope.$apply();
+
+    })
+
+    window.onresize = function(){
+        $scope.$apply();
+    }
+
+
+
+
+
 	$scope.resetCurrentRequester = function(){
 		$scope.currentRequester = {
 			id:'none',
@@ -12,12 +51,7 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.resetCurrentRequester();
 
 	$scope.features = [];
-	//$scope.testcases = [];
-	$rootScope.dragedObjects = [];
-	$rootScope.tcsMultipleObjects = [];
 	
-	// $scope.closeUpdatedd = true;
-
 	$scope.clearFtrTests = function(){
 		$scope.features = [];
 		$scope.featureSelected = false;
@@ -25,8 +59,6 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	}
 
 	$scope.featureSelected = false;
-
-	$('.testcase').draggable({revert:true,helper:'clone'})
 
 	//export to a directive
 
@@ -115,14 +147,6 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	});
 
 
-
-	$rootScope.$watch('tcsMultipleObjects', function(value){
-		if(value.length > 0){
-			$scope.showTCdelete = true;
-		} else {
-			$scope.showTCdelete = false;
-		}
-	})
 
 	$scope.selectFeature = function(feature){
 		$rootScope.dragedObjects = [];

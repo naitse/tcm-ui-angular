@@ -14,7 +14,6 @@ tcmModule.directive('ngTestcases', function(){
         $scope.resetTestcasesObject = function(){
           $scope.testcases = [];
           for(var cs = $scope.$$childHead; cs; cs = cs.$$nextSibling) {
-            console.log(cs)
               cs.$destroy();
           }
         }
@@ -50,6 +49,7 @@ tcmModule.directive('ngTestcases', function(){
             $scope.resetTestcasesObject();
             $scope.resetNewTestcase();
             $scope.selectall = false
+            $scope.showTCdelete = false
             tcm_model.TestCases.query({featureId: $scope.requester.id},function(data){
               $scope.$parent.testcases = data;
               $scope.testcases = $scope.$parent.testcases;
@@ -102,6 +102,7 @@ tcmModule.directive('ngTestcases', function(){
 
         temp.$save(function(data){
           $scope.updateTestCasesList(data)
+          $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
           $scope.resetNewTestcase();
         })
 

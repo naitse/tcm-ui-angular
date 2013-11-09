@@ -96,3 +96,8 @@ input, textarea {
     from { -o-transform: rotate(0deg) scale(1.000) skew(0deg) translate(0px); }
     to { -o-transform: rotate(0deg) scale(1.050) skew(0deg) translate(0px); }
 }
+
+.nav-pills>li>a {
+    border: 1px solid;
+    padding: 7px;
+}
