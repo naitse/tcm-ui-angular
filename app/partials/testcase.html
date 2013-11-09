@@ -3,7 +3,7 @@
 		<div class="draggable-handle"></div>
 		<input style="margin-left:-8px;" type="checkbox" ng-model="tc.checked" ng-click="$event.stopPropagation();"/>		
 		<input class="name" ng-class="tc.editMode==true?'editable':''" ng-model="tc.name" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>
-		<div class="btn-group btn-group-xs pull-right">
+		<div ng-hide="btns.hideStatus == true" class="btn-group btn-group-xs pull-right">
             <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditTC(tc, element);"></span></div>
 			<div class="btn" ng-hide="tc.editMode"><span class="glyphicon glyphicon-pencil" ng-click="editTC(tc)"></span></div>
             <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveTC(tc)"></span></div>

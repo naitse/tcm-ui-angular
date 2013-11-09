@@ -69,7 +69,7 @@ tcmModule.directive('ngTestcase', function(){
           $scope.deleteText = "Deletting...";
           $scope.tc.delete = true;
           $scope.tc.$delete(function(){
-              $scope.tcDeleted(angular.copy($scope.tc));
+              $scope.tcDeleted($scope.tc);
               $scope.$destroy()
           })
         }
@@ -81,21 +81,16 @@ tcmModule.directive('ngTestcase', function(){
               $scope.tc.dragSingle = false;
             }else{
               $scope.tc.dragSingle = true;
+              $scope.$parent.updateGlobalDraggableArray();
             }
           }else{
               $scope.tc.dragSingle = true;
+              $scope.$parent.updateGlobalDraggableArray();
           }
         }
 
         $scope.handleDragRevert = function(tc){
         }
-
-        $scope.$parent.$on('tcDeleteBulk', function(event, message){
-          if($scope.tc.checked == true){
-            $scope.deleteTC($scope.tc);
-          }
-        })
-
 
        }],
 

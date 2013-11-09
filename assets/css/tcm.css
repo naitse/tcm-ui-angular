@@ -70,6 +70,7 @@ input, textarea {
 
 .tcm-drag-helper span{
     font-size: 32px;
+    z-index: 2000;
 }
 
 .tcmselected .panel-heading{

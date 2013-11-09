@@ -1,15 +1,26 @@
 tcmModule.directive('ngTestcases', function(){
    return {
       restrict: 'E',
-      transclude: true,
-      scope:{requester:'='},
+      transclude: false,
+      scope:{requester:'=', btns:'='},
       templateUrl: 'app/partials/testcases.html',
        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
-
         $scope.showTCdelete = false
         $scope.selectall = false
-        $scope.hideButtons = true;
+        $scope.hideBulk = false;
+        $scope.uuid = Math.floor(Math.random()*10000001);
+        var draggedTests = {
+          id: $scope.uuid,
+          objects:[]
+        }
+        $rootScope.draggedObjects.push(draggedTests)
+
+        if(typeof $scope.btns !== 'undefined'){
+          if($scope.btns.hideBulk){
+            $scope.hideBulk = true;
+          }
+        }
 
         $scope.resetTestcasesObject = function(){
           $scope.testcases = [];
@@ -51,8 +62,8 @@ tcmModule.directive('ngTestcases', function(){
             $scope.selectall = false
             $scope.showTCdelete = false
             tcm_model.TestCases.query({featureId: $scope.requester.id},function(data){
-              $scope.$parent.testcases = data;
-              $scope.testcases = $scope.$parent.testcases;
+              $scope.testcases = data;
+              // $scope.testcases = $scope.$parent.testcases;
               $scope.extendTcs();
             })
 
@@ -84,7 +95,13 @@ tcmModule.directive('ngTestcases', function(){
 
 
         $scope.deleteTCsBulk = function(){
-          $scope.$broadcast('tcDeleteBulk');
+          _.each($scope.testcases,function(tc){
+            if(tc.checked == true){
+              tc.$delete(function(){
+                  $scope.tcDeleted(tc);
+              })
+            }
+          })
         }
 /* NEW TCs */
 
@@ -111,13 +128,15 @@ tcmModule.directive('ngTestcases', function(){
 /*******************************************************/
 
   $rootScope.$on('featureCurrentTCadded', function(event, message){
-    $scope.updateTestCasesList(message.tc)
+    if(message.uuid != $scope.uuid){
+        $scope.updateTestCasesList(message.tc)
+    }
   });
 
 
   $scope.tcDeleted = function(tc){
    $scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: tc.tcId}));
-   $scope.updateParentTcArray();
+   // $scope.updateParentTcArray();
     $rootScope.$emit('tcDeleted', {featureId: tc.featureId});
     $scope.manageDragState();
     $scope.verifyBulkDisplay();
@@ -128,11 +147,13 @@ tcmModule.directive('ngTestcases', function(){
 
   $scope.tcChecked = function(){
     $scope.manageDragState();
+    $scope.updateGlobalDraggableArray();
     $scope.verifyBulkDisplay()
  }
 
 $scope.tcUnchecked = function(){
     $scope.manageDragState();
+    $scope.updateGlobalDraggableArray();
     $scope.verifyBulkDisplay();
  }
 
@@ -194,7 +215,13 @@ $scope.$on('tcSelected', function(event, message){
                     }
                   })
               }
-        }
+              $scope.updateGlobalDraggableArray();
+       }
+
+       $scope.updateGlobalDraggableArray =  function(){
+          _.findWhere($rootScope.draggedObjects, {id: $scope.uuid}).objects = $scope.testcases;
+          $rootScope.currentDragUUID = $scope.uuid
+       }
 
         $scope.verifyBulkDisplay = function(){
 

@@ -9,6 +9,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.releases = [];
             scope.iterations = [];
             scope.features = [];
+            scope.btnConfig = {hideBulk:true, hideStatus:true};
 
             scope.resetRelease = function(){
                 scope.release = {
