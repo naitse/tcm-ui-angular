@@ -264,6 +264,45 @@ $scope.$on('tcSelected', function(event, message){
           var result = /^\s*$/.test(string) || (string === null);
           return result;
         }
+
+
+////////////////////DROP SECTION
+
+            $scope.handleDrop = function(){
+              $('.tcm-drag-helper').remove();
+
+              var current = _.findWhere($rootScope.draggedObjects, {id: $rootScope.currentDragUUID})
+              var dragSingle = _.findWhere(current.objects, {dragSingle: true})
+              
+              if(typeof dragSingle == 'undefined'){
+                  $scope.manageDropObjects($scope.requester.id, current, 'draggable');
+              }else{
+                  $scope.manageDropObjects($scope.requester.id, current, 'dragSingle');
+              }
+            
+            }
+
+            $scope.manageDropObjects = function(featureId, current, key){
+
+              _.each(current.objects, function(object){
+              // _.each($scope['testcases'], function(object){
+
+                if(object.type == 'test' && object[key]){
+
+                  var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
+                  newTc.featureId = featureId;
+                  newTc.$save(function(data){
+                    object.dragSingle = false;
+                    $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
+                    $rootScope.$broadcast('tcStatusUpdated', {featureId: featureId});
+                  })
+                }
+
+              })
+            }
+
+
+
       }],
 
        link: function (scope, element, attrs) {

@@ -6,46 +6,29 @@
 
 <!-- separate into directive -->
 
-	<ol class="breadcrumb release-iteration-selector">
-		<li>
-			<a href="" ng-click="release.open = true">Release {{release.releaseName}}<!-- <span class="caret" ng-click="release.open = true"></span> --></a>
-			<div class="btn-group" ng-class="(release.open == true)?'open':''" style=" position: absolute; ">
-				<ul class="dropdown-menu" role="menu" ng-mouseleave="release.open = false">
-					<li ng-repeat="rel in releases" ng-click="selectRelease(rel)"><a href="">{{rel.releaseName}}</a></li>
-				</ul>
-			</div>
-		</li>
-		<li ng-show="iterations.length > 0">
-			<a href="" ng-click="iteration.open = true">{{iteration.iterationName}}<!-- <span class="caret" ng-click="iteration.open = true"></span> --></a>
-			<div class="btn-group" ng-class="(iteration.open == true)?'open':''" style=" position: absolute; ">
-				<ul class="dropdown-menu" role="menu" ng-mouseleave="iteration.open = false">
-					<li ng-repeat="iter in iterations" ng-click="selectIteration(iter)"><a href="">{{iter.iterationName}}</a></li>
-				</ul>
-			</div>
-		</li>
-		<input type="checkbox" ng-model="showRight">
-	</ol>
+
 
 <!-- separate into directive -->
 
 	<div class="panels">
-		<div class="panel panel-default panel-tcm left-panel">
+		<div class="panel panel-default panel-tcm left-panel" style=" overflow: hidden; ">
 		  <div class="panel-body panel-body-tcm">
-		    <div class="well action-bar">
+<!-- 		    <div class="well action-bar">
 		    	<div class="btn-group btn-group-xs pull-right">
 		    		<div class="btn" ng-show="iteration.IterId != null"><span class="glyphicon glyphicon-plus-sign"></span></div>
 		    	</div>
-		    </div>
+		    </div> -->
 
 <!-- FEATURE -->
-				<ng-feature ng-repeat="feature in features" testcases="testcases"></ng-feature>
+			<ng-left-nav-panel/>
+				<!-- <ng-feature ng-repeat="feature in features" testcases="testcases"></ng-feature> -->
 <!-- FEATURE -->
 
 		  </div>
 		</div>
-		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth">
+		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth" style="overflow: hidden;">
 <!-- TESTCASE -->
-			<ng-testcases requester="currentRequester"></ng-testcases>
+			<ng-testcases requester="currentRequester" ></ng-testcases>
 <!-- TESTCASE -->
 		</div>
 
