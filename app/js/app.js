@@ -49,6 +49,11 @@ var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngRoute', 'ngCookies', 
                                         controller: 'MetricsReleaseCntl',
                                         access: access.anon
                                     }
+                                ).when('/metrics/iterations/:projectId',
+                                    {templateUrl: '/app/partials/metrics_iteration.html',
+                                        controller: 'MetricsIterationsCntl',
+                                        access: access.anon
+                                    }
                                 ).when('/login',
                                 {
                                     templateUrl: 'app/partials/login.html',
