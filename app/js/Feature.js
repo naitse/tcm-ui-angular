@@ -8,23 +8,40 @@ tcmModule.directive('ngFeature', function(){
        //  },
        controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
+
             $scope.handleDrop = function(feature){
               $('.tcm-drag-helper').remove();
-              _.each($rootScope.dragedObjects, function(object){
-                if(object.type == 'test'){
+
+              var current = _.findWhere($rootScope.draggedObjects, {id: $rootScope.currentDragUUID})
+              var dragSingle = _.findWhere(current.objects, {dragSingle: true})
+              
+              if(typeof dragSingle == 'undefined'){
+                  $scope.manageDropObjects(feature, current, 'draggable');
+              }else{
+                  $scope.manageDropObjects(feature, current, 'dragSingle');
+              }
+            
+            }
+
+            $scope.manageDropObjects = function(feature, current, key){
+
+              _.each(current.objects, function(object){
+              // _.each($scope['testcases'], function(object){
+
+                if(object.type == 'test' && object[key]){
+
                   var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
                   newTc.featureId = feature.featureId;
                   newTc.$save(function(data){
+                    object.dragSingle = false;
                     $rootScope.$broadcast('tcStatusUpdated', {featureId: feature.featureId});
                     if(feature.current == true){
-                      $rootScope.$broadcast('featureCurrentTCadded', {featureId: feature.featureId, tc: data});
+                      $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
                     }
                   })
                 }
+
               })
-              
-              $rootScope.dragedObjects = _.without( $rootScope.dragedObjects, _.findWhere( $rootScope.dragedObjects, {checked: false}));
-              // $rootScope.dragedObjects = [];
             }
 
             $scope.editFeature = function(feature){

@@ -1,22 +1,64 @@
 
 
 function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
-	$scope.features = [];
-	$scope.testcases = [];
-	$rootScope.dragedObjects = [];
-	$rootScope.tcsMultipleObjects = [];
-	$scope.showTCdelete = false
-	// $scope.closeUpdatedd = true;
+	
+	$scope.showRight = true;
+	$scope.middleWidth = {
+		width: window.innerWidth - 325
+	};
 
+
+    $scope.getWidth = function() {
+        return window.innerWidth;
+    };
+
+    $scope.$watch($scope.getWidth, function(newValue, oldValue) {
+    	newWidth = ($scope.showRight == false)? newValue - 325: newValue - 661;
+        $scope.middleWidth = {
+			width: newWidth
+		};
+    });
+
+    $scope.$watch('showRight', function(value, old){
+    	if(value == old){
+    		return false;
+    	}
+
+    	newWidth = ($scope.showRight == false)? $scope.getWidth() - 325: $scope.getWidth() - 661;
+
+        $scope.middleWidth = {
+			width: newWidth
+		};
+		$scope.$apply();
+
+    })
+
+    window.onresize = function(){
+        $scope.$apply();
+    }
+
+
+
+
+
+	$scope.resetCurrentRequester = function(){
+		$scope.currentRequester = {
+			id:'none',
+			type:''
+		};
+	}
+
+	$scope.resetCurrentRequester();
+
+	$scope.features = [];
+	
 	$scope.clearFtrTests = function(){
 		$scope.features = [];
 		$scope.featureSelected = false;
-		$scope.testcases = [];
+		$scope.resetCurrentRequester();
 	}
 
 	$scope.featureSelected = false;
-
-	$('.testcase').draggable({revert:true,helper:'clone'})
 
 	//export to a directive
 
@@ -73,9 +115,6 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.placeholders = {
 		feature : {
 			delete:'Sure?'
-		},
-		testcase : {
-			delete:'Sure?'
 		}
 	}
 
@@ -94,113 +133,33 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		})
 	}
 
-	$rootScope.$on('tcStatusUpdated', function(event, parameters){
-		// console.log(parameters)
-		$scope.featureUpdateTCsatus(parameters.featureId);
+	$rootScope.$on('tcStatusUpdated', function(event, message){
+		$scope.featureUpdateTCsatus(message.featureId);
 	});
 
-	$rootScope.$on('tcDeleted', function(event, parameters){
-		$scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: parameters.tcId}));
-		$scope.featureUpdateTCsatus(parameters.featureId);
+	$rootScope.$on('tcDeleted', function(event, message){
+		$scope.featureUpdateTCsatus(message.featureId);
 	});
 
-	$scope.deleteTCsBulk = function(){
-		$rootScope.$broadcast('tcDeleteBulk');
-	}
-
-	$rootScope.$on('featureDeleted', function(event, parameters){
-		$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: parameters.featureId}));
-		$scope.testcases = [];
+	$rootScope.$on('featureDeleted', function(event, message){
+		$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: message.featureId}));
+		//$scope.testcases = [];
 	});
 
-	$rootScope.$on('featureCurrentTCadded', function(event, parameters){
-		$scope.updateTestCasesList(parameters.featureId, parameters.tc)
-	});
-
-	$rootScope.$watch('tcsMultipleObjects', function(value){
-		if(value.length > 0){
-			$scope.showTCdelete = true;
-		} else {
-			$scope.showTCdelete = false;
-		}
-	})
 
 
-	$scope.updateTestCasesList = function(featureId, tc){
-		var extended = tc
-		extended.featureId = featureId;
-		$scope.extendSingleTC(extended);
-		$scope.testcases.push(extended);
-	}
-
-
-	$scope.getTestCases = function(feature){
+	$scope.selectFeature = function(feature){
 		$rootScope.dragedObjects = [];
-		$rootScope.tcsMultipleObjects = [];
+
 		_.each($scope.features, function(obj){
 			obj.current = false;
 		})
-
 		var setCurrent = _.findWhere($scope.features, {featureId: feature.featureId});
 		setCurrent.current = true;
 
-		tcm_model.TestCases.query({featureId: feature.featureId},function(data){
-			$scope.testcases = data;
-			$scope.extendTcs();
-			$scope.featureSelected = true;
-		})
-
+		$scope.currentRequester.id = feature.featureId
+		$scope.currentRequester.type = "feature"
 	}
-
-      $scope.extendTcs = function(data){
-        _.each($scope.testcases, function(obj){
-          $scope.extendSingleTC(obj);//_.extend(obj, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true, checked: false});
-        });
-      }
-
-      $scope.extendSingleTC = function(singletc) {
-      	_.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true});
-      }
-
-
-
-      $scope.newTC = {
-      	create:false,
-      	name:'',
-      	description:''
-      }
-
-
-      $scope.createTC =  function(){
-
-      	if($scope.newTC.create == true){
-      		return false;
-      	}
-
-      	$scope.newTC.create = true;
-
-      }
-
-
-      $scope.saveNewTC = function(){
-
-      	var currentFeature = _.findWhere($scope.features, {current: true})
-
-      	$scope.newTC.featureId = currentFeature.featureId
-
-      	var temp = new tcm_model.TestCases($scope.newTC)
-
-      	temp.$save(function(data){
-      		$scope.updateTestCasesList($scope.newTC.featureId, data)
-  		      $scope.newTC = {
-		      	create:false,
-		      	name:'',
-		      	description:''
-		      }
-      	})
-
-      }
-
 
 	$scope.extendFeatures = function(){
 		_.each($scope.features, function(obj){
