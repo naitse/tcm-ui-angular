@@ -14,8 +14,8 @@
                             <label>Release {{r.releaseName}}</label>
                             <ul class="nav nav-list tree">
                                 <li ng-repeat="i in r.iterations | filter:iterationFilter">
-                                    <a class="list-group-item" ng-class="(selectedIteration===i.iterId)?'active':''" ng-click="selectedIteration=i.iterId; getPlan(i.iterId)">{{i.iterationName}}
-                                       <span class="badge pull-right" ng-show="(selectedIteration===i.iterId)">
+                                    <a class="list-group-item" ng-class="(selection.iteration===i.iterId)?'active':''" ng-click="selection.iteration=i.iterId">{{i.iterationName}}
+                                       <span class="badge pull-right" ng-show="(selection.iteration===i.iterId)">
                                            <img src="assets/images/icon-permalink.png" ng-click="openHotLink(i.iterId)"/>
                                        </span>
                                     </a>

@@ -1,6 +1,6 @@
 
 
-function MetricsPlanCntl( $scope, $routeParams, $window, tcm_model) {
+function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
     $scope.selection = {
         iteration: null
     }
@@ -20,4 +20,4 @@ function MetricsPlanCntl( $scope, $routeParams, $window, tcm_model) {
     }
 
 }
-MetricsPlanCntl.$inject = [ '$scope', '$routeParams', '$window', 'tcm_model'];
+MetricsIterationsCntl.$inject = [ '$scope', '$routeParams', '$window', 'tcm_model'];
