@@ -75,6 +75,7 @@ tcmModule.directive('ngTestcase', function(){
         }
 
         $scope.handleDragStart = function(){
+          $scope.$parent.droppable = false;
 
           if($scope.$parent.areTcsChecked()){
             if($scope.$parent.tcCheckedCount() > 1){
@@ -90,6 +91,7 @@ tcmModule.directive('ngTestcase', function(){
         }
 
         $scope.handleDragRevert = function(tc){
+          $scope.$parent.droppable = true;
         }
 
        }],

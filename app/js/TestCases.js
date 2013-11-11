@@ -131,6 +131,7 @@ tcmModule.directive('ngTestcases', function(){
     if(message.uuid != $scope.uuid){
         $scope.updateTestCasesList(message.tc)
     }
+    $scope.droppable = true;
   });
 
 
@@ -267,6 +268,8 @@ $scope.$on('tcSelected', function(event, message){
 
 
 ////////////////////DROP SECTION
+
+            $scope.droppable = true;
 
             $scope.handleDrop = function(){
               $('.tcm-drag-helper').remove();

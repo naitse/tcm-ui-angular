@@ -218,10 +218,17 @@ tcmModule.directive('tcmDroppable', function() {
     transclude:false,
     link: function(scope, element, attrs) {
 
-            var draggable = attrs.drop;
-
-            scope.$watch(draggable, function(val) {
+            scope.$watch('droppable', function(val) {
                 if (val == true) {
+                    makeDroppable();
+                    } else {
+                    try{
+                        $(element).droppable('destroy');
+                    }catch(e){}
+                }
+            });
+
+            function makeDroppable() {
                     $(element).droppable({
                         drop: function(evt, ui){
                             $(this).removeClass('draggable-over')
@@ -254,10 +261,7 @@ tcmModule.directive('tcmDroppable', function() {
                             });
                         }
                     })
-                } else {
-                    $(element).droppable('disable')
-                }
-            });
+            };
         }
     }
 });
