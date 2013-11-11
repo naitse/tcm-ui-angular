@@ -28,24 +28,24 @@
 		left: 0px;
 	}
 
-	#iterations {
+ng-left-nav-panel #iterations {
 		left: 400px;
 		top: 0px;
 	}
 
-	#features {
+ng-left-nav-panel #features {
 		left: 400px;
 		top: 0px;
 	}
-	#testcases {
+ng-left-nav-panel #testcases {
 		left: 400px;
 		top: 0px;
 	}
 
-	.nav.right-panel {
+	.nav.left-panel {
 		position: fixed;
 		top: 65px;
-		right: 0px;
+		left: 0px;
 	}
 
 	.nav-tabs.right-panel>li>a {
@@ -59,10 +59,14 @@
 	.sprint-container .panel {
 		margin-bottom: 0px !important;	
 	}
+/*	.active>div{
+		padding-top: 1px;
+		padding-bottom: 1px;
+	}*/
 </style>
-<div class="panel panel-default panel-tcm right-panel" >
-  <div class="panel-body panel-body-tcm">
-		<ul class="nav nav-tabs right-panel">
+<div class="panel panel-default panel-tcm left-panel" >
+  <div class="panel-body panel-body-tcm" style=" overflow: hidden; height: 100%; padding-bottom: 257px; ">
+		<ul class="nav nav-tabs left-panel">
 		  <li ng-click="$event.preventDefault(); loadSprint()" ng-class="sprintActiveClass"><a href="">Sprint</a></li>
 		  <li ng-click="$event.preventDefault(); loadSuites()" ng-class="suiteActiveClass"><a href="">Suites</a></li>
 		</ul>
@@ -77,27 +81,20 @@
 		</div>
     	<div class="sprint-container" ng-show="sprintActiveClass == 'active'">
     		<div id="releases">
-	    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases" ng-click="getIterations(rel)" ng-class="(release ==  rel)?'active':'';">
+	    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases" ng-click="getIterations(rel)">
 				  <div class="panel-body">
     				Release {{rel.releaseName}}
 				  </div>
 	    		</div>
     		</div>
     		<div id="iterations">
-	    		<div id="iteration" class="panel panel-default" ng-hide="iter.hide" ng-repeat="iter in iterations" ng-click="getFeatures(iter)" ng-class="(iteration ==  iter)?'active':'';">
+	    		<div id="iteration" class="panel panel-default" ng-hide="iter.hide" ng-repeat="iter in iterations" ng-click="getFeatures(iter)">
 	    			<div class="panel-body">
 	    				{{iter.iterationName}}
 	    			</div>
 	    		</div>
     		</div>
     		<div id="features">
-	    		<div id="feature" class="panel panel-default" ng-hide="feat.hide" ng-repeat="feat in features" ng-click="getTests(feat)" ng-class="(feature ==  feat)?'active':'';">
-	    			<div class="panel-body">
-	    				{{feat.featureName}}
-	    			</div>
-	    		</div>
-    		</div>
-    		<div id="testcases">
-				<ng-testcases requester="currentRequester" btns="btnConfig"></ng-testcases>
+				<ng-features requester="iteration">
     		</div>
     	</div>

@@ -1,9 +1,9 @@
-tcmModule.directive('ngRightNavPanel', function() {
+tcmModule.directive('ngLeftNavPanel', function() {
     return {
         restrict: 'E',
         transclude:false,
         scope:true,
-        templateUrl: 'app/partials/rightnavpanel.html',
+        templateUrl: 'app/partials/leftnavpanel.html',
         controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function(scope, element, $attrs, $rootScope, tcm_model){
             
             scope.releases = [];
@@ -11,6 +11,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.features = [];
             scope.btnConfig = {hideBulk:true, hideStatus:true};
             releaseSelected = {};
+            var duration = 200
 
             scope.resetRelease = function(){
                 scope.release = {
@@ -37,17 +38,6 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.resetFeature();
 
-
-            scope.resetCurrentRequester = function(){
-                scope.currentRequester = {
-                    id:'none',
-                    type:''
-                };
-            }
-
-            scope.resetCurrentRequester();
-
-
             scope.back = {
                 state:false,
                 last:''
@@ -61,6 +51,8 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             }
 
+            scope.loadSprint();
+
             scope.loadSuites = function(){
                 scope.sprintActiveClass = ''
                 scope.suiteActiveClass = 'active'
@@ -71,9 +63,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.getIterations = function(release){
                 scope.release = release;
                 _.each(scope.releases, function(rel){
-                    if(rel.id != release.id){
                         rel.hide = true;
-                    }
                 })
 
                 tcm_model.Iterations.query({releaseId: scope.release.id}).$promise.then(function(data){
@@ -85,41 +75,28 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.getFeatures = function(iteration){
-                scope.iteration = iteration
-               _.each(scope.iterations, function(iter){
-                    if(iter.IterId != iteration.IterId){
-                        iter.hide = true;
-                    }
-                })
-                tcm_model.Features.query({iterationId:scope.iteration.IterId}, function(data){
-                    scope.features = _.extend(data, {hide:false});
+                iteration.callback = function(){
                     scope.showFeatures();
-                    scope.back.last = scope.hideFeatures;
-                    // $scope.extendFeatures()
-                })
-            }
+                }
+                scope.iteration = iteration
+                // scope.$parent.iteration = scope.iteration
 
-            scope.getTests = function(feature){
-                scope.feature = feature;
-               _.each(scope.features, function(feat){
-                    if(feat.featureId != feature.featureId){
-                        feat.hide = true;
-                    }
+               _.each(scope.iterations, function(iter){
+                        iter.hide = true;
                 })
-                scope.currentRequester.id = feature.featureId
-                scope.currentRequester.type = "feature"
-                scope.showTests();
-                scope.back.last = scope.hideTests;
+
+               // scope.showFeatures();
             }
 
             scope.showIterations = function(){
                 
-                $('ng-right-nav-panel #iterations').stop(true,true).animate({left:0},function(){});
+                $('ng-left-nav-panel #iterations').stop(true,true).animate({left:0}, duration, function(){});
             }
             scope.hideIterations = function(){
-                  scope.iterations = [];  
+                  scope.iterations = [];
+                  scope.$parent.resetCurrentRequester();  
                   scope.loadSprint();
-                $('ng-left-nav-panel #iterations').stop(true,true).animate({left:400},function(){
+                $('ng-left-nav-panel #iterations').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                       scope.hideIteration = true
                       scope.resetRelease();
@@ -129,14 +106,14 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.showFeatures = function(){
-                $('ng-right-nav-panel #features').stop(true,true).animate({left:0},function(){});
+                $('ng-left-nav-panel #features').stop(true,true).animate({left:0}, duration, function(){});
             }
 
             scope.hideFeatures = function(){
                 scope.hideIteration = false
                 scope.features = [];
                 scope.resetFeature();
-                $('ng-right-nav-panel #features').stop(true,true).animate({left:400},function(){
+                $('ng-left-nav-panel #features').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                             scope.hideFeature = true
                             scope.resetIteration();
@@ -146,38 +123,24 @@ tcmModule.directive('ngRightNavPanel', function() {
                 });
             }
 
-            scope.showTests = function(){
-                $('ng-right-nav-panel #testcases').stop(true,true).animate({left:0},function(){});
-            }
-            
-            scope.hideTests = function(){
-                scope.hideFeature = false
-                scope.resetCurrentRequester();
-                $('ng-right-nav-panel #testcases').stop(true,true).animate({left:400},function(){
-                    scope.$apply(function(){
-                            scope.hideTest = true
-                            // scope.resetIteration();
-                            scope.back.last = scope.hideFeatures;
-                        }
-                    );
-                });
-            }
-
             scope.backToReleases = function(){
-                scope.hideTests()
-                scope.hideFeatures()
                 scope.resetRelease();
+                scope.hideFeatures();
                 scope.hideIterations()
             }
             scope.backToIterations = function(){
-                scope.hideTests()
-                scope.hideFeatures()
+                scope.resetIteration();
                 scope.getIterations(scope.release)
+                scope.hideFeatures();
             }
 
             scope.backToFeatures = function(){
-                scope.hideTests()
                 scope.getFeatures(scope.iteration)
+            }
+
+            scope.setCurrentRequester = function(feature){
+                scope.$parent.currentRequester.id = feature.featureId
+                scope.$parent.currentRequester.type = "feature"
             }
 
         }],
