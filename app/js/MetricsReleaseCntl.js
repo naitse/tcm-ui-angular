@@ -1,6 +1,16 @@
 
 
 function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
+    $scope.selection = {
+        release: null
+    }
+
+    $scope.$watch('selection.release', function(val){
+        if(val!=null){
+            $scope.loadCarriedOver(val);
+            $scope.loadTrends(val);
+        }
+    })
 
     $scope.openHotLink = function(id){
         $window.open('#/metrics/release/' + $routeParams.projectId + '/' + id);
@@ -90,9 +100,6 @@ function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
 
         });
     }
-
-    $scope.selectedRelease = null;
-    $scope.releases = tcm_model.Releases.query();
 
     $scope.trendChart = {
         options: {
@@ -191,5 +198,11 @@ function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
         $scope.selectedGraph.options.chart.height = 450;
     }
 
+
+    if($routeParams.releaseId == null){
+        $scope.releases = tcm_model.Releases.query();
+    }else{
+        $scope.selection.release = $routeParams.releaseId;
+    }
 }
 MetricsReleaseCntl.$inject = [ '$scope', '$routeParams', '$window', 'tcm_model'];
