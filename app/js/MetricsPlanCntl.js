@@ -1,6 +1,6 @@
 
 
-function MetricsPlanCntl( $scope, $routeParams, $http, $window, tcm_model) {
+function MetricsPlanCntl( $scope, $routeParams, $window, tcm_model) {
 
     $scope.getPlan = function(id){
         $scope.plan = tcm_model.metrics.Plan.query({id: id});
@@ -18,4 +18,4 @@ function MetricsPlanCntl( $scope, $routeParams, $http, $window, tcm_model) {
     }
 
 }
-MetricsPlanCntl.$inject = [ '$scope', '$routeParams', '$http', '$window', 'tcm_model'];
+MetricsPlanCntl.$inject = [ '$scope', '$routeParams', '$window', 'tcm_model'];

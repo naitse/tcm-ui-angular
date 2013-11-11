@@ -87,7 +87,9 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
 
         },
         metrics:{
-            Plan: $resource(basePath + 'api/metrics/iterations/:id/plan')
+            Plan: $resource(basePath + 'api/metrics/iterations/:id/plan'),
+            Trend: $resource(basePath + 'api/metrics/releases/:id/trend'),
+            CarriedOver: $resource(basePath + 'api/metrics/releases/:id/carriedover')
         }
     };
 }]);

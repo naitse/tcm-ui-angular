@@ -1,0 +1,57 @@
+<div ng-controller="TopMenuCntl">
+    <ng-include src="topmenu"></ng-include>
+</div>
+<div style="margin-left: 20px;">
+    <div class="container metrics-release">
+        <div class="row" >
+            <div class="col-md-4" class="bs-sidebar hidden-print affix" role="complementary">
+                <div style="width: 100%; padding-bottom: 12;">
+                    <input style="width: 100%" type="input"  placeholder="Search Release" ng-model="releaseFilter">
+                </div>
+                <div class="list-group" style=" height: 100%; overflow-y: auto; padding-bottom: 10px;">
+                    <ul class="nav nav-list tree">
+                        <li ng-repeat="r in releases  | orderBy:'-id'"  >
+                            <a class="list-group-item" ng-class="(selectedRelease===r.id)?'active':''" ng-click="selectedRelease=r.id;loadTrends(r.id);loadCarriedOver(r.id);">{{r.releaseName}}
+                               <span class="badge pull-right" ng-show="(selectedRelease===r.id)">
+                                   <img src="assets/images/icon-permalink.png" ng-click="openHotLink(i.iterId)"/>
+                               </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8" ng-show="trendChart.series==null">
+                <img src="assets/images/Marketing-Performance-Metrics.jpg"/>
+            </div>
+            <div class="col-md-8" ng-show="trendChart.series!=null">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="thumbnail" data-toggle="modal" data-target="#modal-showMetric" >
+                            <highchart id="iterationsTrend" series="trendChart.series" title="trendChart.title" options="trendChart.options"></highchart>
+                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(trendChart)"></span>
+                        </a>
+
+                    </div>
+                    <div class="col-md-6" >
+                        <a class="thumbnail" data-toggle="modal" data-target="#modal-showMetric" >
+                            <highchart id="carriedOver" series="carriedOver.series" title="carriedOver.title" options="carriedOver.options"></highchart>
+                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(carriedOver)"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-showMetric" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 900;height: 600;">
+            <div class="modal-body" style="overflow: visible">
+                <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

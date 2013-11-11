@@ -1,6 +1,6 @@
 'use strict';
 
-var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ngResource']).
+var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngRoute', 'ngCookies', 'ui.bootstrap', 'ngResource']).
     config(['$routeProvider', '$locationProvider', '$httpProvider',
         function($routeProvider, $locationProvider, $httpProvider ) {
             var access = routingConfig.accessLevels;
@@ -37,6 +37,11 @@ var tcmModule = angular.module('tcm', ['ngRoute', 'ngCookies', 'ui.bootstrap', '
                                 ).when('/metrics/plan/:projectId/:iterationId',
                                     {templateUrl: '/app/partials/metrics_plan_hl.html',
                                         controller: 'MetricsPlanCntl',
+                                        access: access.anon
+                                    }
+                                ).when('/metrics/release/:projectId',
+                                    {templateUrl: '/app/partials/metrics_release.html',
+                                        controller: 'MetricsReleaseCntl',
                                         access: access.user
                                     }
                                 ).when('/login',
