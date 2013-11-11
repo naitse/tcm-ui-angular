@@ -25,16 +25,16 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
             active: $location.path().indexOf('testplan') >=0 || $location.path().indexOf('rlsmetrics')>=0 || $location.path().indexOf('/metrics')>=0 ? 'active':'',
             subMenuList: [
                 { name: 'TestPlan',
-                  active: $location.path().indexOf('testplan') >=0 ? 'active':'',
+                  active: $location.path().indexOf('plan/') >=0 ? 'active':'',
                   link: '#/metrics/plan/'+$routeParams.projectId
                 },
                 { name: 'Release',
-                  active: $location.path().indexOf('release_metrics') >=0 ? 'active':'',
-                    link: '#/release_metrics/'+$routeParams.projectId
+                  active: $location.path().indexOf('release/') >=0 ? 'active':'',
+                    link: '#/metrics/release/'+$routeParams.projectId
                 },
                 { name: 'Iteration',
-                  active: $location.path().indexOf('/metrics') >=0 ? 'active':'',
-                    link: '#/metrics'
+                  active: $location.path().indexOf('iterations/') >=0 ? 'active':'',
+                    link: '#/metrics/iterations/'+$routeParams.projectId
                 }]
         },
         {

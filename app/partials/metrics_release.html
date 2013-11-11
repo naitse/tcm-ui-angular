@@ -1,0 +1,36 @@
+<div ng-controller="TopMenuCntl">
+    <ng-include src="topmenu"></ng-include>
+</div>
+<div style="margin-left: 20px;">
+    <div class="container jira-sync">
+        <div class="row" >
+            <div class="col-md-4" class="bs-sidebar hidden-print affix" role="complementary">
+                <div style="width: 100%; padding-bottom: 12;">
+                    <input style="width: 100%" type="input"  placeholder="Search Release" ng-model="releaseFilter">
+                </div>
+                <div class="list-group" style=" height: 100%; overflow-y: auto; padding-bottom: 10px;">
+                    <ul class="nav nav-list tree">
+                        <li ng-repeat="r in releases  | orderBy:'-id'">
+                            <a class="list-group-item" ng-class="(selectedRelease===r.id)?'active':''" ng-click="selectedRelease=r.id;">{{r.releaseName}}
+                               <span class="badge pull-right" ng-show="(selectedRelease===r.id)">
+                                   <img src="assets/images/icon-permalink.png" ng-click="openHotLink(i.iterId)"/>
+                               </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <a href="#" class="thumbnail">
+                    <div id="iterationsTrendContainer"></div>
+                </a>
+                <a href="#" class="thumbnail">
+                    <div id="carriedOverContainer"></div>
+                </a>
+            </div>
+
+
+        </div>
+    </div>
+</div>
