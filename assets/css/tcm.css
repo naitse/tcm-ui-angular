@@ -105,8 +105,9 @@ input, textarea {
 
 .copy-icon {
     background: url('/assets/images/copy-icon.png')  -1px -1px;
-    height: 20px;
-    width: 20px;
+    height: 16px;
+    width: 16px;
     background-size: 110%;
+    margin-top: 2px;
 
 }

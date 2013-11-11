@@ -2,7 +2,7 @@ tcmModule.directive('ngFeatures', function(){
    return {
       restrict: 'E',
       transclude: true,
-      scope:{requester:'=', btns:'='},
+      scope:{requester:'=', btns:'=', droppable:'@drop', hidenotcurrent:'@hidenotcurrent'},
       templateUrl: 'app/partials/features.html',
        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
@@ -52,7 +52,7 @@ tcmModule.directive('ngFeatures', function(){
 
 		$scope.extendFeatures = function(){
 			_.each($scope.features, function(obj){
-				_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false});
+				_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false, hide:false});
 			});
 		}
 
@@ -64,6 +64,13 @@ tcmModule.directive('ngFeatures', function(){
 			})
 			var setCurrent = _.findWhere($scope.features, {featureId: feature.featureId});
 			setCurrent.current = true;
+
+
+			if(typeof $scope.hidenotcurrent != 'undefined'){
+				if($scope.hidenotcurrent == 'true'){
+					$scope.features = [feature]
+				}
+			}
 
 			$scope.$parent.setCurrentRequester(feature);
 			

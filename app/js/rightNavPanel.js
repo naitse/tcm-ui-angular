@@ -6,6 +6,8 @@ tcmModule.directive('ngRightNavPanel', function() {
         templateUrl: 'app/partials/rightnavpanel.html',
         controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function(scope, element, $attrs, $rootScope, tcm_model){
             
+
+            var duration = 200
             scope.releases = [];
             scope.iterations = [];
             scope.features = [];
@@ -85,18 +87,19 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.getFeatures = function(iteration){
+                iteration.callback = function(){
+                    scope.showFeatures();
+                }
                 scope.iteration = iteration
                _.each(scope.iterations, function(iter){
                     if(iter.IterId != iteration.IterId){
                         iter.hide = true;
                     }
                 })
-                tcm_model.Features.query({iterationId:scope.iteration.IterId}, function(data){
-                    scope.features = _.extend(data, {hide:false});
-                    scope.showFeatures();
-                    scope.back.last = scope.hideFeatures;
-                    // $scope.extendFeatures()
-                })
+            }
+
+            scope.setCurrentRequester = function(feature){
+                scope.getTests(feature)
             }
 
             scope.getTests = function(feature){
@@ -114,12 +117,12 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.showIterations = function(){
                 
-                $('ng-right-nav-panel #iterations').stop(true,true).animate({left:0},function(){});
+                $('.ng-right-nav-panel #iterations').stop(true,true).animate({left:0},function(){});
             }
             scope.hideIterations = function(){
-                  scope.iterations = [];  
+                  scope.iterations = [];
                   scope.loadSprint();
-                $('ng-left-nav-panel #iterations').stop(true,true).animate({left:400},function(){
+                $('.ng-right-nav-panel #iterations').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                       scope.hideIteration = true
                       scope.resetRelease();
@@ -129,14 +132,14 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.showFeatures = function(){
-                $('ng-right-nav-panel #features').stop(true,true).animate({left:0},function(){});
+                $('.ng-right-nav-panel #features').stop(true,true).animate({left:0},function(){});
             }
 
             scope.hideFeatures = function(){
                 scope.hideIteration = false
                 scope.features = [];
                 scope.resetFeature();
-                $('ng-right-nav-panel #features').stop(true,true).animate({left:400},function(){
+                $('.ng-right-nav-panel #features').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                             scope.hideFeature = true
                             scope.resetIteration();
@@ -147,13 +150,13 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.showTests = function(){
-                $('ng-right-nav-panel #testcases').stop(true,true).animate({left:0},function(){});
+                $('.ng-right-nav-panel #testcases').stop(true,true).animate({left:0},function(){});
             }
             
             scope.hideTests = function(){
                 scope.hideFeature = false
                 scope.resetCurrentRequester();
-                $('ng-right-nav-panel #testcases').stop(true,true).animate({left:400},function(){
+                $('.ng-right-nav-panel #testcases').stop(true,true).animate({left:400},function(){
                     scope.$apply(function(){
                             scope.hideTest = true
                             // scope.resetIteration();
@@ -164,15 +167,15 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.backToReleases = function(){
-                scope.hideTests()
-                scope.hideFeatures()
                 scope.resetRelease();
+                scope.hideFeatures();
                 scope.hideIterations()
             }
+
             scope.backToIterations = function(){
-                scope.hideTests()
-                scope.hideFeatures()
+                scope.resetIteration();
                 scope.getIterations(scope.release)
+                scope.hideFeatures();
             }
 
             scope.backToFeatures = function(){

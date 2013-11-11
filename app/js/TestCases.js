@@ -103,6 +103,22 @@ tcmModule.directive('ngTestcases', function(){
             }
           })
         }
+
+        $scope.cloneTcBulk = function(){
+
+            var contraryPanel = _.without($rootScope.draggedObjects,_.findWhere($rootScope.draggedObjects,{id:$scope.uuid}))
+          _.each($scope.testcases,function(tc){
+            if(tc.checked == true){
+              var newTc = new tcm_model.TestCasesCloneTC({tcId:tc.tcId});
+              newTc.featureId = $scope.requester.id;
+              newTc.$save(function(data){
+                $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+                $scope.updateTestCasesList(data)
+              })
+            }
+          })
+
+        }
 /* NEW TCs */
 
       $scope.createTC =  function(){

@@ -2,7 +2,7 @@
 	.sprint-container{
 		position: relative;
 		height: 100%;
-		overflow-x: hidden;
+		overflow: hidden;
 		overflow-y: auto;
 	}
 
@@ -24,22 +24,32 @@
 		height:100%;
 	}
 
-	#releases {
+.ng-right-nav-panel 	#releases {
+	height: auto;
 		left: 0px;
 	}
 
-	#iterations {
+.ng-right-nav-panel 	#iterations {
+	height: auto;
 		left: 400px;
 		top: 0px;
 	}
 
-	#features {
+.ng-right-nav-panel 	#features {
+	height: auto;
 		left: 400px;
 		top: 0px;
 	}
-	#testcases {
+
+.ng-right-nav-panel 	#testcases {
 		left: 400px;
 		top: 0px;
+		height: 100%;
+		padding-bottom: 93px;
+	}
+	.ng-right-nav-panel #testcases {
+		left: 400px;
+		top: 93px;
 	}
 
 	.nav.right-panel {
@@ -61,7 +71,7 @@
 	}
 </style>
 <div class="panel panel-default panel-tcm right-panel" >
-  <div class="panel-body panel-body-tcm">
+  <div class="panel-body panel-body-tcm" >
 		<ul class="nav nav-tabs right-panel">
 		  <li ng-click="$event.preventDefault(); loadSprint()" ng-class="sprintActiveClass"><a href="">Sprint</a></li>
 		  <li ng-click="$event.preventDefault(); loadSuites()" ng-class="suiteActiveClass"><a href="">Suites</a></li>
@@ -91,11 +101,7 @@
 	    		</div>
     		</div>
     		<div id="features">
-	    		<div id="feature" class="panel panel-default" ng-hide="feat.hide" ng-repeat="feat in features" ng-click="getTests(feat)" ng-class="(feature ==  feat)?'active':'';">
-	    			<div class="panel-body">
-	    				{{feat.featureName}}
-	    			</div>
-	    		</div>
+    			<ng-features requester="iteration" hidenotcurrent="true">
     		</div>
     		<div id="testcases">
 				<ng-testcases requester="currentRequester" btns="btnConfig"></ng-testcases>

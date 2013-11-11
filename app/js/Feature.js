@@ -8,7 +8,7 @@ tcmModule.directive('ngFeature', function(){
        //  },
        controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
-          $scope.droppable = true;
+          $scope.droppable = $scope.$parent.droppable || true;
             $scope.handleDrop = function(feature){
               $('.tcm-drag-helper').remove();
 

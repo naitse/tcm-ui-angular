@@ -90,13 +90,13 @@ tcmModule.directive('ngLeftNavPanel', function() {
 
             scope.showIterations = function(){
                 
-                $('ng-left-nav-panel #iterations').stop(true,true).animate({left:0}, duration, function(){});
+                $('.ng-left-nav-panel #iterations').stop(true,true).animate({left:0}, duration, function(){});
             }
             scope.hideIterations = function(){
                   scope.iterations = [];
                   scope.$parent.resetCurrentRequester();  
                   scope.loadSprint();
-                $('ng-left-nav-panel #iterations').stop(true,true).animate({left:400}, duration, function(){
+                $('.ng-left-nav-panel #iterations').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                       scope.hideIteration = true
                       scope.resetRelease();
@@ -106,14 +106,14 @@ tcmModule.directive('ngLeftNavPanel', function() {
             }
 
             scope.showFeatures = function(){
-                $('ng-left-nav-panel #features').stop(true,true).animate({left:0}, duration, function(){});
+                $('.ng-left-nav-panel #features').stop(true,true).animate({left:0}, duration, function(){});
             }
 
             scope.hideFeatures = function(){
                 scope.hideIteration = false
                 scope.features = [];
                 scope.resetFeature();
-                $('ng-left-nav-panel #features').stop(true,true).animate({left:400}, duration, function(){
+                $('.ng-left-nav-panel #features').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                             scope.hideFeature = true
                             scope.resetIteration();
