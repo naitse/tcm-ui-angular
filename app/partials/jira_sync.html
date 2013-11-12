@@ -54,6 +54,7 @@
                                 <div class="panel-heading" ng-click="incompletedCollapsed = !incompletedCollapsed">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion">
+                                            <span><input type="checkbox" ng-model="incompletedSelecteAll" ng-click="$event.stopPropagation();"></span>
                                             Incompleted Issues
                                         </a>
                                     </h4>
@@ -89,6 +90,7 @@
                                 <div class="panel-heading" ng-click="completedCollapsed = !completedCollapsed">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion">
+                                            <span><input type="checkbox" ng-model="completedSelecteAll" ng-click="$event.stopPropagation();"></span>
                                             Completed Issues
                                         </a>
                                     </h4>

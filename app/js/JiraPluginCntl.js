@@ -20,6 +20,21 @@ function JiraPluginCntl( $scope, $routeParams, $http, $location, tcm_model) {
         $scope.issues.contents.incompletedIssues.forEach(syncItem);
     }
 
+    $scope.$watch('completedSelecteAll', function(val){
+        if($scope.issues== null){return;}
+        $scope.issues.contents.completedIssues.forEach(function(element){
+            element.selected = val;
+        })
+    })
+
+    $scope.$watch('incompletedSelecteAll', function(val){
+
+        if($scope.issues== null){return;}
+        $scope.issues.contents.incompletedIssues.forEach(function(element){
+            element.selected = val;
+        })
+    })
+
     function syncItem(feature){
         if(feature.selected != null && feature.selected){
 
