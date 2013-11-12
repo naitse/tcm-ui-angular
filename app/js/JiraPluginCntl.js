@@ -3,22 +3,21 @@
 function JiraPluginCntl( $scope, $routeParams, $http, $location, tcm_model) {
 
     $scope.iterations = tcm_model.JiraIterations.get();
-    $scope.iteration = null;
+    $scope.selection = {
+        jiraIteration: null,
+        iteration: null
+    }
 
-    $scope.getIssues = function(value){
+    $scope.alerts = [
+
+    ];
+
+    $scope.$watch("selection.jiraIteration", function(value){
         if(value != null){
-            $scope.issues= tcm_model.JiraIssues.get({id: value});
+            $scope.issues = tcm_model.JiraIssues.get({id: value});
         }
 
-    };
-
-    $scope.releasesIterations = tcm_model.ReleasesIterations.query();
-
-    $scope.syncronize = function(){
-
-        $scope.issues.contents.completedIssues.forEach(syncItem);
-        $scope.issues.contents.incompletedIssues.forEach(syncItem);
-    }
+    });
 
     $scope.$watch('completedSelecteAll', function(val){
         if($scope.issues== null){return;}
@@ -35,26 +34,37 @@ function JiraPluginCntl( $scope, $routeParams, $http, $location, tcm_model) {
         })
     })
 
-    function syncItem(feature){
-        if(feature.selected != null && feature.selected){
+    $scope.syncronize = function(){
+        var issuesToSync = new Array();
 
-            $scope.releasesIterations.forEach(function(release){
+        $scope.getIssuesToSync($scope.issues.contents.completedIssues, issuesToSync)
+        $scope.getIssuesToSync($scope.issues.contents.incompletedIssues, issuesToSync)
 
-                release.iterations.forEach(function(iteration){
+        var newFeatureBulk = new tcm_model.FeaturesBulk({id: $scope.selection.iteration});
 
-                    if(iteration.selected != null && iteration.selected){
-                        var newFeature = new tcm_model.Features({iterationId: iteration.iterId});
-
-                        newFeature.key = feature.key
-                        newFeature.name = feature.summary
-                        newFeature.$save();
-                    }
-                })
-            });
-        }
-
-        //$location.path('/manager/' + $routeParams.projectId);
+        newFeatureBulk.issues = issuesToSync;
+        newFeatureBulk.$save(function(){
+            $scope.alerts.push({ type: 'success', msg: 'Well done! You successfully syncronized jira items.' });
+        });
 
     }
+
+    $scope.getIssuesToSync = function(issues, issuestoSync){
+        issues.forEach(function(feature){
+            if(feature.selected != null && feature.selected){
+                issuestoSync.push({
+                    key : feature.key,
+                    name : feature.summary
+                });
+            }
+        })
+    }
+
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
+
+    $scope.releasesIterations = tcm_model.ReleasesIterations.query();
+
 }
 JiraPluginCntl.$inject = [ '$scope', '$routeParams', '$http', '$location', 'tcm_model'];

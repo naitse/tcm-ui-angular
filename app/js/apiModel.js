@@ -32,6 +32,8 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                 }
         }),
 
+        FeaturesBulk: $resource(basePath + 'api/iterations/:id/features_bulk', {id: '@id'}),
+
         FeatureExecutedTC: $resource(basePath + 'api/getFeatureExecutedTestCases/:featureId', {featureId:'@featureId'},{
                 update: {
                     method: 'PUT'

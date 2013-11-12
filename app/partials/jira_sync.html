@@ -19,7 +19,14 @@
 }
 .modal-body {
     height: 100%;
-}    
+}
+
+.alert{
+    position: fixed;
+    z-index: 1000;
+    width: 400;
+    margin-left: 50;
+}
 </style>
 <div ng-controller="TopMenuCntl">
     <ng-include src="topmenu"></ng-include>
@@ -36,7 +43,7 @@
                     <div ng-show="(iterations.sprints == null)">
                         <img src="assets/images/loading1.gif" style="width: 400;">
                     </div>
-                    <a class="list-group-item" ng-class="iteration==sprint.id?'active':''" ng-repeat="sprint in iterations.sprints | filter:iterationFilter | orderBy:'-id'" ng-click="iteration=sprint.id; getIssues(sprint.id);">{{sprint.name}}</a>
+                    <a class="list-group-item" ng-class="selection.jiraIteration==sprint.id?'active':''" ng-repeat="sprint in iterations.sprints | filter:iterationFilter | orderBy:'-id'" ng-click="selection.jiraIteration=sprint.id">{{sprint.name}}</a>
                 </div>
             </div>
             <div class="col-md-8">
@@ -130,6 +137,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
+                    <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
                     <div style="width: 100%; padding-bottom: 12;">
                         <input style="width: 100%" type="input"  placeholder="Search TCM Iteration" ng-model="tcm_iterationFilter">
                     </div>
@@ -140,7 +148,7 @@
                                 <ul class="nav nav-list tree">
                                     <li ng-repeat="i in r.iterations | filter:tcm_iterationFilter">
 
-                                        <a class="list-group-item" ng-class="i.selected?'active':''" ng-click="i.selected=(i.selected==null)?true:!i.selected">{{i.iterationName}}</a>
+                                        <a class="list-group-item" ng-class="selection.iteration==i.iterId?'active':''" ng-click="selection.iteration=i.iterId">{{i.iterationName}}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -154,7 +162,4 @@
             </div>
         </div>
     </div>
-
-
-
 </div>
