@@ -40,8 +40,9 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 
 	$scope.resetCurrentRequester = function(){
 		$scope.currentRequester = {
-			id:'none',
-			type:''
+			id:'',
+			type:'',
+			object:{}
 		};
 	}
 

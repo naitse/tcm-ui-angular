@@ -111,3 +111,10 @@ input, textarea {
     margin-top: 2px;
 
 }
+
+.loading-small {
+    background: url('/assets/images/loading-small.gif');
+    height: 16px;
+    width: 16px;
+    background-size: 100%;
+}

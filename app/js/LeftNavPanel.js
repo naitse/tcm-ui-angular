@@ -124,11 +124,13 @@ tcmModule.directive('ngLeftNavPanel', function() {
             }
 
             scope.backToReleases = function(){
+                scope.resetCurrentRequester();
                 scope.resetRelease();
                 scope.hideFeatures();
                 scope.hideIterations()
             }
             scope.backToIterations = function(){
+                scope.resetCurrentRequester();
                 scope.resetIteration();
                 scope.getIterations(scope.release)
                 scope.hideFeatures();
@@ -141,6 +143,13 @@ tcmModule.directive('ngLeftNavPanel', function() {
             scope.setCurrentRequester = function(feature){
                 scope.$parent.currentRequester.id = feature.featureId
                 scope.$parent.currentRequester.type = "feature"
+                scope.$parent.currentRequester.object = feature
+            }
+
+            scope.resetCurrentRequester = function(){
+                scope.$parent.currentRequester.id = ''
+                scope.$parent.currentRequester.type = ""
+                scope.$parent.currentRequester = {}
             }
 
         }],

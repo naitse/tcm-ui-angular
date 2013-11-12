@@ -24,6 +24,11 @@
 		  </div>
 		</div>
 		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth" style="overflow: hidden;">
+			<div class="tcm-item">
+				<div class="item-key">{{currentRequester.object.jiraKey}}</div>
+				<div class="item-name">{{currentRequester.object.featureName}}</div>
+				<pre class="item-description">{{currentRequester.object.featureDescription}}</pre>
+			</div>
 <!-- TESTCASE -->
 			<ng-testcases requester="currentRequester" ></ng-testcases>
 <!-- TESTCASE -->

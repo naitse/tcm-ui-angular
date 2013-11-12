@@ -76,6 +76,7 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.cloneTc = function(tc){
             var contraryPanel = _.without($rootScope.draggedObjects,_.findWhere($rootScope.draggedObjects,{id:$scope.$parent.uuid}))
+            console.log($rootScope.draggedObjects, contraryPanel, $scope.$parent.uuid)
               var newTc = new tcm_model.TestCasesCloneTC({tcId:tc.tcId});
               newTc.featureId = $scope.$parent.requester.id;
               newTc.$save(function(data){

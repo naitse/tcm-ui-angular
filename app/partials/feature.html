@@ -2,6 +2,7 @@
   <div class="panel-heading panel-heading-tcm">
     {{feature.jiraKey}}
       <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div>
+      <div class="closed" ng-show="feature.loading != false"><div class="loading-small"></div></div>
     <div class="btn-group btn-group-xs pull-right">
         <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditFeature(feature, element);"></span></div>
       <div class="btn" ng-hide="feature.editMode"><span class="glyphicon glyphicon-pencil" ng-click="$event.stopPropagation(); editFeature(feature)"></span></div>
