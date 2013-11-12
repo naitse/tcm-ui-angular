@@ -32,15 +32,15 @@
                 <div class="row">
                     <div class="col-md-6">
                         <a class="thumbnail" data-toggle="modal" data-target="#modal-showMetric" >
-                            <highchart id="iterationsTrend" series="trendChart.series" title="trendChart.title" options="trendChart.options"></highchart>
-                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(trendChart)"></span>
+                            <highchart id="executed" series="executed.series" title="executed.title" options="executed.options"></highchart>
+                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(executed)"></span>
                         </a>
 
                     </div>
                     <div class="col-md-6" >
                         <a class="thumbnail" data-toggle="modal" data-target="#modal-showMetric" >
-                            <highchart id="carriedOver" series="carriedOver.series" title="carriedOver.title" options="carriedOver.options"></highchart>
-                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(carriedOver)"></span>
+                            <highchart id="daily" series="daily.series" title="daily.title" options="daily.options"></highchart>
+                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(daily)"></span>
                         </a>
                     </div>
                 </div>
