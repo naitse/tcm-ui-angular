@@ -25,7 +25,8 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.resetIteration = function(){
                 scope.iteration = {
-                    iterationName:''
+                    iterationName:'',
+                    IterId:''
                 }
             }
 
@@ -90,7 +91,9 @@ tcmModule.directive('ngRightNavPanel', function() {
                 iteration.callback = function(){
                     scope.showFeatures();
                 }
-                scope.iteration = iteration
+                var clone = angular.copy(iteration)
+                try{scope.$apply(scope.iteration.IterId = 'none')}catch(e){}
+                scope.iteration = clone
                _.each(scope.iterations, function(iter){
                     if(iter.IterId != iteration.IterId){
                         iter.hide = true;
@@ -132,14 +135,14 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.showFeatures = function(){
-                $('.ng-right-nav-panel #features').stop(true,true).animate({left:0},function(){});
+                $('.ng-right-nav-panel #features').css('height','100%').stop(true,true).animate({left:0},function(){});
             }
 
             scope.hideFeatures = function(){
                 scope.hideIteration = false
                 scope.features = [];
                 scope.resetFeature();
-                $('.ng-right-nav-panel #features').stop(true,true).animate({left:400}, duration, function(){
+                $('.ng-right-nav-panel #features').css('height','94px').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                             scope.hideFeature = true
                             scope.resetIteration();
@@ -157,12 +160,12 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.hideFeature = false
                 scope.resetCurrentRequester();
                 $('.ng-right-nav-panel #testcases').stop(true,true).animate({left:400},function(){
-                    scope.$apply(function(){
-                            scope.hideTest = true
-                            // scope.resetIteration();
-                            scope.back.last = scope.hideFeatures;
-                        }
-                    );
+                    // scope.$apply(function(){
+                    //         scope.hideTest = true
+                    //         // scope.resetIteration();
+                    //         scope.back.last = scope.hideFeatures;
+                    //     }
+                    // );
                 });
             }
 

@@ -22,6 +22,7 @@ tcmModule.directive('ngFeatures', function(){
 		}
 
           $scope.$watch("requester.IterId",function(value){
+          	console.log('changed', value)
           	$scope.clearFtrTests()
           		if(typeof value == 'undefined'){
           			return false;
