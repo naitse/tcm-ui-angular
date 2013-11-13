@@ -4,6 +4,7 @@
       <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div>
       <div class="closed" ng-show="feature.loading != false"><div class="loading-small"></div></div>
     <div class="btn-group btn-group-xs pull-right">
+        <div class="tcm-icon jira-status-icon" ng-show="feature.loading == false" title="{{feature.remote.status.name}}"><div class="tcm-icon no-opacity" style="background: url('{{feature.remote.status.iconUrl}}') 0px -1px;"></div></div>
         <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditFeature(feature, element);"></span></div>
       <div class="btn" ng-hide="feature.editMode"><span class="glyphicon glyphicon-pencil" ng-click="$event.stopPropagation(); editFeature(feature)"></span></div>
         <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveFeature(feature)"></span></div>

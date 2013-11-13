@@ -48,7 +48,9 @@ tcmModule.directive('ngFeatures', function(){
 					tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
 						feature.featureDescription = jira.fields.description;
 						feature.loading = false;
-						// console.log(feature, jira)
+						feature.remote = {}
+						feature.remote.status = jira.fields.status
+						console.log(feature, jira)
 					})
 					
 				})

@@ -118,3 +118,26 @@ input, textarea {
     width: 16px;
     background-size: 100%;
 }
+
+.tcm-icon {
+        height: 16px;
+    width: 16px;
+    background-size: 100%;
+    display: inline-block;
+    padding: 0px 0px;
+    margin-bottom: 0;
+    cursor: default;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    position: relative;
+    float: left;
+    margin-right: 7px;
+}
+.jira-status-icon {
+
+}
