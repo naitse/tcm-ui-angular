@@ -61,7 +61,7 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
         JiraIterations: $resource(basePath + 'api/projects/:id/jira/iterations', {id: $routeParams.projectId}),
         JiraIssues: $resource(basePath + 'api/projects/:projectId/jira/iteration/:id/issues', {projectId: $routeParams.projectId, id: '@id'}),
         JiraIssue: $resource(basePath + 'api/projects/:projectId/jira/issue/:key', {projectId: $routeParams.projectId, key: '@key'}),
-        JiraIssueTransition: $resource(basePath + '/api/projects/:projectId/jira/issue/:key/transitions/:transitionId', {projectId: $routeParams.projectId, key: '@key', transitionId:'@transitionId'}),
+        JiraIssueTransition: $resource(basePath + 'api/projects/:projectId/jira/issue/:key/transitions/:transitionId/', {projectId: $routeParams.projectId}),
         ReleasesIterations: $resource(basePath + 'api/projects/:id/releasesiterations', {id: $routeParams.projectId}),
         admin: {
 

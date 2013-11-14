@@ -70,6 +70,35 @@ tcmModule.directive('ngFeature', function(){
 
               }
 
+            ///////////////DD actions
+
+              $scope.setDdDefaults = function(){
+                $scope.dropDownClose = true;
+                $scope.hovered = false
+              }
+
+              $scope.setDdDefaults();
+
+              $scope.openDD = function(){
+                $scope.dropDownClose = false
+              }
+
+              $scope.tryCloseDD = function(){
+
+                if(!$scope.dropDownClose){
+                  setTimeout(function(){
+                    $scope.$apply(
+                      function(){
+                        if(!$(element).find('.dropdown-menu').hasClass('hovered')){
+                          $scope.setDdDefaults();
+                        }
+                      }
+                    )
+                  }, 300);
+                }
+
+              }
+
 
        }],
 

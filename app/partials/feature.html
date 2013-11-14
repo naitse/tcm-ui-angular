@@ -1,21 +1,22 @@
 <div class="panel panel-default feature" ng-class="(feature.current == true)?'active':''" id="{{feature.featureId}}" ng-click="selectFeature(feature)" tcm-droppable drop="true" tcmDrop="handleDrop(feature)">
   <div class="panel-heading panel-heading-tcm">
     {{feature.jiraKey}}
-      <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div>
+      <!-- <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div> -->
       <div class="closed" ng-show="feature.loading != false"><div class="loading-small"></div></div>
     <div class="btn-group btn-group-xs pull-right">
 
-       <!--  <div class="tcm-icon jira-status-icon" ng-show="feature.loading == false" title="{{feature.remote.status.name}}">
-          <div class="tcm-icon no-opacity" style="background: url('{{feature.remote.status.iconUrl}}') 0px -1px;"></div>
-        </div> -->
-      <div class="btn-group">
-        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-          <div class="tcm-icon no-opacity" style="background: url('{{feature.remote.fields.status.iconUrl}}') 0px -1px;"></div> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu pull-right" role="menu">
-          <li ng-repeat="transition in feature.remote.transitions">
-            <a>
-              <div class="tcm-icon no-opacity" style="background: url('{{transition.to.iconUrl}}') 0px -1px;">{{transition.name}}</div>
+
+
+
+
+
+      <div class="btn-group"  ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; ">
+        <div ng-click="$event.stopPropagation(); openDD();" class="btn btn-default btn-xs no-opacity feature-status-btn">
+            <div class="tcm-icon no-opacity" style="background: url('{{feature.remote.fields.status.iconUrl}}') 0px -1px;"></div>
+        </div>
+        <ul class="dropdown-menu pull-right" role="menu" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; dropDownClose = true;">
+          <li ng-click="$event.stopPropagation(); updateIssueState(feature, transition)" ng-repeat="transition in feature.remote.transitions">
+            <a><span class="tcm-icon no-opacity" style="background: url('{{transition.to.iconUrl}}') 0px -1px;" ></span>{{transition.name}}
             </a>
           </li>
         </ul>

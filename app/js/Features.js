@@ -22,7 +22,6 @@ tcmModule.directive('ngFeatures', function(){
 		}
 
           $scope.$watch("requester.IterId",function(value){
-          	console.log('changed', value)
           	$scope.clearFtrTests()
           		if(typeof value == 'undefined'){
           			return false;
@@ -49,7 +48,7 @@ tcmModule.directive('ngFeatures', function(){
 						feature.featureDescription = jira.fields.description;
 						feature.loading = false;
 						feature.remote = jira
-						console.log(feature, jira)
+						// console.log(feature, jira)
 					})
 					
 				})
@@ -94,6 +93,23 @@ tcmModule.directive('ngFeatures', function(){
 			})
 		}
 
+		$scope.updateIssueState = function(feature, transition){
+
+			console.log(transition.id)
+
+			feature.loading = true;
+
+			var tran = new tcm_model.JiraIssueTransition()
+
+			tran.$save({key: feature.jiraKey, transitionId: transition.id}, function(){
+					tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
+						feature.featureDescription = jira.fields.description;
+						feature.loading = false;
+						feature.remote = jira
+					})
+			})
+		}
+
 		///////////////////////////////
 
 		$rootScope.$on('tcStatusUpdated', function(event, message){
@@ -108,7 +124,6 @@ tcmModule.directive('ngFeatures', function(){
 			$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: message.featureId}));
 			//$scope.testcases = [];
 		});
-
 
 	
       }],

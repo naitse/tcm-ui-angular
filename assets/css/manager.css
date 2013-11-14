@@ -69,6 +69,11 @@
 	width: 100%;
 }
 
+.feature-status-btn {
+	background-color: transparent;
+border-color: transparent;
+}
+
 .feature:hover .panel-heading-tcm{
 	background-color: #DDD;
 }
