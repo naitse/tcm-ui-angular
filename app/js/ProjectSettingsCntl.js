@@ -54,10 +54,13 @@ function ProjectSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model
 
     $scope.addNewIteration = function(){
 
+        if($scope.newIteration == null){
+            return;
+        }
         var newIter = new tcm_model.Iterations({releaseId:$scope.selectedRelease.id});
 
         newIter.iterationName = $scope.newIteration;
-        console.log(newIter);
+
         newIter.$save(function(){
             $scope.newIteration = "";
             $scope.updateIterations($scope.selectedRelease.id, $scope.selectedRelease.name);
