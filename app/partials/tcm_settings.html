@@ -149,8 +149,8 @@
                                 </label>
                             </td>
                             <td style="width: 26;">
-                                <span class="glyphicon glyphicon-floppy-disk" ng-show="editMode" ng-click="up.$update()"></span>
-                                <span class="glyphicon glyphicon-ban-circle" ng-hide="editMode" ng-click="up.$delete()"></span>
+                                <span class="glyphicon glyphicon-floppy-disk" ng-show="editMode" ng-click="up.$update(); editMode = false"></span>
+                                <span class="glyphicon glyphicon-ban-circle" ng-hide="editMode" ng-click="up.$delete(loadUserPassports)"></span>
                             </td>
                         </tr>
 

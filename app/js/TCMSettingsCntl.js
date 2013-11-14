@@ -34,8 +34,12 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
     $scope.loadUserProjects = function(id){
 
         $scope.selectedUser.id = id;
-        $scope.usersPassports = tcm_model.admin.UsersPassports.query({userId: $scope.selectedUser.id});
+        $scope.loadUserPassports();
         $scope.refreshProjects();
+    }
+
+    $scope.loadUserPassports = function(){
+        $scope.usersPassports = tcm_model.admin.UsersPassports.query({userId: $scope.selectedUser.id});
     }
 
     $scope.refreshProjects = function(){
@@ -106,6 +110,20 @@ function TCMSettingsCntl( $scope, $routeParams, $http, $rootScope, tcm_model) {
             $scope.loadUsers(true);
         });
 
+    }
+
+    $scope.addPassportUser = function(){
+        console.log('addPassportUser', $scope.selectedUser.id   );
+        var passport = new tcm_model.admin.UsersPassports({userId: $scope.selectedUser.id});
+        passport.username = $scope.newPassportUserName;
+        passport.loginTypeId = $scope.newPassportLoginType;
+        passport.enabled = $scope.newPassportUserIsEnabled;
+        passport.$save(function(){
+            $scope.newPassportUserName = "";
+            $scope.newPassportLoginType = "";
+            $scope.newPassportUserIsEnabled = false;
+            $scope.loadUserPassports();
+        });
     }
 
     $scope.loadProjects();
