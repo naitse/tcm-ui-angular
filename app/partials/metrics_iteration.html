@@ -1,6 +1,47 @@
 <div ng-controller="TopMenuCntl">
     <ng-include src="topmenu"></ng-include>
 </div>
+<style>
+    .btn-pill {
+        cursor: default;
+        width: 160px;
+        position: relative;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        margin-left: 20px;
+        margin-right: auto;
+    }
+
+    .btn-pill div:hover {
+        text-decoration: none;
+        background-color: #f5f5f5;
+        cursor: pointer;
+    }
+    .btn-pill #left-btn #right-btn {
+        -webkit-border-radius: 15px 0px 0px 15px;
+        -moz-border-radius: 15px 0px 0px 15px;
+        border-radius: 15px 0px 0px 15px;
+        -webkit-border-radius: 0px 15px 15px 0px;
+        -moz-border-radius: 0px 15px 15px 0px;
+        border-radius: 0px 15px 15px 0px;
+        margin-left: -5px;
+    }
+    .btn-pill .active {
+        border: 1px solid #ddd !important;
+        box-shadow: #d2e9fa 0 0 50px inset !important;
+        -moz-box-shadow: #d2e9fa 0 0 50px inset !important;
+        -webkit-box-shadow: #d2e9fa 0 0 50px inset !important;
+    }
+    .btn-pill div {
+        display: inline-block;
+        padding: 5px 14px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+    }
+</style>
 <div style="margin-left: 20px;">
     <div class="container metrics-release">
         <div class="row" >
@@ -29,21 +70,23 @@
                 <img src="assets/images/Marketing-Performance-Metrics.jpg"/>
             </div>
             <div class="col-md-8" ng-show="selection.iteration!=null">
+
                 <div class="row">
                     <div class="col-md-6">
                         <a class="thumbnail" data-toggle="modal" data-target="#modal-showMetric" >
                             <highchart id="executed" series="executed.series" title="executed.title" options="executed.options"></highchart>
-                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(executed)"></span>
+                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(executed); selection.graph='executed'"></span>
                         </a>
 
                     </div>
                     <div class="col-md-6" >
                         <a class="thumbnail" data-toggle="modal" data-target="#modal-showMetric" >
                             <highchart id="daily" series="daily.series" title="daily.title" options="daily.options"></highchart>
-                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(daily)"></span>
+                            <span class="glyphicon glyphicon-new-window" ng-click="selectGraph(daily); selection.graph='daily'"></span>
                         </a>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -52,7 +95,15 @@
     <div class="modal-dialog">
         <div class="modal-content" style="width: 900;height: 600;">
             <div class="modal-body" style="overflow: visible">
-                <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
+                <!--<div class="row" ng-show="selection.graph=='executed'">
+                    <div class="btn-pill" style="visibility: visible; width: 310px;">
+                        <div id="left-btn" ng-init="selection.general=true" ng-class="(selection.general)?'active':''" ng-click="selection.general=true" >General</div>
+                        <div id="right-btn" ng-class="(!selection.general)?'active':''" ng-click="selection.general=false">By Item</div>
+                    </div>
+                </div-->
+                <div class="row">
+                    <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

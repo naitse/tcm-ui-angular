@@ -76,7 +76,7 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     method: 'PUT'
                 }
             }),
-            UsersPassports: $resource(basePath + 'api/admin/users/:userId/passport/:id', {userId: 'userId',  id:'@id'}, {
+            UsersPassports: $resource(basePath + 'api/admin/users/:userId/passport/:id', {userId:'@userId', id:'@id'}, {
                     update: {
                         method: 'PUT'
                     }
