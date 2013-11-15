@@ -7,6 +7,7 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.deleteText = "Sure?";
         $scope.draggable = $scope.tc.draggable;
+        var saveCallback = function(){};
 
         $scope.$watch('tc.checked', function(newValue, oldValue){
             if (newValue == oldValue) {
@@ -83,6 +84,34 @@ tcmModule.directive('ngTestcase', function(){
                 $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.$parent.requester.id});
                 $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: contraryPanel[0].id});
               })
+        }
+
+        $scope.updateTCStatusonDB = function(statusId, callback){
+          tcm_model.TestCasesUpdateStatus.update({tcId: $scope.tc.tcId, statusId: statusId, actualResult:$scope.tc.actualResult}, function(data){
+              callback(data);
+              saveCallback()
+          })
+        }
+
+        $scope.setActualResult = function(statusId, callback){
+          saveCallback = callback;
+          if($scope.tc.current != true){
+            $scope.selectTc($scope.tc)
+          }
+          $scope.tc.editARMode = true;
+        }
+
+        $scope.saveRun = function(){
+          $scope.updateTCStatusonDB($scope.tc.statusId,function(){
+            $scope.tc.editARMode = false;
+          })
+        }
+
+        $scope.undoRun = function(){
+          $scope.tc.statusName = $scope.tc.statusNameTemp;
+          $scope.tc.statusId = $scope.tc.statusIdTemp;
+          $scope.tc.editARMode = false;
+          saveCallback = function(){}
         }
 
         $scope.handleDragStart = function(){

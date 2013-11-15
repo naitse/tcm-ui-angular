@@ -25,7 +25,14 @@
 	background: transparent;
 }
 
-.testcase .name.editable {
+.testcase .priority {
+	width: 30px;
+	margin-left: 10px;
+	border: none;
+	background: transparent;
+}
+
+.testcase .name.editable, .testcase .priority.editable {
 	background: white;
 }
 

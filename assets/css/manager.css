@@ -35,6 +35,7 @@
 	width: 325px;
 	border-top: 1px solid #e7e7e7;
 	margin-left: 327px;
+	min-width: 830px;
 }
 
 
@@ -72,6 +73,7 @@
 .feature-status-btn {
 	background-color: transparent;
 border-color: transparent;
+cursor: pointer;
 }
 
 .feature:hover .panel-heading-tcm{

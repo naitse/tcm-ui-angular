@@ -63,6 +63,16 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
         JiraIssue: $resource(basePath + 'api/projects/:projectId/jira/issue/:key', {projectId: $routeParams.projectId, key: '@key'}),
         JiraIssueTransition: $resource(basePath + 'api/projects/:projectId/jira/issue/:key/transitions/:transitionId/', {projectId: $routeParams.projectId}),
         ReleasesIterations: $resource(basePath + 'api/projects/:id/releasesiterations', {id: $routeParams.projectId}),
+        Tags: $resource(basePath + 'api/projects/:id/tags/:tid', {id: $routeParams.projectId},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+        TagsTcs: $resource(basePath + 'api/projects/:id/tags/:tid/tcs/:tcId', {id: $routeParams.projectId},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
         admin: {
 
             Projects: $resource(basePath + 'api/admin/projects/:id', {id:'@id'}, {

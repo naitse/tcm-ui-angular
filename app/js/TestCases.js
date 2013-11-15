@@ -76,7 +76,7 @@ tcmModule.directive('ngTestcases', function(){
         }
 
         $scope.extendSingleTC = function(singletc) {
-          _.extend(singletc, {type:'test', editMode: false, tcTemp:{}, delete:false, current:false, dropDownClose:true, checked:false, draggable:true, dragSingle:false});
+          _.extend(singletc, {type:'test', editMode: false, editARMode:false, tcTemp:{}, delete:false, current:false, dropDownClose:true, checked:false, draggable:true, dragSingle:false});
         }
 
 

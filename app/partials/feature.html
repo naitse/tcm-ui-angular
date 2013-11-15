@@ -4,14 +4,8 @@
       <!-- <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div> -->
       <div class="closed" ng-show="feature.loading != false"><div class="loading-small"></div></div>
     <div class="btn-group btn-group-xs pull-right">
-
-
-
-
-
-
-      <div class="btn-group"  ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; ">
-        <div ng-click="$event.stopPropagation(); openDD();" class="btn btn-default btn-xs no-opacity feature-status-btn">
+      <div class="btn-group"  ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; cursor=pointer;">
+        <div ng-click="$event.stopPropagation(); openDD();" title="{{feature.remote.fields.status.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
             <div class="tcm-icon no-opacity" style="background: url('{{feature.remote.fields.status.iconUrl}}') 0px -1px;"></div>
         </div>
         <ul class="dropdown-menu pull-right" role="menu" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; dropDownClose = true;">
@@ -21,11 +15,6 @@
           </li>
         </ul>
       </div>
-
-
-
-
-
         <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditFeature(feature, element);"></span></div>
       <div class="btn" ng-hide="feature.editMode"><span class="glyphicon glyphicon-pencil" ng-click="$event.stopPropagation(); editFeature(feature)"></span></div>
         <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveFeature(feature)"></span></div>

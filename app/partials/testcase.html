@@ -1,7 +1,8 @@
 <div class="panel panel-default testcase  {{(checked == true)?'tcmselected':''}}" ng-class="(tc.current == true)?'active':''" ng-click="selectTc(tc)" tcm-draggable  tcmDragStart="handleDragStart(tc)" tcmDragRevert="handleDragRevert(tc)" >
 	<div class="panel-heading" >
 		<div class="draggable-handle"></div>
-		<input style="margin-left:-8px;" type="checkbox" ng-model="tc.checked" ng-click="$event.stopPropagation();"/>		
+		<input style="margin-left:-8px;" type="checkbox" ng-model="tc.checked" ng-click="$event.stopPropagation();"/>
+		<input class="priority" ng-class="tc.editMode==true?'editable':''" ng-model="tc.priority" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>		
 		<input class="name" ng-class="tc.editMode==true?'editable':''" ng-model="tc.name" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>
 		<div ng-hide="btns.hideStatus == true" class="btn-group btn-group-xs pull-right">
             <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditTC(tc, element);"></span></div>
@@ -20,10 +21,12 @@
 				<textarea class="panel-body textarea-tcm" ng-class="tc.editMode==true?'editable':''" ng-model="tc.description" ng-disabled="tc.editMode==false?true:''"></textarea>
 			</div>
 		</div>
-		<div ng-hide="isEmpty(tc.actualResult)" class="panel panel-default">
+		<div ng-hide="isEmpty(tc.actualResult) && tc.editARMode==false" class="panel panel-default">
 				<div class="panel-body">
 				<div class="actual-result-label field-label">Last Run Result</div>
-				<textarea class="panel-body textarea-tcm" ng-model="tc.actualResult" disabled></textarea>
+				<textarea class="panel-body textarea-tcm" ng-class="tc.editARMode==true?'editable':''" ng-model="tc.actualResult" ng-disabled="tc.editARMode==false?true:''"></textarea>
+				<div ng-hide="tc.editARMode==false" class="btn btn-default" ng-click="undoRun()">Discard Run</div>
+				<div ng-hide="tc.editARMode==false" class="btn btn-info" ng-click="saveRun()">Save Run</div>
 			</div>
 		</div>
 	</div>

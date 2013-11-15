@@ -15,6 +15,10 @@ tcmModule.directive('tcStatusDropdown', function(){
           $scope.hovered = false
         }
 
+        $scope.$parent.$watch('tc.statusId', function(newStatus){
+            $scope.setButtonColor(newStatus);
+        })
+
         $scope.setButtonColor = function(statusId){
           switch(statusId){
               case 0:
@@ -59,13 +63,38 @@ tcmModule.directive('tcStatusDropdown', function(){
         }
 
         $scope.updateTCstatus = function(statusId){
-          tcm_model.TestCasesUpdateStatus.update({tcId: $scope.test.tcId, statusId: statusId, actualResult:''}, function(data){
-            $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.test.featureId});
-            $scope.test.statusName = data.name;
-            $scope.setButtonColor(data.statusId);
-            $scope.setDefaults();
+
+
+          if(statusId == 2 || statusId == 3){
+            $scope.setButtonColor(statusId)
+             $scope.test.statusNameTemp = angular.copy($scope.test.statusName)
+             $scope.test.statusIdTemp = angular.copy($scope.test.statusId)
+            $scope.test.statusName = (statusId == 2)?'Blocked':'Failed';
+            $scope.test.statusId = statusId;
+            $scope.requestActualResult(statusId,function(){
+            })
+            return;
+          }
+
+          $scope.$parent.updateTCStatusonDB(statusId,function(data){
+              $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.test.featureId});
+              $scope.test.statusName = data.name;
+              $scope.setButtonColor(data.statusId);
+              $scope.setDefaults();
           })
+
+        }
+
+        $scope.requestActualResult = function(statusId){
+          $scope.$parent.setActualResult(statusId,function(){
+              $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.test.featureId});
+              $scope.test.statusName = data.name;
+              $scope.setButtonColor(data.statusId);
+              $scope.setDefaults();
+            });
         }  
+
+
 
        }],
 
