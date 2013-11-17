@@ -61,11 +61,17 @@ tcmModule.directive('ngTestcases', function(){
             $scope.resetNewTestcase();
             $scope.selectall = false
             $scope.showTCdelete = false
-            tcm_model.TestCases.query({featureId: $scope.requester.id},function(data){
-              $scope.testcases = data;
-              // $scope.testcases = $scope.$parent.testcases;
-              $scope.extendTcs();
-            })
+            if($scope.requester.type == 'tag'){
+              tcm_model.TagsTcs.query({tid: $scope.requester.id},function(data){
+                $scope.testcases = data;
+                $scope.extendTcs();
+              })
+            }else if($scope.requester.type == 'feature'){
+              tcm_model.TestCases.query({featureId: $scope.requester.id},function(data){
+                $scope.testcases = data;
+                $scope.extendTcs();
+              })
+            }
 
           }
 
@@ -155,6 +161,13 @@ tcmModule.directive('ngTestcases', function(){
    $scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: tc.tcId}));
    // $scope.updateParentTcArray();
     $rootScope.$emit('tcDeleted', {featureId: tc.featureId});
+    $scope.manageDragState();
+    $scope.verifyBulkDisplay();
+  };
+
+    $scope.tcUntagged = function(tc){
+   $scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: tc.tcId}));
+   // $scope.updateParentTcArray();
     $scope.manageDragState();
     $scope.verifyBulkDisplay();
   };
@@ -296,28 +309,34 @@ $scope.$on('tcSelected', function(event, message){
               if(typeof dragSingle == 'undefined'){
                   $scope.manageDropObjects($scope.requester.id, current, 'draggable');
               }else{
+                current.objects = [dragSingle];
                   $scope.manageDropObjects($scope.requester.id, current, 'dragSingle');
               }
             
             }
 
             $scope.manageDropObjects = function(featureId, current, key){
-
+              console.log(featureId)
+              if($scope.requester.type = 'tag'){
+                var tagTc = new tcm_model.TagsTcs({tid:featureId})
+                tagTc.tid = featureId;
+                tagTc.testArray = current.objects
+                tagTc.$save();
+                return;
+              }
               _.each(current.objects, function(object){
               // _.each($scope['testcases'], function(object){
-
-                if(object.type == 'test' && object[key]){
-
-                  var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
-                  newTc.featureId = featureId;
-                  newTc.$save(function(data){
-                    object.dragSingle = false;
-                    $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
-                    $rootScope.$broadcast('tcStatusUpdated', {featureId: featureId});
+                  if(object.type == 'test' && object[key]){
+                      var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
+                      newTc.featureId = featureId;
+                      newTc.$save(function(data){
+                        object.dragSingle = false;
+                        $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
+                        $rootScope.$broadcast('tcStatusUpdated', {featureId: featureId});
                   })
                 }
-
               })
+
             }
 
 

@@ -54,7 +54,8 @@ function JiraPluginCntl( $scope, $routeParams, $http, $location, tcm_model) {
             if(feature.selected != null && feature.selected){
                 issuestoSync.push({
                     key : feature.key,
-                    name : feature.summary
+                    name : feature.summary,
+                    type : 1
                 });
             }
         })

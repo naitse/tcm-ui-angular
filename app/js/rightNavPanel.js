@@ -11,6 +11,15 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.releases = [];
             scope.iterations = [];
             scope.features = [];
+            scope.tags = [];
+            scope.currentRequester = {
+                id:'',
+                type:''
+            }
+            scope.currentRequesterTags = {
+                id:'',
+                type:''
+            }
             scope.btnConfig = {hideBulk:true, hideStatus:true};
             releaseSelected = {};
 
@@ -59,6 +68,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.loadSprint = function(){
                 scope.sprintActiveClass = 'active'
                 scope.suiteActiveClass = ''
+                scope.tagActiveClass = ''
                 var releases = tcm_model.Releases.query();
                 scope.releases =  _.extend(releases, {hide:false})
 
@@ -67,7 +77,10 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.loadSuites = function(){
                 scope.sprintActiveClass = ''
                 scope.suiteActiveClass = 'active'
+                scope.tagActiveClass = ''
             }
+
+
 
 /////////////////////////
 
@@ -185,6 +198,25 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.hideTests()
                 scope.getFeatures(scope.iteration)
             }
+
+
+            //////////////////////////TAGS
+
+            scope.loadTags = function(){
+                scope.sprintActiveClass = ''
+                scope.suiteActiveClass = ''
+                scope.tagActiveClass = 'active'
+                tcm_model.Tags.query(function(res){
+                    scope.tags = res;
+                })
+            }
+
+            scope.loadTagTc = function(tag){
+                scope.currentRequesterTags.id = tag.id
+                scope.currentRequesterTags.type = 'tag'
+            }
+
+
 
         }],
         link: function(scope, elm, attr, ngModelCtrl) {

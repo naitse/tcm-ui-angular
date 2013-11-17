@@ -75,14 +75,13 @@
 		<ul class="nav nav-tabs right-panel">
 		  <li ng-click="$event.preventDefault(); loadSprint()" ng-class="sprintActiveClass"><a href="">Sprint</a></li>
 		  <li ng-click="$event.preventDefault(); loadSuites()" ng-class="suiteActiveClass"><a href="">Suites</a></li>
+		  <li ng-click="$event.preventDefault(); loadTags()" ng-class="tagActiveClass"><a href="">Tags</a></li>
 		</ul>
 		<div class="position-reference panel">
 	    	<div class="btn-group btn-group-sm pull-left">
 				<div ng-show="releases.length > 0" ng-click="backToReleases()"class="btn btn-default">&#47;</div>
 				<div ng-show="release.releaseName != ''" ng-click="backToIterations();"class="btn btn-default">Release {{release.releaseName}}</div>
 				<div ng-show="iteration.iterationName != '' " ng-click="backToFeatures(); "class="btn btn-default">{{iteration.iterationName}}</div>
-				<!-- <div ng-show="feature.featureName != '' " class="btn btn-default">{{feature.featureName}}</div> -->
-				<!-- <div ng-show="back.state == true" ng-click="back.last()"class="btn btn-default pull-right">Back</div> -->
 	    	</div>
 		</div>
     	<div class="sprint-container" ng-show="sprintActiveClass == 'active'">
@@ -105,5 +104,17 @@
     		</div>
     		<div id="testcases">
 				<ng-testcases requester="currentRequester" btns="btnConfig"></ng-testcases>
+    		</div>
+    	</div>
+    	<div class="tag-container" ng-show="tagActiveClass == 'active'">
+    		<div id="tags">
+    			<div ng-repeat="tag in tags" id="tag" class="panel panel-default" ng-click="loadTagTc(tag)">
+	    			<div class="panel-body">
+	    				{{tag.name}}
+	    			</div>
+    			</div>
+    		</div>
+    		<div id="tagstestcases">
+				<ng-testcases requester="currentRequesterTags" btns=""></ng-testcases>
     		</div>
     	</div>

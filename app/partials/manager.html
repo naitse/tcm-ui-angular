@@ -25,9 +25,24 @@
 		</div>
 		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth" style="overflow: hidden;">
 			<div class="tcm-item">
-				<div class="item-key">{{currentRequester.object.jiraKey}}</div>
-				<div class="item-name">{{currentRequester.object.featureName}}</div>
-				<pre class="item-description">{{currentRequester.object.featureDescription}}</pre>
+				<div class="item-header">
+					<div class="item-key"><a href="{{currentRequester.object.remote.self}}">{{currentRequester.object.jiraKey}}</a></div>
+					<div class="item-name">{{currentRequester.object.featureName}}</div>
+					<div class="label label-info pull-right">Comments: {{currentRequester.object.remote.fields.comment.total}}</div>
+				</div>
+				<div class="cont">
+					<pre class="item-description">{{currentRequester.object.featureDescription}}</pre>
+					<div class="jira-comments-container">
+						<div class="comments">
+							<div ng-repeat="comment in currentRequester.object.remote.fields.comment.comments" class="item-comment">
+								<div class="comment-author-avatar" style="background: url('{{comment.author.avatarUrls.48x48}}') 0px -1px;"></div> 
+								<div class="comment-author-name">{{comment.author.displayName}}</div>
+								<div class="comment-created">{{comment.created}}</div>
+								<pre>{{comment.body}}</pre>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 <!-- TESTCASE -->
 			<ng-testcases requester="currentRequester" ></ng-testcases>

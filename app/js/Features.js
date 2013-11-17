@@ -44,12 +44,18 @@ tcmModule.directive('ngFeatures', function(){
 			tcm_model.Features.query({iterationId:$scope.requester.IterId}, function(data){
 				$scope.features = data;
 				_.each($scope.features,function(feature){
-					tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
-						feature.featureDescription = jira.fields.description;
+					if(feature.type == 1){
+						tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
+							feature.featureDescription = jira.fields.description;
+							feature.loading = false;
+							feature.remote = jira
+							//  _.each(feature.remote.fields.comment.comments,function(comment){
+							// 	comment.body = $scope.parseCommentBody(comment.body);
+							// })
+						})
+					}else{
 						feature.loading = false;
-						feature.remote = jira
-						// console.log(feature, jira)
-					})
+					}
 					
 				})
 				$scope.extendFeatures();
@@ -95,8 +101,6 @@ tcmModule.directive('ngFeatures', function(){
 
 		$scope.updateIssueState = function(feature, transition){
 
-			console.log(transition.id)
-
 			feature.loading = true;
 
 			var tran = new tcm_model.JiraIssueTransition()
@@ -126,6 +130,20 @@ tcmModule.directive('ngFeatures', function(){
 		});
 
 	
+		$scope.parseCommentBody= function(comment){
+			var comment = comment.split('{code}')
+			var parsed = comment[0];
+			_.each(comment, function(section, index){
+				if(isOdd(index)){
+					parsed += '<div class="code-line">' + section + '</div>'
+				}
+			})
+			console.log(parsed += _.last(comment));
+			return parsed += _.last(comment)
+
+		}
+		function isOdd(num) { return num % 2;}
+
       }],
 
        link: function (scope, element, attrs) {

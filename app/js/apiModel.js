@@ -68,7 +68,7 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     method: 'PUT'
                 }
         }),
-        TagsTcs: $resource(basePath + 'api/projects/:id/tags/:tid/tcs/:tcId', {id: $routeParams.projectId},{
+        TagsTcs: $resource(basePath + 'api/projects/:id/tags/:tid/tcs/:tcId', {id: $routeParams.projectId, tid:'@tid',tcId:'@tcId'},{
                 update: {
                     method: 'PUT'
                 }
