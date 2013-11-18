@@ -4,12 +4,6 @@
 </div>
 <div class="manager">
 
-<!-- separate into directive -->
-
-
-
-<!-- separate into directive -->
-
 	<div class="panels">
 		<div class="panel panel-default panel-tcm left-panel" style=" overflow: hidden; ">
 		  <div class="panel-body panel-body-tcm">
@@ -50,4 +44,5 @@
 		</div>
 			<ng-right-nav-panel class="ng-right-nav-panel" ng-show="showRight == true"/>
 	</div>
+	<div class="panel-expander" ng-click="togglePanel()" style="right:{{panelExpanderRight}}"><span class="glyphicon glyphicon-chevron-{{toggleIcon}}"></span><span class="glyphicon glyphicon-chevron-{{toggleIcon}}"></span><span class="glyphicon glyphicon-chevron-{{toggleIcon}}"></span></div>
 </div>

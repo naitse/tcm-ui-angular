@@ -316,8 +316,7 @@ $scope.$on('tcSelected', function(event, message){
             }
 
             $scope.manageDropObjects = function(featureId, current, key){
-              console.log(featureId)
-              if($scope.requester.type = 'tag'){
+              if($scope.requester.type == 'tag'){
                 var tagTc = new tcm_model.TagsTcs({tid:featureId})
                 tagTc.tid = featureId;
                 tagTc.testArray = current.objects
@@ -325,7 +324,6 @@ $scope.$on('tcSelected', function(event, message){
                 return;
               }
               _.each(current.objects, function(object){
-              // _.each($scope['testcases'], function(object){
                   if(object.type == 'test' && object[key]){
                       var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
                       newTc.featureId = featureId;

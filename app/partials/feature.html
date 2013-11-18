@@ -4,7 +4,7 @@
       <!-- <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div> -->
       <div class="closed" ng-show="feature.loading != false"><div class="loading-small"></div></div>
     <div class="btn-group btn-group-xs pull-right">
-      <div class="btn-group"  ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; cursor=pointer;">
+      <div class="btn-group"  ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; cursor=pointer;" ng-show="feature.featureType == 1">
         <div ng-click="$event.stopPropagation(); openDD();" title="{{feature.remote.fields.status.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
             <div class="tcm-icon no-opacity" style="background: url('{{feature.remote.fields.status.iconUrl}}') 0px -1px;"></div>
         </div>
@@ -15,10 +15,18 @@
           </li>
         </ul>
       </div>
-        <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditFeature(feature, element);"></span></div>
-      <div class="btn" ng-hide="feature.editMode"><span class="glyphicon glyphicon-pencil" ng-click="$event.stopPropagation(); editFeature(feature)"></span></div>
-        <div class="btn no-opacity" ng-show="feature.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveFeature(feature)"></span></div>
-      <div class="btn" ng-hide="feature.delete"><span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); feature.delete = true"></span></div>
+          <div class="btn no-opacity" ng-show="feature.editMode">
+            <span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditFeature(feature, element);"></span>
+          </div>
+          <div class="btn" ng-hide="feature.editMode == true || feature.featureType != 2" >
+            <span class="glyphicon glyphicon-pencil" ng-click="$event.stopPropagation(); editFeature(feature)"></span>
+          </div>
+          <div class="btn no-opacity" ng-show="feature.editMode">
+            <span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveFeature(feature)"></span>
+          </div>
+          <div class="btn" ng-hide="feature.delete">
+           <span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); feature.delete = true"></span>
+          </div>
       <div class="btn btn-danger btn-delete" ng-show="feature.delete" ng-click="deleteFeature(feature)" ng-mouseleave="$event.stopPropagation(); feature.delete = false">{{placeholders.feature.delete}}</div>
     </div>
   </div>

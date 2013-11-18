@@ -44,7 +44,7 @@ tcmModule.directive('ngFeatures', function(){
 			tcm_model.Features.query({iterationId:$scope.requester.IterId}, function(data){
 				$scope.features = data;
 				_.each($scope.features,function(feature){
-					if(feature.type == 1){
+					if(feature.featureType == 1){
 						tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
 							feature.featureDescription = jira.fields.description;
 							feature.loading = false;
