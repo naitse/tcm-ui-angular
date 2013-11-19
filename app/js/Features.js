@@ -41,7 +41,11 @@ tcmModule.directive('ngFeatures', function(){
           })
 
        	$scope.getFeatures = function(){
-       					$scope.statuses = [];
+			$scope.statuses = [];
+				              	$scope.statusFilter = {
+	              		name:'All',
+	              		iconUrl:'/assets/images/all_icon.gif'
+              		};	
 			tcm_model.Features.query({iterationId:$scope.requester.IterId}, function(data){
 				$scope.features = data;
 				_.each($scope.features,function(feature){
