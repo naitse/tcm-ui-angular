@@ -41,6 +41,7 @@ tcmModule.directive('ngFeatures', function(){
           })
 
        	$scope.getFeatures = function(){
+       					$scope.statuses = [];
 			tcm_model.Features.query({iterationId:$scope.requester.IterId}, function(data){
 				$scope.features = data;
 				_.each($scope.features,function(feature){
@@ -49,9 +50,9 @@ tcmModule.directive('ngFeatures', function(){
 							feature.featureDescription = jira.fields.description;
 							feature.loading = false;
 							feature.remote = jira
-							//  _.each(feature.remote.fields.comment.comments,function(comment){
-							// 	comment.body = $scope.parseCommentBody(comment.body);
-							// })
+							if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
+								$scope.statuses.push(jira.fields.status)
+							}
 						})
 					}else{
 						feature.loading = false;
@@ -109,7 +110,9 @@ tcmModule.directive('ngFeatures', function(){
 					tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
 						feature.featureDescription = jira.fields.description;
 						feature.loading = false;
-						feature.remote = jira
+						feature.remote = jira;
+						$scope.refreshStatuses();
+						$scope.filterFeatures();
 					})
 			})
 		}
@@ -143,6 +146,86 @@ tcmModule.directive('ngFeatures', function(){
 
 		}
 		function isOdd(num) { return num % 2;}
+
+
+            ///////////////DD actions
+          	$scope.statusFilter = {
+              		name:'All',
+              		iconUrl:'/assets/images/all_icon.gif'
+          	};
+
+            $scope.filterByStatus=function(status){
+            	$scope.statusDDClosed = true;
+            	$scope.statusFilter = status
+            	if(status == 'all'){
+	              	$scope.statusFilter = {
+	              		name:'All',
+	              		iconUrl:'/assets/images/all_icon.gif'
+              		};
+            	}
+
+            	$scope.filterFeatures();
+            }
+
+
+            $scope.filterFeatures = function(){
+            	_.each($scope.features,function(feature){
+            		if(feature.remote.fields.status.id != $scope.statusFilter.id && $scope.statusFilter.name != 'All'){
+            			feature.hide = true;
+            		}else{
+            			feature.hide = false;
+            		}
+            	})
+
+            	if(typeof _.findWhere($scope.features, {hide:false}) == 'undefined'){
+	              	$scope.statusFilter = {
+	              		name:'All',
+	              		iconUrl:'/assets/images/all_icon.gif'
+              		};
+            		$scope.filterFeatures();
+            	}
+
+            }
+
+
+            $scope.refreshStatuses = function(){
+            	$scope.statuses = [];
+            	_.each($scope.features,function(feature){
+					if(typeof _.findWhere($scope.statuses, {name:feature.remote.fields.status.name}) == 'undefined'){
+						$scope.statuses.push(feature.remote.fields.status)
+					}
+            	})
+
+            }
+
+        		$scope.statuses = [];
+              $scope.setDdDefaults = function(){
+				$scope.statusDDClosed = true
+                $scope.hovered = false
+              }
+
+              $scope.setDdDefaults();
+
+              $scope.openDD = function(){
+                $scope.statusDDClosed = false
+              }
+
+              $scope.tryCloseDD = function(){
+
+                if(!$scope.statusDDClosed){
+                  setTimeout(function(){
+                    $scope.$apply(
+                      function(){
+                        if(!$(element).find('.dropdown-menu').hasClass('hovered')){
+                          $scope.setDdDefaults();
+                        }
+                      }
+                    )
+                  }, 300);
+                }
+
+              }
+
 
       }],
 

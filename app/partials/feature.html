@@ -1,6 +1,6 @@
 <div class="panel panel-default feature" ng-class="(feature.current == true)?'active':''" id="{{feature.featureId}}" ng-click="selectFeature(feature)" tcm-droppable drop="true" tcmDrop="handleDrop(feature)">
   <div class="panel-heading panel-heading-tcm">
-    {{feature.jiraKey}}
+    <a href="https://www.mulesoft.org/jira/browse/{{feature.jiraKey}}" target="_blank">{{feature.jiraKey}}</a>
       <!-- <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div> -->
       <div class="closed" ng-show="feature.loading != false"><div class="loading-small"></div></div>
     <div class="btn-group btn-group-xs pull-right">

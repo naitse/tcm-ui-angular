@@ -67,7 +67,7 @@ tcmModule.directive('ngTestcase', function(){
         }
 
         $scope.deleteTC = function(){
-          if($scope.$parent.requester.type="tag"){
+          if($scope.$parent.requester.type=="tag"){
             var toDel =  new tcm_model.TagsTcs({tid:$scope.$parent.requester.id, tcId:$scope.tc.tcId});
             toDel.$delete(function(){
               $scope.tcUntagged($scope.tc);

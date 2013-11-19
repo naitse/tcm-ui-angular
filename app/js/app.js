@@ -280,7 +280,48 @@ tcmModule.directive('tcmDroppable', function() {
         }
     }
 });
-
+tcmModule.directive('trelloDroppable', function() {
+    return{
+    transclude:false,
+    link: function(scope, element, attrs) {
+            makeDroppable()
+            function makeDroppable() {
+                    $(element).droppable({
+                        drop: function(evt, ui){
+                            $(this).removeClass('draggable-over')
+                            $(this).addClass('draggable-dropped')
+                            // $(this).animate({
+                            //     boxShadow: '0px 0px 11px -2px green'
+                            // })
+                            var that = this;
+                            scope.$apply(function(scope, attrs){
+                                var ble = setTimeout(function(){$(that).removeClass('draggable-dropped')},500)
+                                if ('undefined' !== typeof element.context.attributes.tcmDrop) {
+                                  scope.$eval(element.context.attributes.tcmDrop.nodeValue);
+                                }
+                            });
+                        },
+                        over: function(evt, ui){
+                            $(this).addClass('draggable-over')
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDragStart) {
+                                  scope.$eval(element.context.attributes.tcmDropOver.nodeValue);
+                                }
+                            });
+                        },
+                        out: function(evt, ui){
+                            $(this).removeClass('draggable-over')
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmDragStop) {
+                                  scope.$eval(element.context.attributes.tcmDropOut.nodeValue);
+                                }
+                            });
+                        }
+                    })
+            };
+        }
+    }
+});
 /*
 To autoresize textareas
 */

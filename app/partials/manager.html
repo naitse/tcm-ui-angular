@@ -7,11 +7,6 @@
 	<div class="panels">
 		<div class="panel panel-default panel-tcm left-panel" style=" overflow: hidden; ">
 		  <div class="panel-body panel-body-tcm">
-<!-- 		    <div class="well action-bar">
-		    	<div class="btn-group btn-group-xs pull-right">
-		    		<div class="btn" ng-show="iteration.IterId != null"><span class="glyphicon glyphicon-plus-sign"></span></div>
-		    	</div>
-		    </div> -->
 
 			<ng-left-nav-panel class="ng-left-nav-panel"/>
 
@@ -20,11 +15,11 @@
 		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth" style="overflow: hidden;">
 			<div class="tcm-item">
 				<div class="item-header">
-					<div class="item-key"><a href="{{currentRequester.object.remote.self}}">{{currentRequester.object.jiraKey}}</a></div>
+					<div class="item-key"><a href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a></div>
 					<div class="item-name">{{currentRequester.object.featureName}}</div>
-					<div class="label label-info pull-right">Comments: {{currentRequester.object.remote.fields.comment.total}}</div>
+					<!-- <div class="label label-info pull-right">Comments: {{currentRequester.object.remote.fields.comment.total}}</div> -->
 				</div>
-				<div class="cont">
+<!-- 				<div class="cont">
 					<pre class="item-description">{{currentRequester.object.featureDescription}}</pre>
 					<div class="jira-comments-container">
 						<div class="comments">
@@ -36,10 +31,10 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 <!-- TESTCASE -->
-			<ng-testcases requester="currentRequester" ></ng-testcases>
+			<ng-testcases class="tc-container" requester="currentRequester" trello="true"></ng-testcases>
 <!-- TESTCASE -->
 		</div>
 			<ng-right-nav-panel class="ng-right-nav-panel" ng-show="showRight == true"/>

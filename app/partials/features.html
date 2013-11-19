@@ -1,1 +1,22 @@
+<div class="well action-bar">
+	<div class="btn-group btn-group-xs pull-right">
+		<div class="btn"><span class="glyphicon glyphicon-plus-sign"></span></div>
+      <div class="btn-group"  ng-class="(statusDDClosed == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; top:0px;cursor=pointer;">
+        <div ng-click="$event.stopPropagation(); openDD();" title="{{statusFilter.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
+            <div class="tcm-icon no-opacity" style="background: url('{{statusFilter.iconUrl}}') 0px -1px;"></div>
+        </div>
+        <ul class="dropdown-menu pull-right" role="menu" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; statusDDClosed = true;">
+    		<li ng-click="$event.stopPropagation(); filterByStatus('all')">
+            	<a><span class="tcm-icon no-opacity" style="background: url('{{status.iconUrl}}') 0px -1px;" ></span>All
+            </a>
+            <div class="divider"></div>
+          </li>
+          <li ng-click="$event.stopPropagation(); filterByStatus(status)" ng-repeat="status in statuses">
+            <a><span class="tcm-icon no-opacity" style="background: url('{{status.iconUrl}}') 0px -1px;" ></span>{{status.name}}
+            </a>
+          </li>
+        </ul>
+      </div>
+	</div>
+</div>
 <ng-feature ng-repeat="feature in features" ng-hide="feature.hide"></ng-feature>

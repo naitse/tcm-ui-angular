@@ -79,3 +79,10 @@
 .testcase .panel-body .panel-body {
 	position: relative;
 }
+
+.trello-panel {
+	width: 33%;
+	display: inline-block;
+	float:left;
+	height: 100%;
+}
