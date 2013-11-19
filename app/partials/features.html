@@ -1,3 +1,11 @@
+<style>
+	.features-container{
+		overflow: hidden;
+		overflow-y: auto;
+		height: 100%;
+padding-bottom: 61px;
+	}
+</style>
 <div class="well action-bar">
 	<div class="btn-group btn-group-xs pull-right">
 		<div class="btn"><span class="glyphicon glyphicon-plus-sign"></span></div>
@@ -19,4 +27,6 @@
       </div>
 	</div>
 </div>
-<ng-feature ng-repeat="feature in features" ng-hide="feature.hide"></ng-feature>
+<div class="features-container">
+	<ng-feature ng-repeat="feature in features" ng-hide="feature.hide"></ng-feature>
+</div>
