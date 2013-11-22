@@ -53,9 +53,9 @@
 	}
 	.ng-right-nav-panel 	#tagstestcases {
 		left: 400px;
-		top: 93px;
+		top: 50px;
 		height: 100%;
-		padding-bottom: 93px;
+		padding-bottom: 50px;
 	}
 	.nav.right-panel {
 		position: fixed;
@@ -89,7 +89,7 @@
 				<div ng-show="iteration.iterationName != '' " ng-click="backToFeatures(); "class="btn btn-default">{{iteration.iterationName}}</div>
 	    	</div>
 	    	<div ng-show="tagActiveClass == 'active'" class="btn-group btn-group-sm pull-left">
-				<div ng-show="tags.length > 0" ng-click="backToTags()"class="btn btn-default">&#47;</div>
+				<div ng-show="tags.length > 0 && hideTags == true" ng-click="backToTags()"class="btn btn-default">Back</div>
 <!-- 				<div ng-show="release.releaseName != ''" ng-click="backToIterations();"class="btn btn-default">Release {{release.releaseName}}</div>
 				<div ng-show="iteration.iterationName != '' " ng-click="backToFeatures(); "class="btn btn-default">{{iteration.iterationName}}</div> -->
 	    	</div>
@@ -110,7 +110,7 @@
 	    		</div>
     		</div>
     		<div id="features">
-    			<ng-features requester="iteration" hidenotcurrent="true">
+    			<ng-features requester="iteration" btns="featBtnConfig" hidenotcurrent="true">
     		</div>
     		<div id="testcases">
 				<ng-testcases requester="currentRequester" btns="btnConfig"></ng-testcases>

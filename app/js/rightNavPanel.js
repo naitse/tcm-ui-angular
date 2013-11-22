@@ -12,6 +12,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.iterations = [];
             scope.features = [];
             scope.tags = [];
+            scope.featBtnConfig = {hideBar:true, hideFeatureActions:true}
             scope.currentRequester = {
                 id:'',
                 type:''
@@ -229,7 +230,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.showTags = function(){
-                scope.hideTagTags = false
+                scope.hideTags = false
                 scope.hideTagTests();
                 $('.ng-right-nav-panel #tags').stop(true,true).animate({left:0},function(){});
             }
@@ -243,6 +244,7 @@ tcmModule.directive('ngRightNavPanel', function() {
 
 
             scope.showTagTests = function(){
+                scope.hideTags = true
                 $('.ng-right-nav-panel #tagstestcases').stop(true,true).animate({left:0},function(){});
             }
             

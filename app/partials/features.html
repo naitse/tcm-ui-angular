@@ -6,7 +6,7 @@
 padding-bottom: 61px;
 	}
 </style>
-<div class="well action-bar">
+<div ng-hide="btns.hideBar == true" class="well action-bar">
 	<div class="btn-group btn-group-xs pull-right">
 		<div class="btn"><span class="glyphicon glyphicon-plus-sign"></span></div>
       <div class="btn-group"  ng-class="(statusDDClosed == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; top:0px;cursor=pointer;">

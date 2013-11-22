@@ -6,6 +6,8 @@ tcmModule.directive('ngFeatures', function(){
       templateUrl: 'app/partials/features.html',
        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
+       	$scope.btnConfig = (typeof $scope.btns == 'undefined')?{}:$scope.btns;
+
        	$scope.features = [];
 		$scope.featureSelected = false;
 
@@ -48,21 +50,23 @@ tcmModule.directive('ngFeatures', function(){
               		};	
 			tcm_model.Features.query({iterationId:$scope.requester.IterId}, function(data){
 				$scope.features = data;
-				_.each($scope.features,function(feature){
-					if(feature.featureType == 1){
-						tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
-							feature.featureDescription = jira.fields.description;
-							feature.loading = false;
-							feature.remote = jira
-							if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
-								$scope.statuses.push(jira.fields.status)
-							}
-						})
-					}else{
-						feature.loading = false;
-					}
-					
-				})
+				console.log($scope.btnConfig)
+				if($scope.btnConfig.hideFeatureActions != true){
+					_.each($scope.features,function(feature){
+						if(feature.featureType == 1){
+							feature.loading = true;
+							tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
+								feature.featureDescription = jira.fields.description;
+								feature.loading = false;
+								feature.remote = jira
+								if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
+									$scope.statuses.push(jira.fields.status)
+								}
+							})
+						}
+						
+					})
+				}
 				$scope.extendFeatures();
 				if(typeof $scope.requester.callback != 'undefined'){
 					$scope.requester.callback();
@@ -72,7 +76,7 @@ tcmModule.directive('ngFeatures', function(){
 
 		$scope.extendFeatures = function(){
 			_.each($scope.features, function(obj){
-				_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false, hide:false});
+				_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false, hide:false,loading:false});
 			});
 		}
 
@@ -111,6 +115,7 @@ tcmModule.directive('ngFeatures', function(){
 			var tran = new tcm_model.JiraIssueTransition()
 
 			tran.$save({key: feature.jiraKey, transitionId: transition.id}, function(){
+				feature.loading = true;
 					tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
 						feature.featureDescription = jira.fields.description;
 						feature.loading = false;

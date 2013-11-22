@@ -3,7 +3,7 @@
     <a href="https://www.mulesoft.org/jira/browse/{{feature.jiraKey}}" target="_blank">{{feature.jiraKey}}</a>
       <!-- <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div> -->
       <div class="closed" ng-show="feature.loading != false"><div class="loading-small"></div></div>
-    <div class="btn-group btn-group-xs pull-right">
+    <div ng-hide="btns.hideFeatureActions == true" class="btn-group btn-group-xs pull-right">
       <div class="btn-group"  ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; cursor=pointer;" ng-show="feature.featureType == 1">
         <div ng-click="$event.stopPropagation(); openDD();" title="{{feature.remote.fields.status.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
             <div class="tcm-icon no-opacity" style="background: url('{{feature.remote.fields.status.iconUrl}}') 0px -1px;"></div>
