@@ -185,6 +185,7 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.backToReleases = function(){
                 scope.resetRelease();
+                scope.hideTests();
                 scope.hideFeatures();
                 scope.hideIterations()
             }
@@ -192,6 +193,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.backToIterations = function(){
                 scope.resetIteration();
                 scope.getIterations(scope.release)
+                scope.hideTests();
                 scope.hideFeatures();
             }
 

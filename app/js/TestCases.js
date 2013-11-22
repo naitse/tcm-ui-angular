@@ -147,6 +147,12 @@ tcmModule.directive('ngTestcases', function(){
 
       }
 
+      $scope.cancelNewTC = function(){
+
+        $scope.resetNewTestcase()
+
+      }
+
 /*******************************************************/
 
   $rootScope.$on('featureCurrentTCadded', function(event, message){

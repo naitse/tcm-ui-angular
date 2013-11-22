@@ -16,6 +16,18 @@ tcmModule.directive('ngFeatures', function(){
 			$scope.featureSelected = false;
 		}
 
+        $scope.resetNewFeature = function(){
+          $scope.newFeature = {
+            create:false,
+            name:'',
+            key:'',
+            description:'',
+            type:2,
+            iterationId: $scope.requester.IterId
+          }
+        }
+		
+		$scope.resetNewFeature();
 
    		$scope.placeholders = {
 			feature : {
@@ -40,6 +52,7 @@ tcmModule.directive('ngFeatures', function(){
               	$scope.clearFtrTests()
                   $scope.$parent.hideButtons = true
               }
+              $scope.resetNewFeature();
           })
 
        	$scope.getFeatures = function(){
@@ -50,7 +63,6 @@ tcmModule.directive('ngFeatures', function(){
               		};	
 			tcm_model.Features.query({iterationId:$scope.requester.IterId}, function(data){
 				$scope.features = data;
-				console.log($scope.btnConfig)
 				if($scope.btnConfig.hideFeatureActions != true){
 					_.each($scope.features,function(feature){
 						if(feature.featureType == 1){
@@ -156,6 +168,33 @@ tcmModule.directive('ngFeatures', function(){
 		}
 		function isOdd(num) { return num % 2;}
 
+
+/* NEW TCs */
+
+      $scope.createFeature =  function(){
+        if($scope.newFeature.create == true){
+          return false;
+        }
+        $scope.newFeature.create = true;
+      }
+
+      $scope.saveNewFeature = function(){
+
+        var temp = new tcm_model.Features($scope.newFeature)
+
+        temp.$save(function(data){
+          $scope.features.push(data)
+          // $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+          $scope.resetNewFeature();
+        })
+
+      }
+
+      $scope.cancelNewFeature = function(){
+
+        $scope.resetNewFeature()
+
+      }
 
             ///////////////DD actions
           	$scope.statusFilter = {

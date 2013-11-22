@@ -85,10 +85,20 @@ cursor: pointer;
 	margin-right: 5px;
 }
 
+.feature .key-field{
+	width: 66%;
+border: none;
+background: transparent;
+}
+
 .feature .editable {
 	border-top: none !important;
 }
 
+.feature .key-field.editable {
+	background: white;
+	border-top: inherit;
+}
 .textarea-tcm {
 	width: 100% !important;
 	border: none;

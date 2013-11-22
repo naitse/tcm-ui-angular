@@ -52,6 +52,7 @@ tcmModule.directive('ngFeature', function(){
               $scope.cancelEditFeature = function(feature){
                 feature.editMode = false; 
                 feature.featureName = feature.featureTemp.featureName
+                feature.jiraKey = feature.featureTemp.jiraKey
               }
               $scope.saveFeature = function(feature){
                 feature.editMode = false;

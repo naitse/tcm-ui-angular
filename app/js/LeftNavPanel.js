@@ -149,7 +149,7 @@ tcmModule.directive('ngLeftNavPanel', function() {
             scope.resetCurrentRequester = function(){
                 scope.$parent.currentRequester.id = ''
                 scope.$parent.currentRequester.type = ""
-                scope.$parent.currentRequester = {}
+                scope.$parent.currentRequester.object = {}
             }
 
         }],
