@@ -202,18 +202,68 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             //////////////////////////TAGS
 
+
+            scope.resetCurrentRequesterTags = function(){
+                scope.currentRequesterTags.id = ''
+                scope.currentRequesterTags.type = 'tag'
+            };
+
             scope.loadTags = function(){
                 scope.sprintActiveClass = ''
                 scope.suiteActiveClass = ''
                 scope.tagActiveClass = 'active'
                 tcm_model.Tags.query(function(res){
-                    scope.tags = res;
+                    scope.tags = _.extend(res, {hide:false});
                 })
             }
 
             scope.loadTagTc = function(tag){
                 scope.currentRequesterTags.id = tag.id
                 scope.currentRequesterTags.type = 'tag'
+                 _.each(scope.tags, function(tagEl){
+                    if(tagEl.id != tag.id){
+                        tagEl.hide = true;
+                    }
+                })
+                scope.showTagTests();
+            }
+
+            scope.showTags = function(){
+                scope.hideTagTags = false
+                scope.hideTagTests();
+                $('.ng-right-nav-panel #tags').stop(true,true).animate({left:0},function(){});
+            }
+            
+            scope.hideTagsContainer = function(){
+                scope.hideTags = true
+                console.log('hidetags')
+                $('.ng-right-nav-panel #tags').stop(true,true).animate({left:400},function(){
+                });
+            }
+
+
+            scope.showTagTests = function(){
+                $('.ng-right-nav-panel #tagstestcases').stop(true,true).animate({left:0},function(){});
+            }
+            
+            scope.hideTagTests = function(){
+                scope.hideTags = false
+                scope.resetCurrentRequesterTags();
+                $('.ng-right-nav-panel #tagstestcases').stop(true,true).animate({left:400},function(){
+                    // scope.$apply(function(){
+                    //         scope.hideTest = true
+                    //         // scope.resetIteration();
+                    //         scope.back.last = scope.hideFeatures;
+                    //     }
+                    // );
+                });
+            }
+
+            scope.backToTags = function(){
+                scope.resetCurrentRequesterTags();
+                scope.hideTagTests();
+                scope.loadTags();
+                scope.showTags();
             }
 
 
