@@ -19,10 +19,10 @@ tcmModule.directive('ngFeatures', function(){
         $scope.resetNewFeature = function(){
           $scope.newFeature = {
             create:false,
-            name:'',
-            key:'',
-            description:'',
-            type:2,
+            featureName:'',
+            jiraKey:'',
+            featureDescription:'',
+            featureType:2,
             iterationId: $scope.requester.IterId
           }
         }
@@ -31,7 +31,7 @@ tcmModule.directive('ngFeatures', function(){
 
    		$scope.placeholders = {
 			feature : {
-				delete:'Sure?'
+				delete:'Delete?'
 			}
 		}
 
@@ -88,8 +88,12 @@ tcmModule.directive('ngFeatures', function(){
 
 		$scope.extendFeatures = function(){
 			_.each($scope.features, function(obj){
-				_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false, hide:false,loading:false});
+				$scope.extendSingleFeature(obj)
 			});
+		}
+
+		$scope.extendSingleFeature = function(obj){
+			_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false, hide:false,loading:false});
 		}
 
 		$scope.selectFeature = function(feature){
@@ -169,7 +173,7 @@ tcmModule.directive('ngFeatures', function(){
 		function isOdd(num) { return num % 2;}
 
 
-/* NEW TCs */
+/* NEW Features */
 
       $scope.createFeature =  function(){
         if($scope.newFeature.create == true){
@@ -179,13 +183,28 @@ tcmModule.directive('ngFeatures', function(){
       }
 
       $scope.saveNewFeature = function(){
-
         var temp = new tcm_model.Features($scope.newFeature)
 
         temp.$save(function(data){
-          $scope.features.push(data)
+        	$scope.extendSingleFeature(data);
+
+          $scope.features.push(data);
           // $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
-          $scope.resetNewFeature();
+          $scope.cancelNewFeature();
+        })
+
+      }
+
+    $scope.cloneFeature = function(feature){
+    	feature.clone = true;
+        var temp = new tcm_model.Features(feature)
+
+        temp.$save(function(data){
+        	$scope.extendSingleFeature(data);
+
+          $scope.features.push(data);
+          // $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+          $scope.cancelNewFeature();
         })
 
       }

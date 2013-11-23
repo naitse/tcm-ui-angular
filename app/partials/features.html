@@ -9,7 +9,7 @@ padding-bottom: 61px;
 <div ng-hide="btns.hideBar == true" class="well action-bar">
 	<div class="btn-group btn-group-xs pull-right">
 		<div class="btn btn-default" ng-click="createFeature()">Add Item</div>
-      <div class="btn-group"  ng-class="(statusDDClosed == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; top:0px;cursor=pointer;">
+      <div class="btn-group"  ng-show="statuses.length > 0"ng-class="(statusDDClosed == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; top:0px;cursor=pointer;">
         <div ng-click="$event.stopPropagation(); openDD();" title="{{statusFilter.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
             <div class="tcm-icon no-opacity" style="background: url('{{statusFilter.iconUrl}}') 0px -1px;"></div>
         </div>
@@ -28,15 +28,18 @@ padding-bottom: 61px;
 	</div>
 </div>
 
+
+
+<div class="features-container">
   <div ng-show="newFeature.create" class="panel panel-default current testcase" ng-class="">
     <div class="panel-heading" >
-      <input class="name editable" ng-model="newFeature.key"/>
+      <input class="name editable" ng-model="newFeature.jiraKey"/>
     </div>
     <div class="panel-body" ng-click="$event.stopPropagation()">
       <div class="panel panel-default">
           <div class="panel-body">
           <div class="description-label field-label">Description</div>
-          <textarea class="panel-body textarea-tcm editable" ng-model="newFeature.name"></textarea>
+          <textarea class="panel-body textarea-tcm editable" ng-model="newFeature.featureName"></textarea>
         </div>
       </div>
     </div>
@@ -45,8 +48,5 @@ padding-bottom: 61px;
       <div class="btn btn-info btn-sm" ng-click="saveNewFeature()">Save</div>
     </div>
   </div>
-
-
-<div class="features-container">
 	<ng-feature ng-repeat="feature in features" ng-hide="feature.hide"></ng-feature>
 </div>

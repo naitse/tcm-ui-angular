@@ -1,3 +1,7 @@
+.testcase {
+	font-size: 12px !important;
+}
+
 	.draggable-handle {
 		width: 12px;
 		height: 43px;
@@ -19,7 +23,7 @@
 	margin-left: -8px;
 }
 	.testcase .name {
-	width: 70%;
+	width: 65%;
 	margin-left: 10px;
 	border: none;
 	background: transparent;
@@ -80,9 +84,8 @@
 	position: relative;
 }
 
-.trello-panel {
-	width: 33%;
-	display: inline-block;
-	float:left;
-	height: 100%;
-}
+	.status-button {
+		border-radius: 4px !important;
+		padding: 1px 3px 1px 5px !important;
+		width: 81px;
+	}

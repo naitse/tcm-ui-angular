@@ -70,6 +70,10 @@
 	width: 100%;
 }
 
+.feature .copy-icon {
+    margin-right: 8px;
+}
+
 .feature-status-btn {
 	background-color: transparent;
 border-color: transparent;
@@ -86,7 +90,7 @@ cursor: pointer;
 }
 
 .feature .key-field{
-	width: 66%;
+	width: 60%;
 border: none;
 background: transparent;
 }
@@ -120,12 +124,6 @@ background: transparent;
     margin-left: 10px;
 }
 
-
-
-.testcase {
-	/*border:1px solid;*/
-}
-
 .panel .action-bar {
 
 }
@@ -151,16 +149,18 @@ right: 319;
 	/*height: 180px;*/
 	overflow: hidden;
 	position: relative;
-	padding-top: 28px; 
+	padding-top: 43px; 
 }
 
 .tcm-item .item-header {
 	position: absolute;
 	top:0;
 	left: 0;
-height: 28;
+height: 45;
 box-shadow: 0px 0px 12px -4px black;
 width: 100%;
+padding: 11px;
+font-size: 15px;
 
 }
 

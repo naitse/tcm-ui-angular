@@ -44,6 +44,18 @@ tcmModule.directive('ngFeature', function(){
               })
             }
 
+            $scope.clone = function(){
+              feat = {
+                featureName:$scope.feature.featureName,
+                jiraKey:$scope.feature.jiraKey,
+                featureDescription:$scope.feature.featureDescription,
+                featureType:$scope.feature.featureType,
+                iterationId: $scope.feature.iterationId,
+                fId: $scope.feature.featureId
+              }
+              $scope.$parent.cloneFeature(feat)
+            }
+
             $scope.editFeature = function(feature){
                 feature.editMode = true; 
                 var temp = angular.copy(feature);
@@ -61,11 +73,11 @@ tcmModule.directive('ngFeature', function(){
               }
 
               $scope.deleteFeature = function(feature){
-                $scope.placeholders.feature.delete = "Deletting...";
+                $scope.placeholders.feature.delete = "OMG!";
 
                 feature.$delete(function(){
                   $rootScope.$broadcast('featureDeleted', {featureId: feature.featureId});
-                  $scope.placeholders.feature.delete = "Sure?";
+                  $scope.placeholders.feature.delete = "Delete?";
                   $scope.featureSelected = false;
                 })
 

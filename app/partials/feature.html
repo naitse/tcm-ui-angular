@@ -19,6 +19,7 @@
           </li>
         </ul>
       </div>
+      <div ng-show="feature.featureType == 2" title="Clone Item" class="btn copy-icon"  ng-click="$event.stopPropagation(); clone(feature)"></div>
           <div class="btn no-opacity" ng-show="feature.editMode">
             <span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditFeature(feature, element);"></span>
           </div>
@@ -31,7 +32,7 @@
           <div class="btn" ng-hide="feature.delete">
            <span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); feature.delete = true"></span>
           </div>
-      <div class="btn btn-danger btn-delete" ng-show="feature.delete" ng-click="deleteFeature(feature)" ng-mouseleave="$event.stopPropagation(); feature.delete = false">{{placeholders.feature.delete}}</div>
+      <div class="btn btn-danger btn-delete" ng-show="feature.delete" ng-click="$event.stopPropagation(); deleteFeature(feature)" ng-mouseleave="$event.stopPropagation(); feature.delete = false">{{placeholders.feature.delete}}</div>
     </div>
   </div>
   <div class="progress progress-tcm">
