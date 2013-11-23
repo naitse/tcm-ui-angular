@@ -115,6 +115,12 @@ background: transparent;
 	max-height: 118px;
 }
 
+.features-actions {
+	position: absolute;
+	top: 9px  !important;
+	right: 26px;
+}
+
 .feature.active .panel-heading-tcm {
 	background-color: #e2f2ff;
 }
@@ -126,6 +132,10 @@ background: transparent;
 
 .panel .action-bar {
 
+}
+
+.panel #features .action-bar {
+	padding: 3px;
 }
 
 .panel .action-bar .btn-group {

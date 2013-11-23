@@ -7,7 +7,12 @@ padding-bottom: 61px;
 	}
 </style>
 <div ng-hide="btns.hideBar == true" class="well action-bar">
-	<div class="btn-group btn-group-xs pull-right">
+
+<div class="input-group">
+  <input type="text" class="form-control" placeholder="Search" ng-model="searchText">
+</div>
+
+	<div ng-hide="btns.hideBtns == true" class="btn-group btn-group-xs features-actions">
 		<div class="btn btn-default" ng-click="createFeature()">Add Item</div>
       <div class="btn-group"  ng-show="statuses.length > 0"ng-class="(statusDDClosed == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; top:0px;cursor=pointer;">
         <div ng-click="$event.stopPropagation(); openDD();" title="{{statusFilter.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
@@ -48,5 +53,5 @@ padding-bottom: 61px;
       <div class="btn btn-info btn-sm" ng-click="saveNewFeature()">Save</div>
     </div>
   </div>
-	<ng-feature ng-repeat="feature in features" ng-hide="feature.hide"></ng-feature>
+	<ng-feature ng-repeat="feature in features | filter:searchText" ng-hide="feature.hide"></ng-feature>
 </div>

@@ -12,7 +12,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.iterations = [];
             scope.features = [];
             scope.tags = [];
-            scope.featBtnConfig = {hideBar:true, hideFeatureActions:true}
+            scope.featBtnConfig = {hideBar:false, hideFeatureActions:true, hideBtns:true}
             scope.currentRequester = {
                 id:'',
                 type:''
