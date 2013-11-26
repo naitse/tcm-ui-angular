@@ -70,7 +70,7 @@
                                     <div class="panel-body">
                                         <div class="table-responsive" style="overflow-y: scroll; overflow-x: hidden;">
                                             <table class="table table-condensed">
-                                                <tr ng-repeat="cissues in issues.contents.incompletedIssues" >
+                                                <tr ng-repeat="cissues in issues.contents.incompletedIssues" popover-popup-delay="5" popover-animation="true" popover-title="{{cissues.key}}" popover="{{cissues.summary}}" popover-trigger="mouseenter">
                                                     <td>
                                                         <label>
                                                             <input type="checkbox" ng-model="cissues.selected">
@@ -82,9 +82,6 @@
                                                     <td>{{cissues.key}}
                                                     </td>
                                                     <td>{{cissues.summary.substring(0, 60)}}{{(cissues.summary.length > 60)?'...':''}}
-                                                    </td>
-                                                    <td>
-                                                        <span class="glyphicon glyphicon-chevron-up" popover="Type: {{cissues.typeName}}\npriorityName: {{cissues.priorityName}}" popover-title="{{cissues.key}}"></span>
                                                     </td>
                                                 </tr>
                                             </table>

@@ -52,7 +52,7 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
                  });
 
 
-
+                 console.log(chartData);
                  $scope.executed.series = [{
                      type: 'pie',
                      name: 'Test Cases',
@@ -92,7 +92,7 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
                 height:200,
                 width:300
             },
-            colors: ['#c6c6c6','#46ACCA', '#5DB95D', '#CD433D', '#FAA328'],
+            colors: ['#c6c6c6', '#CD433D', '#5DB95D', '#46ACCA', '#FAA328'],
             title: {
                 text: ""
             },
