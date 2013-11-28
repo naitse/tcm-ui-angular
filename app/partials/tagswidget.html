@@ -1,0 +1,13 @@
+<div class="btn-group" ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();">
+  <div type="button" class="btn btn-default tags-container">
+      <span ng-repeat="tag in tags" class="label label-default">{{tag.name}}<span ng-click="unassignTag(tag)"class=" tag-remove glyphicon glyphicon-remove"></span></span>
+      <input class="tag-input" type="text" ng-model="searchTag" ng-click="$event.stopPropagation()" ng-change="$event.stopPropagation(); openDD();"/>
+    </div>
+  <div ng-click="$event.stopPropagation(); openDD();" type="button" class="btn btn-default dropdown-toggle " style=" height: 32; padding-top: 13; ">
+    <span ng-click="$event.stopPropagation(); openDD();" class="caret"></span>
+  </div>
+  <ul class="dropdown-menu pull-right" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; dropDownClose = true;" style=" top: 30px;">
+	<li ng-show="loadingTags == true"><a class="loading-small"></a></li>
+  	<li ng-repeat="gtag in globalTags | filter:searchTag" ng-click="tagTc(gtag)"><a >{{gtag.name}}</a></li>
+  </ul>
+</div>

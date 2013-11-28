@@ -89,3 +89,23 @@
 		padding: 1px 3px 1px 5px !important;
 		width: 81px;
 	}
+
+
+
+
+/*tags*/
+
+.tags-container {
+    padding: 5px !important;
+}
+
+.tag-input {
+    background:transparent;
+    border:none;
+    outline:none !important;
+}
+
+.tag-remove {
+    top: 2px;
+    position: relative; 
+}

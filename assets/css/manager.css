@@ -251,7 +251,7 @@ display: inline-block;
 }
 
 .tc-container .dropdown-menu:last-of-type {
-	bottom:100%;
+	top:100%;
 	top:inherit;
 	float: left;
 }

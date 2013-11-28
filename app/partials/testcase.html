@@ -1,7 +1,10 @@
 <div class="panel panel-default testcase  {{(checked == true)?'tcmselected':''}}" ng-class="(tc.current == true)?'active':''" ng-click="selectTc(tc)" tcm-draggable  tcmDragStart="handleDragStart(tc)" tcmDragRevert="handleDragRevert(tc)" >
 	<div class="panel-heading" >
 		<div class="draggable-handle"></div>
+
+
 		<input style="margin-left:-8px;" type="checkbox" ng-model="tc.checked" ng-click="$event.stopPropagation();"/>
+
 		<input class="priority" ng-class="tc.editMode==true?'editable':''" ng-model="tc.priority" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>		
 		<input class="name" ng-class="tc.editMode==true?'editable':''" ng-model="tc.name" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>
 		<div ng-hide="btns.hideStatus == true" class="btn-group btn-group-xs pull-right">
@@ -14,9 +17,11 @@
 			<tc-status-dropdown test="tc"></tc-status-dropdown>
 		</div>
 	</div>
+
 	<div class="panel-body" ng-show="tc.current" ng-click="$event.stopPropagation()">
+		<ng-tags-widget test="tc" />
 		<div class="panel panel-default">
-				<div class="panel-body">
+			<div class="panel-body">
 				<div class="description-label field-label">Description</div>
 				<textarea class="panel-body textarea-tcm" ng-class="tc.editMode==true?'editable':''" ng-model="tc.description" ng-disabled="tc.editMode==false?true:''"></textarea>
 			</div>
