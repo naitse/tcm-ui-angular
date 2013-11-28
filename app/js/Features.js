@@ -141,7 +141,7 @@ tcmModule.directive('ngFeatures', function(){
 			tcm_model.FeatureExecutedTC.query({featureId:featureId},function(executed){
 				var data = executed[0];
 				var obj = _.findWhere($scope.features, {featureId: featureId})
-				_.extend(obj, data);
+				try{_.extend(obj, data);}catch(e){}
 			})
 		}
 
