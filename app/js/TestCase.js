@@ -4,7 +4,7 @@ tcmModule.directive('ngTestcase', function(){
       transclude: true,
        templateUrl: 'app/partials/testcase.html',
        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
-
+        
         $scope.deleteText = "Delete?";
         $scope.draggable = $scope.tc.draggable;
         var saveCallback = function(){};

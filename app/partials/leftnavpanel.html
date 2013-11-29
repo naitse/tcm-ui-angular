@@ -71,12 +71,13 @@
 		  <li ng-click="$event.preventDefault(); loadSuites()" ng-class="suiteActiveClass"><a href="">Suites</a></li>
 		</ul>
 		<div class="position-reference panel">
-	    	<div class="btn-group btn-group-sm pull-left">
+	    	<div class="btn-group btn-group-sm pull-left" ng-show="sprintActiveClass == 'active'">
 				<div ng-show="releases.length > 0" ng-click="backToReleases()"class="btn btn-default">&#47;</div>
 				<div ng-show="release.releaseName != ''" ng-click="backToIterations();"class="btn btn-default">Release {{release.releaseName}}</div>
 				<div ng-show="iteration.iterationName != '' " ng-click="backToFeatures(); "class="btn btn-default">{{iteration.iterationName}}</div>
-				<!-- <div ng-show="feature.featureName != '' " class="btn btn-default">{{feature.featureName}}</div> -->
-				<!-- <div ng-show="back.state == true" ng-click="back.last()"class="btn btn-default pull-right">Back</div> -->
+	    	</div>
+	    	<div class="btn-group btn-group-sm pull-left" ng-show="suiteActiveClass == 'active'">
+				
 	    	</div>
 		</div>
     	<div class="sprint-container" ng-show="sprintActiveClass == 'active'">

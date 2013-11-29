@@ -46,6 +46,8 @@ tcmModule.directive('ngLeftNavPanel', function() {
             scope.loadSprint = function(){
                 scope.sprintActiveClass = 'active'
                 scope.suiteActiveClass = ''
+                scope.$parent.sprint = true
+                scope.$parent.suites = false
                 var releases = tcm_model.Releases.query();
                 scope.releases =  _.extend(releases, {hide:false})
 
@@ -56,6 +58,9 @@ tcmModule.directive('ngLeftNavPanel', function() {
             scope.loadSuites = function(){
                 scope.sprintActiveClass = ''
                 scope.suiteActiveClass = 'active'
+                scope.$parent.sprint = false
+                scope.$parent.suites = true
+
             }
 
 /////////////////////////

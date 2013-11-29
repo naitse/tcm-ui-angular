@@ -32,10 +32,10 @@
 }
 
 .panel-tcm.middle-panel{
-	width: 325px;
+	width: 60%;
 	border-top: 1px solid #e7e7e7;
 	margin-left: 327px;
-	min-width: 830px;
+	min-width: 690px;
 }
 
 
@@ -251,7 +251,7 @@ display: inline-block;
 }
 
 .tc-container .dropdown-menu:last-of-type {
-	bottom:100%;
+	top:100%;
 	top:inherit;
 	float: left;
 }

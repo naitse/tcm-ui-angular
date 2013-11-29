@@ -4,7 +4,7 @@ tcmModule.directive('ngFeatures', function(){
       transclude: true,
       scope:{requester:'=', btns:'=', droppable:'@drop', hidenotcurrent:'@hidenotcurrent'},
       templateUrl: 'app/partials/features.html',
-       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$timeout',  function($scope, element, $attrs, $rootScope, tcm_model, $timeout){
 
        	$scope.btnConfig = (typeof $scope.btns == 'undefined')?{}:$scope.btns;
 
@@ -42,7 +42,7 @@ tcmModule.directive('ngFeatures', function(){
           		}
               if(value != ''){
                 if(value != 'none'){
-                  $scope.getFeatures()
+                  $timeout($scope.getFeatures, 2000);
                   $scope.$parent.hideButtons = false
                 }else{
                 	$scope.clearFtrTests()
@@ -67,6 +67,23 @@ tcmModule.directive('ngFeatures', function(){
 					_.each($scope.features,function(feature){
 						if(feature.featureType == 1){
 							feature.loading = true;
+
+						
+							// $.ajax({
+							//   url: "http://localhost:9000/api/projects/2/jira/issue/" + feature.jiraKey,
+							//   type: "GET",
+							//   asyn:true,
+							//   contentType:"application/json"
+							// }).done(function(data){
+							// 	feature.featureDescription = data.fields.description;
+							// 	feature.remote = data
+							// 	if(typeof _.findWhere($scope.statuses, {name:data.fields.status.name}) == 'undefined'){
+							// 		$scope.statuses.push(data.fields.status)
+							// 	}
+							// 	feature.loading = false;
+							// });
+
+
 							tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
 								feature.featureDescription = jira.fields.description;
 								feature.loading = false;
@@ -93,7 +110,11 @@ tcmModule.directive('ngFeatures', function(){
 		}
 
 		$scope.extendSingleFeature = function(obj){
-			_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false, hide:false,loading:false});
+			lo = false
+			if(obj.featureType == 1){
+				lo = true
+			}
+			_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false, hide:false,loading:lo});
 		}
 
 		$scope.selectFeature = function(feature){
@@ -120,7 +141,7 @@ tcmModule.directive('ngFeatures', function(){
 			tcm_model.FeatureExecutedTC.query({featureId:featureId},function(executed){
 				var data = executed[0];
 				var obj = _.findWhere($scope.features, {featureId: featureId})
-				_.extend(obj, data);
+				try{_.extend(obj, data);}catch(e){}
 			})
 		}
 

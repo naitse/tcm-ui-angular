@@ -5,6 +5,8 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 	$scope.showRight = true;
 	$scope.toggleIcon = ($scope.showRight == true)?'right':'left';
 	$scope.panelExpanderRight = ($scope.showRight == true)?319:0;
+	$scope.sprint = true
+	$scope.suites = false
 
 	$scope.togglePanel = function(){
 		$scope.showRight = !$scope.showRight
