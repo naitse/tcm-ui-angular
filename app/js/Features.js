@@ -60,7 +60,7 @@ tcmModule.directive('ngFeatures', function(){
 				              	$scope.statusFilter = {
 	              		name:'All',
 	              		iconUrl:'/assets/images/all_icon.gif'
-              		};	
+              		};
 			tcm_model.Features.query({iterationId:$scope.requester.IterId}, function(data){
 				$scope.features = data;
 				if($scope.btnConfig.hideFeatureActions != true){
@@ -68,32 +68,16 @@ tcmModule.directive('ngFeatures', function(){
 						if(feature.featureType == 1){
 							feature.loading = true;
 
-						
-							// $.ajax({
-							//   url: "http://localhost:9000/api/projects/2/jira/issue/" + feature.jiraKey,
-							//   type: "GET",
-							//   asyn:true,
-							//   contentType:"application/json"
-							// }).done(function(data){
-							// 	feature.featureDescription = data.fields.description;
-							// 	feature.remote = data
-							// 	if(typeof _.findWhere($scope.statuses, {name:data.fields.status.name}) == 'undefined'){
-							// 		$scope.statuses.push(data.fields.status)
-							// 	}
-							// 	feature.loading = false;
-							// });
-
-
 							tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
-								feature.featureDescription = jira.fields.description;
-								feature.loading = false;
-								feature.remote = jira
-								if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
-									$scope.statuses.push(jira.fields.status)
-								}
-							})
+                                feature.featureDescription = jira.fields.description;
+                                feature.loading = false;
+                                feature.remote = jira
+                                if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
+                                    $scope.statuses.push(jira.fields.status)
+                                }
+                            })
 						}
-						
+
 					})
 				}
 				$scope.extendFeatures();

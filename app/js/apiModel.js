@@ -1,4 +1,4 @@
-tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$cookieStore', function($resource, $http, $routeParams, Auth, $cookieStore) {
+tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$rootScope', function($resource, $http, $routeParams, Auth, $rootScope) {
 
 
     return {
@@ -60,7 +60,19 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
 
         JiraIterations: $resource(basePath + 'api/projects/:id/jira/iterations', {id: $routeParams.projectId}),
         JiraIssues: $resource(basePath + 'api/projects/:projectId/jira/iteration/:id/issues', {projectId: $routeParams.projectId, id: '@id'}),
-        JiraIssue: $resource(basePath + 'api/projects/:projectId/jira/issue/:key', {projectId: $routeParams.projectId, key: '@key'}),
+        JiraIssue: { //$resource(basePath + 'api/projects/:projectId/jira/issue/:key', {projectId: $routeParams.projectId, key: '@key'}),
+            get: function(params, callback){
+                $.ajax({
+                url: basePath + 'api/projects/:projectId/jira/issue/:key'.replace(':projectId', $routeParams.projectId).replace(':key', params.key),
+                 type: "GET",
+                 asyn:true,
+                 contentType:"application/json"
+                }).done(callback);
+                //return $http.get(basePath + 'api/projects/:projectId/jira/issue/:key'.replace(':projectId', $routeParams.projectId).replace(':key', params.key));
+
+            }
+        },
+
         JiraIssueTransition: $resource(basePath + 'api/projects/:projectId/jira/issue/:key/transitions/:transitionId/', {projectId: $routeParams.projectId}),
         ReleasesIterations: $resource(basePath + 'api/projects/:id/releasesiterations', {id: $routeParams.projectId}),
         Tags: $resource(basePath + 'api/projects/:id/tags/:tid', {id: $routeParams.projectId},{
