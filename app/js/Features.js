@@ -69,29 +69,29 @@ tcmModule.directive('ngFeatures', function(){
 							feature.loading = true;
 
 						
-							// $.ajax({
-							//   url: "http://localhost:9000/api/projects/2/jira/issue/" + feature.jiraKey,
-							//   type: "GET",
-							//   asyn:true,
-							//   contentType:"application/json"
-							// }).done(function(data){
-							// 	feature.featureDescription = data.fields.description;
-							// 	feature.remote = data
-							// 	if(typeof _.findWhere($scope.statuses, {name:data.fields.status.name}) == 'undefined'){
-							// 		$scope.statuses.push(data.fields.status)
-							// 	}
-							// 	feature.loading = false;
-							// });
-
-
-							tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
-								feature.featureDescription = jira.fields.description;
-								feature.loading = false;
-								feature.remote = jira
-								if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
-									$scope.statuses.push(jira.fields.status)
+							$.ajax({
+							  url: "http://localhost:9000/api/projects/2/jira/issue/" + feature.jiraKey,
+							  type: "GET",
+							  asyn:true,
+							  contentType:"application/json"
+							}).done(function(data){
+								feature.featureDescription = data.fields.description;
+								feature.remote = data
+								if(typeof _.findWhere($scope.statuses, {name:data.fields.status.name}) == 'undefined'){
+									$scope.statuses.push(data.fields.status)
 								}
-							})
+								feature.loading = false;
+							});
+
+
+							// tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
+							// 	feature.featureDescription = jira.fields.description;
+							// 	feature.loading = false;
+							// 	feature.remote = jira
+							// 	if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
+							// 		$scope.statuses.push(jira.fields.status)
+							// 	}
+							// })
 						}
 						
 					})

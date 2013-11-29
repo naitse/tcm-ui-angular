@@ -3,44 +3,14 @@
     <ng-include src="topmenu"></ng-include>
 </div>
 <div class="manager">
-
-	<div class="panels">
-		<div class="panel panel-default panel-tcm left-panel" style=" overflow: hidden; ">
-		  <div class="panel-body panel-body-tcm">
-
-			<ng-left-nav-panel class="ng-left-nav-panel"/>
-
-		  </div>
-		</div>
-		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth" style="overflow: hidden;">
-			<div ng-show="sprint == true" id="sprintElements">
-				
-				<div class="tcm-item">
-					<div class="item-header">
-						<div class="item-key"><a href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a></div>
-						<div class="item-name">{{currentRequester.object.featureName}}</div>
-						<!-- <div class="label label-info pull-right">Comments: {{currentRequester.object.remote.fields.comment.total}}</div> -->
-					</div>
-	<!-- 				<div class="cont">
-						<pre class="item-description">{{currentRequester.object.featureDescription}}</pre>
-						<div class="jira-comments-container">
-							<div class="comments">
-								<div ng-repeat="comment in currentRequester.object.remote.fields.comment.comments" class="item-comment">
-									<div class="comment-author-avatar" style="background: url('{{comment.author.avatarUrls.48x48}}') 0px -1px;"></div> 
-									<div class="comment-author-name">{{comment.author.displayName}}</div>
-									<div class="comment-created">{{comment.created}}</div>
-									<pre>{{comment.body}}</pre>
-								</div>
-							</div>
-						</div>
-					</div> -->
-				</div>
-	<!-- TESTCASE -->
-				<ng-testcases class="tc-container" requester="currentRequester" trello="true"></ng-testcases>
-<!-- TESTCASE -->
-			</div>
-		</div>
-			<ng-right-nav-panel class="ng-right-nav-panel" ng-show="showRight == true"/>
+	<div id="tabs">
+		<ul class="nav nav-tabs left-panel">
+		  <li ng-click="$event.preventDefault(); selectSprint()" ng-class="(views.sprint.active == true)?'active':'';"><a href="">Sprint</a></li>
+		  <li ng-click="$event.preventDefault(); selectSuites()" ng-class="(views.suites.active == true)?'active':'';"><a href="">Suites</a></li>
+		</ul>
 	</div>
-	<div class="panel-expander" ng-click="togglePanel()" style="right:{{panelExpanderRight}}"><span class="glyphicon glyphicon-chevron-{{toggleIcon}}"></span><span class="glyphicon glyphicon-chevron-{{toggleIcon}}"></span><span class="glyphicon glyphicon-chevron-{{toggleIcon}}"></span></div>
+
+	<tcm-sprint-module id="tcm-sprint-module" ng-show="views.sprint.active == true"></tcm-sprint-module>
+	<tcm-suites-module id="tcm-suites-module" ng-show="views.suites.active == true"></tcm-suites-module>
+	
 </div>

@@ -136,6 +136,7 @@ background: transparent;
 
 .panel #features .action-bar {
 	padding: 3px;
+	margin-bottom: 2px;
 }
 
 .panel .action-bar .btn-group {
@@ -144,14 +145,6 @@ background: transparent;
 
 .panel .action-bar .btn-group span{
 	font-size: 16px;
-}
-
-.panel-expander {
-	height: 40px;
-	width: 16;
-	position: absolute;
-top: 104px;
-right: 319;
 }
 
 .tcm-item {
