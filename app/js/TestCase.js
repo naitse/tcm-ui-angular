@@ -56,6 +56,9 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.cancelEditTC = function(tc){
           tc.editMode = false; 
+          if(tc.delete == true){
+            return false;
+          }
           tc.name = tc.tcTemp.name
           tc.description = tc.tcTemp.description
         }
@@ -75,7 +78,6 @@ tcmModule.directive('ngTestcase', function(){
             return;
           }
 
-
           $scope.deleteText = "OMG!";
           $scope.tc.delete = true;
           $scope.tc.$delete(function(){
@@ -86,7 +88,6 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.cloneTc = function(tc){
             var contraryPanel = _.without($rootScope.draggedObjects,_.findWhere($rootScope.draggedObjects,{id:$scope.$parent.uuid}))
-            console.log($rootScope.draggedObjects, contraryPanel, $scope.$parent.uuid)
               var newTc = new tcm_model.TestCasesCloneTC({tcId:tc.tcId});
               newTc.featureId = $scope.$parent.requester.id;
               newTc.$save(function(data){
@@ -98,7 +99,7 @@ tcmModule.directive('ngTestcase', function(){
         $scope.updateTCStatusonDB = function(statusId, callback){
           tcm_model.TestCasesUpdateStatus.update({tcId: $scope.tc.tcId, statusId: statusId, actualResult:$scope.tc.actualResult}, function(data){
               callback(data);
-              saveCallback()
+              saveCallback(data)
           })
         }
 

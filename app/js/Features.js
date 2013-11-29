@@ -76,6 +76,7 @@ tcmModule.directive('ngFeatures', function(){
                                     $scope.statuses.push(jira.fields.status)
                                 }
                             })
+
 						}
 
 					})

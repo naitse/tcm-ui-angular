@@ -41,6 +41,12 @@ tcmModule.directive('ngTestcases', function(){
         $scope.resetNewTestcase();
 
 
+        $scope.$watch("requester.type", function(val){
+          if(val == 'tag'){
+            $scope.droppable = false;
+          }
+        })
+
           $scope.$watch("requester.id",function(value){
 
             $scope.resetTestcasesObject();
@@ -88,7 +94,6 @@ tcmModule.directive('ngTestcases', function(){
 
         $scope.updateTestCasesList = function(tc){
           var extended = tc
-          extended.featureId = $scope.requester.id;
           $scope.extendSingleTC(extended);
             if($scope.areTcsChecked()){
               extended.draggable = false;
@@ -159,7 +164,12 @@ tcmModule.directive('ngTestcases', function(){
     if(message.uuid != $scope.uuid){
         $scope.updateTestCasesList(message.tc)
     }
-    $scope.droppable = true;
+    if($scope.requester.type == 'tag'){
+      $scope.droppable = false;
+    }else{
+      $scope.droppable = true;
+    }
+
   });
 
 
@@ -325,8 +335,13 @@ $scope.$on('tcSelected', function(event, message){
               if($scope.requester.type == 'tag'){
                 var tagTc = new tcm_model.TagsTcs({tid:featureId})
                 tagTc.tid = featureId;
-                tagTc.testArray = current.objects
-                tagTc.$save();
+                tagTc.testArray = angular.copy(current.objects)
+                tagTc.$save(function(){
+                  _.each(tagTc.testArray, function(data){
+                    $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
+                  })
+                  _.findWhere($rootScope.draggedObjects, {id: $rootScope.currentDragUUID}).objects = [];
+                });
                 return;
               }
               _.each(current.objects, function(object){
@@ -340,6 +355,7 @@ $scope.$on('tcSelected', function(event, message){
                   })
                 }
               })
+              // _.findWhere($rootScope.draggedObjects, {id: $rootScope.currentDragUUID}).objects = [];
 
             }
 

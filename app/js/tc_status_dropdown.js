@@ -71,8 +71,7 @@ tcmModule.directive('tcStatusDropdown', function(){
              $scope.test.statusIdTemp = angular.copy($scope.test.statusId)
             $scope.test.statusName = (statusId == 2)?'Blocked':'Failed';
             $scope.test.statusId = statusId;
-            $scope.requestActualResult(statusId,function(){
-            })
+            $scope.requestActualResult(statusId)
             return;
           }
 
@@ -86,7 +85,7 @@ tcmModule.directive('tcStatusDropdown', function(){
         }
 
         $scope.requestActualResult = function(statusId){
-          $scope.$parent.setActualResult(statusId,function(){
+          $scope.$parent.setActualResult(statusId,function(data){
               $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.test.featureId});
               $scope.test.statusName = data.name;
               $scope.setButtonColor(data.statusId);
