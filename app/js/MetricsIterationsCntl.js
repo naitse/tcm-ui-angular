@@ -5,9 +5,22 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
         iteration: null
     }
 
+    $scope.statuses = [
+        {id: 0, name: 'Not Run'},
+        {id: 1, name: 'In Progress'},
+        {id: 2, name: 'Blocked'},
+        {id: 3, name: 'Failed'},
+        {id: 4, name: 'Pass'}];
+
+
+    $scope.details = false;
+
     $scope.$watch('selection.iteration', function(id){
-        $scope.loadExecuted(id);
-        $scope.loadDaily(id);
+        if(id!= null){
+            $scope.loadExecuted(id);
+            $scope.loadDaily(id);
+        }
+
     });
 
     $scope.loadDaily = function(id){
@@ -51,9 +64,7 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
                      chartData.push(new Array( key, value));
                  });
 
-
-                 console.log(chartData);
-                 $scope.executed.series = [{
+                $scope.executed.series = [{
                      type: 'pie',
                      name: 'Test Cases',
                      data: chartData
@@ -105,17 +116,28 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
                         color: '#000000',
                         connectorColor: '#000000',
                         formatter: function() {
-                            // return MetricsView.fetchTCsbyStatus(this.x);
                             return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';
                         }
                     }
+
                 },
                 series: {
-                    allowPointSelect: true,
+                    allowPointSelect: false,
                     cursor: 'pointer',
-                    point: {
+                    point:{
                         events: {
+                            click: function() {
+                                if($scope.selectedGraph== null){return;}
 
+                                $scope.details = true;
+                                var seriesName = this.name;
+                                var status = _.find($scope.statuses, function(item){
+                                    return item.name === seriesName;
+                                });
+
+                                $scope.detailsByStatus = tcm_model.metrics.TCsByStatus.query({'id': $scope.selection.iteration, 'statusId': status.id})
+
+                            }
                         }
                     }
                 }
@@ -128,7 +150,8 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
     }
 
     $scope.selectGraph = function(graph){
-        $scope.selectedGraph = JSON.parse(JSON.stringify(graph));
+        $scope.selectedGraph = $.extend(true, {}, graph);
+        $scope.selectedGraph.options.plotOptions.series.allowPointSelect = true;
         $scope.selectedGraph.options.chart.width = 800;
         $scope.selectedGraph.options.chart.height = 450;
     }

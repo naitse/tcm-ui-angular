@@ -2,45 +2,7 @@
     <ng-include src="topmenu"></ng-include>
 </div>
 <style>
-    .btn-pill {
-        cursor: default;
-        width: 160px;
-        position: relative;
-        margin-bottom: 5px;
-        margin-top: 5px;
-        margin-left: 20px;
-        margin-right: auto;
-    }
 
-    .btn-pill div:hover {
-        text-decoration: none;
-        background-color: #f5f5f5;
-        cursor: pointer;
-    }
-    .btn-pill #left-btn #right-btn {
-        -webkit-border-radius: 15px 0px 0px 15px;
-        -moz-border-radius: 15px 0px 0px 15px;
-        border-radius: 15px 0px 0px 15px;
-        -webkit-border-radius: 0px 15px 15px 0px;
-        -moz-border-radius: 0px 15px 15px 0px;
-        border-radius: 0px 15px 15px 0px;
-        margin-left: -5px;
-    }
-    .btn-pill .active {
-        border: 1px solid #ddd !important;
-        box-shadow: #d2e9fa 0 0 50px inset !important;
-        -moz-box-shadow: #d2e9fa 0 0 50px inset !important;
-        -webkit-box-shadow: #d2e9fa 0 0 50px inset !important;
-    }
-    .btn-pill div {
-        display: inline-block;
-        padding: 5px 14px;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        -webkit-border-radius: 15px;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-    }
 </style>
 <div style="margin-left: 20px;">
     <div class="container metrics-release">
@@ -93,20 +55,33 @@
 </div>
 <div id="modal-showMetric" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content" style="width: 900;height: 600;">
-            <div class="modal-body" style="overflow: visible">
-                <!--<div class="row" ng-show="selection.graph=='executed'">
-                    <div class="btn-pill" style="visibility: visible; width: 310px;">
-                        <div id="left-btn" ng-init="selection.general=true" ng-class="(selection.general)?'active':''" ng-click="selection.general=true" >General</div>
-                        <div id="right-btn" ng-class="(!selection.general)?'active':''" ng-click="selection.general=false">By Item</div>
-                    </div>
-                </div-->
-                <div class="row">
+        <div  class="modal-content" style="width: 900;">
+            <div  class="modal-body" style="overflow: visible">
+                <div class="row" ng-hide="details" >
                     <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
+                </div>
+                <div class="row" ng-show="details" style="height: 75%; overflow-y: auto; padding-bottom: 10px;">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default" ng-repeat="tc in detailsByStatus">
+                            <div class="panel-heading" ng-click="in=(in==='in')?'':'in'">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" >
+                                        {{tc.name}}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse {{in}}" >
+                                <div class="panel-body">
+                                    {{tc.description}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" ng-show="details" ng-click="details=false">Hide details</button>
+                <button type="button" class="btn btn-default" ng-click="selectedGraph=null" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -105,7 +105,8 @@ tcmModule.service('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
             Trend: $resource(basePath + 'api/metrics/releases/:id/trend'),
             CarriedOver: $resource(basePath + 'api/metrics/releases/:id/carriedover'),
             Executed: $resource(basePath + 'api/metrics/iterations/:id/executed'),
-            Daily: $resource(basePath + 'api/metrics/iterations/:id/daily')
+            Daily: $resource(basePath + 'api/metrics/iterations/:id/daily'),
+            TCsByStatus: $resource(basePath + 'api/metrics/iterations/:id/status/:statusId')
         }
     };
 }]);
