@@ -62,18 +62,12 @@
 }
 
 .testcase .field-label {
-	border: 1px solid;
+	border-bottom: 1px solid;
 	padding: 0px 0px 2px 0px;
-	width: 130px;
 	position: absolute;
-	top: -1;
-	left: -1;
-	border-radius: 0px 0px 4px 0px;
-	border-color: white;
+	border-color: #ccc;
 	z-index: 200;
-	border-bottom-color: #e7e7e7;
-	border-right-color: #e7e7e7;
-	text-align: center;
+	font-size: 14px;
 }
 
 .testcase .textarea-tcm {
@@ -82,6 +76,9 @@
 
 .testcase .panel-body .panel-body {
 	position: relative;
+	padding: 5px;
+	padding-left: 15px;
+	padding-top: 8px;
 }
 
 	.status-button {
@@ -90,7 +87,13 @@
 		width: 81px;
 	}
 
-
+.testcase .panel-body .panel-default {
+border: none;
+border-bottom: 1px solid #ccc;
+border-radius: 0px;
+padding: 0px;
+margin-bottom: 2px;
+}
 
 
 /*tags*/

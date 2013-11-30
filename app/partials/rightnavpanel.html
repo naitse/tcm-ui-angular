@@ -74,6 +74,29 @@
 	.sprint-container .panel, .tag-container .panel {
 		margin-bottom: 0px !important;	
 	}
+
+
+	.single-tag {
+		border-radius: 25px 6px 6px 25px;
+		height: 30px;
+	}
+
+	#tag .panel-body{
+		padding:5px;
+	}
+
+	.single-tag .cordon{
+		border-radius: 15px;
+		height: 14px;
+		width: 14px;
+		position: relative;
+		border: 1px solid #ddd;
+		float: left;
+		top: 2px;
+		margin-right: 10px;
+	}
+
+
 </style>
 <div class="panel panel-default panel-tcm right-panel" >
   <div class="panel-body panel-body-tcm" >
@@ -118,9 +141,9 @@
     	</div>
     	<div class="tag-container" ng-show="tagActiveClass == 'active'">
     		<div id="tags">
-    			<div ng-repeat="tag in tags" id="tag" ng-hide="tag.hide" class="panel panel-default" ng-click="loadTagTc(tag)">
+    			<div ng-repeat="tag in tags" id="tag" ng-hide="tag.hide" class="panel panel-default single-tag" ng-click="loadTagTc(tag)">
 	    			<div class="panel-body">
-	    				{{tag.name}}
+	    				<div class="cordon"></div>{{tag.name}}
 	    			</div>
     			</div>
     		</div>

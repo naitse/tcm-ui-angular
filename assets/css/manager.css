@@ -152,7 +152,6 @@ background: transparent;
 	/*height: 180px;*/
 	overflow: hidden;
 	position: relative;
-	padding-top: 43px; 
 }
 
 .tcm-item .item-header {
@@ -176,9 +175,6 @@ font-size: 15px;
 .tcm-item .item-description {
 	overflow: hidden;
 	overflow-y :auto;
-	height: 100%;
-	width:49%;
-	display: inline-block;
 	font-size: 13px;
 line-height: 1.3077;
 font-family: Arial,FreeSans,Helvetica,sans-serif;
@@ -203,7 +199,6 @@ padding: 5px;
 .jira-comments-container {
 	height: 100%;
 	overflow-y: auto;
-	width: 50%;
 	display: inline-block; 
 }
 

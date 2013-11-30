@@ -13,6 +13,8 @@ tcmModule.directive('tcmSprintModule', function() {
             releaseSelected = {};
             var duration = 200
 
+            $("#accordion").collapse()
+
             scope.resetCurrentRequester = function(){
              scope.currentRequester = {
                  id:'',

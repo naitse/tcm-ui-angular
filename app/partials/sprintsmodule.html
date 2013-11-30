@@ -48,10 +48,6 @@
 		left: 0px;
 	}
 
-/*	#tcm-sprint-module .nav-tabs.right-panel>li>a {
-		border-color: #eee #eee #ddd !important;
-	}*/
-
 	#tcm-sprint-module .position-reference {
 		height: 36px;
 		margin-bottom: 0px !important;
@@ -124,11 +120,52 @@
 
 
 			<div id="sprintElements">
-				<div class="tcm-item">
-					<div class="item-header">
-						<div class="item-key"><a href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a></div>
-						<div class="item-name">{{currentRequester.object.featureName}}</div>
+				<div class="tcm-item" ng-show="currentRequester.id != ''">
+
+
+
+
+					<div class="panel-group" id="accordion">
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+								<a href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   {{currentRequester.object.featureName}}     </div>
+					      </h4>
+					    </div>
+					    <div id="collapseOne" class="panel-collapse collapse">
+					      <div class="panel-body">
+								 <pre class="item-description">{{currentRequester.object.featureDescription}}</pre>
+					      </div>
+					    </div>
+					  </div>
+					  <div class="panel panel-default" ng-show="(currentRequester.object.remote.fields.comment.comments.length > 0)?true:false">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+					Comments:    <span class="badge">{{currentRequester.object.remote.fields.comment.comments.length}}</span>    </div>
+					      </h4>
+					    </div>
+					    <div id="collapseTwo" class="panel-collapse collapse">
+					      <div class="panel-body">
+						    <div class="cont">
+						        <div class="jira-comments-container">
+						                <div class="comments">
+						                        <div ng-repeat="comment in currentRequester.object.remote.fields.comment.comments" class="item-comment">
+						                                <div class="comment-author-avatar" style="background: url('{{comment.author.avatarUrls.48x48}}') 0px -1px;"></div> 
+						                                <div class="comment-author-name">{{comment.author.displayName}}</div>
+						                                <div class="comment-created">{{comment.created}}</div>
+						                                <pre>{{comment.body}}</pre>
+						                        </div>
+						                </div>
+						        </div>
+							</div>
+					      </div>
+					    </div>
+					  </div>
 					</div>
+
+
 				</div>
 				<ng-testcases class="tc-container" requester="currentRequester" ></ng-testcases>
 			</div>

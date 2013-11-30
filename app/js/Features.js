@@ -96,7 +96,7 @@ tcmModule.directive('ngFeatures', function(){
 
 		$scope.extendSingleFeature = function(obj){
 			lo = false
-			if(obj.featureType == 1){
+			if(obj.featureType == 1 && $scope.btnConfig.hideFeatureActions != true){
 				lo = true
 			}
 			_.extend(obj, {type:'feature', editMode: false, featureTemp:{}, delete:false, current:false, hide:false,loading:lo});
