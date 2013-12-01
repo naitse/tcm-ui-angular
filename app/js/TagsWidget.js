@@ -41,6 +41,7 @@ tcmModule.directive('ngTagsWidget', function(){
           tagTc.tid = tag.id;
           tagTc.testArray = [$scope.$parent.tc]
           tagTc.$save(function(){
+            $rootScope.$broadcast('tcTagged', {tc: $scope.$parent.tc, tag:tag});
             $scope.removeFromGtags(tag)
             $scope.tags.push(tag)
           });
@@ -53,6 +54,7 @@ tcmModule.directive('ngTagsWidget', function(){
           tagTc.tcId = tcId;
           tagTc.testArray = [$scope.$parent.tc]
           tagTc.$delete(function(){
+            $rootScope.$broadcast('tcUntagged', {tc: $scope.$parent.tc});
             $scope.globalTags.push(tag);
             $scope.removeFromTags(tag)
           });

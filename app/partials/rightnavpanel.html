@@ -136,7 +136,7 @@
     			<ng-features requester="iteration" btns="featBtnConfig" hidenotcurrent="true">
     		</div>
     		<div id="testcases">
-				<ng-testcases requester="currentRequester" btns="btnConfig"></ng-testcases>
+				<ng-testcases requester="currentRequester" btns="btnConfig" tcminactive="tcsHidden"></ng-testcases>
     		</div>
     	</div>
     	<div class="tag-container" ng-show="tagActiveClass == 'active'">
@@ -148,6 +148,6 @@
     			</div>
     		</div>
     		<div id="tagstestcases">
-				<ng-testcases requester="currentRequesterTags" btns="btnConfig"></ng-testcases>
+				<ng-testcases requester="currentRequesterTags" btns="btnConfig" tcminactive="tagsTcsHidden"></ng-testcases>
     		</div>
     	</div>

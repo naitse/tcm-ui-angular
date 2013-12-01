@@ -129,7 +129,8 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading">
 					      <h4 class="panel-title">
-					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="isopend = !isopend">
+					        	<span class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': isopend, 'glyphicon-chevron-right': !isopend}" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
 								<a href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   {{currentRequester.object.featureName}}     </div>
 					      </h4>
 					    </div>
@@ -142,7 +143,8 @@
 					  <div class="panel panel-default" ng-show="(currentRequester.object.remote.fields.comment.comments.length > 0)?true:false">
 					    <div class="panel-heading">
 					      <h4 class="panel-title">
-					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" ng-click="isopen = !isopen">
+					        	<span class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
 					Comments:    <span class="badge">{{currentRequester.object.remote.fields.comment.comments.length}}</span>    </div>
 					      </h4>
 					    </div>
@@ -167,7 +169,7 @@
 
 
 				</div>
-				<ng-testcases class="tc-container" requester="currentRequester" ></ng-testcases>
+				<ng-testcases class="tc-container" requester="currentRequester" tcminactive="false"></ng-testcases>
 			</div>
 
 

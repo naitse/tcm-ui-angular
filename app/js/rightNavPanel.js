@@ -67,6 +67,8 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.loadSprint = function(){
+                scope.tcsHidden = false
+                scope.tagsTcsHidden = true
                 scope.sprintActiveClass = 'active'
                 scope.suiteActiveClass = ''
                 scope.tagActiveClass = ''
@@ -166,20 +168,18 @@ tcmModule.directive('ngRightNavPanel', function() {
                 });
             }
 
+            scope.tcsHidden = false
             scope.showTests = function(){
-                $('.ng-right-nav-panel #testcases').stop(true,true).animate({left:0},function(){});
+                $('.ng-right-nav-panel #testcases').stop(true,true).animate({left:0},function(){
+                    scope.tcsHidden = false
+                });
             }
             
             scope.hideTests = function(){
                 scope.hideFeature = false
                 scope.resetCurrentRequester();
                 $('.ng-right-nav-panel #testcases').stop(true,true).animate({left:400},function(){
-                    // scope.$apply(function(){
-                    //         scope.hideTest = true
-                    //         // scope.resetIteration();
-                    //         scope.back.last = scope.hideFeatures;
-                    //     }
-                    // );
+                    scope.tcsHidden = true
                 });
             }
 
@@ -212,6 +212,8 @@ tcmModule.directive('ngRightNavPanel', function() {
             };
 
             scope.loadTags = function(){
+                scope.tcsHidden = true
+                scope.tagsTcsHidden = false
                 scope.sprintActiveClass = ''
                 scope.suiteActiveClass = ''
                 scope.tagActiveClass = 'active'
@@ -244,22 +246,19 @@ tcmModule.directive('ngRightNavPanel', function() {
                 });
             }
 
-
+            scope.tagsTcsHidden = false
             scope.showTagTests = function(){
                 scope.hideTags = true
-                $('.ng-right-nav-panel #tagstestcases').stop(true,true).animate({left:0},function(){});
+                $('.ng-right-nav-panel #tagstestcases').stop(true,true).animate({left:0},function(){
+                    scope.tagsTcsHidden = false
+                });
             }
             
             scope.hideTagTests = function(){
                 scope.hideTags = false
                 scope.resetCurrentRequesterTags();
                 $('.ng-right-nav-panel #tagstestcases').stop(true,true).animate({left:400},function(){
-                    // scope.$apply(function(){
-                    //         scope.hideTest = true
-                    //         // scope.resetIteration();
-                    //         scope.back.last = scope.hideFeatures;
-                    //     }
-                    // );
+                    scope.tagsTcsHidden = true
                 });
             }
 
