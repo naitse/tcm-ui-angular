@@ -12,10 +12,10 @@ tcmModule.directive('ngFeature', function(){
             $scope.handleDrop = function(feature){
               $('.tcm-drag-helper').remove();
 
-              var current = _.findWhere($rootScope.draggedObjects, {id: $rootScope.currentDragUUID})
-              var dragSingle = _.findWhere(current.objects, {dragSingle: true})
+              var current =  $scope.getDraggableObjectsArray()
+              var dragSingle = $scope.getDragSingleObject()
               
-              if(typeof dragSingle == 'undefined'){
+              if(dragSingle == false){
                   $scope.manageDropObjects(feature, current, 'draggable');
               }else{
                   $scope.manageDropObjects(feature, current, 'dragSingle');
@@ -42,6 +42,32 @@ tcmModule.directive('ngFeature', function(){
                 }
 
               })
+            }
+
+
+            $scope.getDraggableObjectsArray = function(){
+              var objectsArray = []
+                _.each($rootScope.draggedObjects, function(current){
+                  if(current.id == $rootScope.currentDragUUID){
+                    objectsArray = current
+                  }
+                })
+
+                return objectsArray
+            }
+
+            $scope.getDragSingleObject = function(){
+                var object = false
+                _.each($rootScope.draggedObjects, function(current){
+                  if(current.id == $rootScope.currentDragUUID){
+                    _.each(current.objects, function(el){
+                      if(el.dragSingle == true){
+                        object = el
+                      }
+                    })
+                  }
+                })
+                return object
             }
 
             $scope.clone = function(){

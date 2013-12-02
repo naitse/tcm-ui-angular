@@ -335,7 +335,6 @@ $scope.$on('tcSelected', function(event, message){
               $('.tcm-drag-helper').remove();
 
               var current = $scope.getDraggableObjectsArray()
-              console.log(angular.copy(current))
               var dragSingle = $scope.getDragSingleObject()
               
               if(dragSingle == false){
@@ -388,7 +387,6 @@ $scope.$on('tcSelected', function(event, message){
                   })
                   $scope.draggable = true
                 });
-                current.objects = []
                 return false;
               }
               _.each(current.objects, function(object){
@@ -402,7 +400,6 @@ $scope.$on('tcSelected', function(event, message){
                   })
                 }
               })
-              current.objects = []
             }
 
             $scope.getDraggableObjectsArray = function(){
