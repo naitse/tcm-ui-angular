@@ -142,6 +142,7 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.handleDragRevert = function(tc){
           $scope.$parent.droppable = true;
+          $rootScope.currentDragUUID = '';
         }
 
        }],
