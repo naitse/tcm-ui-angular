@@ -57,10 +57,11 @@ tcmModule.directive('ngFeatures', function(){
 
        	$scope.getFeatures = function(){
 			$scope.statuses = [];
-				              	$scope.statusFilter = {
-	              		name:'All',
-	              		iconUrl:'/assets/images/all_icon.gif'
-              		};
+    	$scope.statusFilter = {
+    		name:'All',
+    		iconUrl:'/assets/images/all_icon.gif',
+        style:"-1px -17px;background-size: 16;"
+  		};
 			tcm_model.Features.query({iterationId:$scope.requester.IterId}, function(data){
 				$scope.features = data;
 				if($scope.btnConfig.hideFeatureActions != true){
@@ -69,13 +70,16 @@ tcmModule.directive('ngFeatures', function(){
 							feature.loading = true;
 
 							tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
-                                feature.featureDescription = jira.fields.description;
-                                feature.loading = false;
-                                feature.remote = jira
-                                if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
-                                    $scope.statuses.push(jira.fields.status)
-                                }
-                            })
+                $scope.$apply(function(){
+                  feature.featureDescription = jira.fields.description;
+                  _.extend(jira.fields.status, {style:"0px -1px;"})
+                  feature.loading = false;
+                  feature.remote = jira
+                  if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
+                      $scope.statuses.push(jira.fields.status)
+                  }
+                })
+              })
 
 						}
 
@@ -196,7 +200,7 @@ tcmModule.directive('ngFeatures', function(){
 
           $scope.features.push(data);
           // $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
-          $scope.cancelNewFeature();
+          // $scope.cancelNewFeature();
         })
 
       }
@@ -233,7 +237,8 @@ tcmModule.directive('ngFeatures', function(){
             	if(status == 'all'){
 	              	$scope.statusFilter = {
 	              		name:'All',
-	              		iconUrl:'/assets/images/all_icon.gif'
+	              		iconUrl:'/assets/images/all_icon.gif',
+                    style:"-1px -17px;background-size: 16;"
               		};
             	}
 

@@ -63,9 +63,6 @@
 		right: 0px;
 	}
 
-/*	.nav-tabs.right-panel>li>a {
-		border-color: #eee #eee #ddd !important;
-	}*/
 
 	.position-reference {
 		height: 36px;
@@ -136,6 +133,7 @@
     			<ng-features requester="iteration" btns="featBtnConfig" hidenotcurrent="true">
     		</div>
     		<div id="testcases">
+    			{{tcsHidden}}
 				<ng-testcases requester="currentRequester" btns="btnConfig" tcminactive="tcsHidden"></ng-testcases>
     		</div>
     	</div>
@@ -148,6 +146,7 @@
     			</div>
     		</div>
     		<div id="tagstestcases">
+    			{{tagsTcsHidden}}
 				<ng-testcases requester="currentRequesterTags" btns="btnConfig" tcminactive="tagsTcsHidden"></ng-testcases>
     		</div>
     	</div>

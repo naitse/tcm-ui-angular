@@ -32,7 +32,7 @@
 }
 
 .panel-tcm.middle-panel{
-	width: 60%;
+	width: 690px;
 	border-top: 1px solid #e7e7e7;
 	margin-left: 327px;
 	min-width: 690px;
@@ -242,4 +242,11 @@ display: inline-block;
 	top:100%;
 	top:inherit;
 	float: left;
+}
+
+#release {
+	border-left: 6px solid #004766;
+}
+#iteration{
+	border-left: 6px solid #006b99;
 }

@@ -6,13 +6,47 @@ tcmModule.directive('ngRightNavPanel', function() {
         templateUrl: 'app/partials/rightnavpanel.html',
         controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function(scope, element, $attrs, $rootScope, tcm_model){
             
+            if(scope.containerType == 'sprint'){
+                scope.$watch('sprintTestInactive', function(newVal, oldVal){
+                    if(newVal == oldVal){
+                        return false;
+                    }
+
+                    if(newVal == true){
+                        scope.temptcsHidden = angular.copy(scope.tcsHidden)
+                        scope.temptagsTcsHidden = angular.copy(scope.tagsTcsHidden)
+                        scope.tcsHidden = true
+                        scope.tagsTcsHidden = true
+                    }else{
+                        scope.tcsHidden = scope.temptcsHidden
+                        scope.tagsTcsHidden = scope.temptagsTcsHidden
+                    }
+
+                })
+            }else{
+                scope.$watch('suiteTestInactive', function(newVal, oldVal){
+                    if(newVal == oldVal){
+                        return false;
+                    }
+
+                    if(newVal == true){
+                        scope.temptcsHidden = angular.copy(scope.tcsHidden)
+                        scope.temptagsTcsHidden = angular.copy(scope.tagsTcsHidden)
+                        scope.tcsHidden = true
+                        scope.tagsTcsHidden = true
+                    }else{
+                         scope.tcsHidden = scope.temptcsHidden
+                        scope.tagsTcsHidden = scope.temptagsTcsHidden
+                    }
+                })
+            }
 
             var duration = 200
             scope.releases = [];
             scope.iterations = [];
             scope.features = [];
             scope.tags = [];
-            scope.featBtnConfig = {hideBar:false, hideFeatureActions:true, hideBtns:true}
+            scope.featBtnConfig = {hideBar:false, hideFeatureActions:true, hideBtns:true, hideSearch:false}
             scope.currentRequester = {
                 id:'',
                 type:''
@@ -136,12 +170,12 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.showIterations = function(){
                 
-                $('.ng-right-nav-panel #iterations').stop(true,true).animate({left:0},function(){});
+                $(element).find('#iterations').stop(true,true).animate({left:0},function(){});
             }
             scope.hideIterations = function(){
                   scope.iterations = [];
                   scope.loadSprint();
-                $('.ng-right-nav-panel #iterations').stop(true,true).animate({left:400}, duration, function(){
+                $(element).find('#iterations').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                       scope.hideIteration = true
                       scope.resetRelease();
@@ -151,14 +185,14 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.showFeatures = function(){
-                $('.ng-right-nav-panel #features').css('height','100%').stop(true,true).animate({left:0},function(){});
+                $(element).find('#features').css('height','100%').stop(true,true).animate({left:0},function(){});
             }
 
             scope.hideFeatures = function(){
                 scope.hideIteration = false
                 scope.features = [];
                 scope.resetFeature();
-                $('.ng-right-nav-panel #features').css('height','94px').stop(true,true).animate({left:400}, duration, function(){
+                $(element).find('#features').css('height','94px').stop(true,true).animate({left:400}, duration, function(){
                     scope.$apply(function(){
                             scope.hideFeature = true
                             scope.resetIteration();
@@ -170,7 +204,8 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.tcsHidden = false
             scope.showTests = function(){
-                $('.ng-right-nav-panel #testcases').stop(true,true).animate({left:0},function(){
+                scope.featBtnConfig.hideBar = true
+                $(element).find('#testcases').stop(true,true).animate({left:0},function(){
                     scope.tcsHidden = false
                 });
             }
@@ -178,8 +213,9 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.hideTests = function(){
                 scope.hideFeature = false
                 scope.resetCurrentRequester();
-                $('.ng-right-nav-panel #testcases').stop(true,true).animate({left:400},function(){
+                $(element).find('#testcases').stop(true,true).animate({left:400},function(){
                     scope.tcsHidden = true
+                    scope.featBtnConfig.hideBar = false
                 });
             }
 
@@ -241,15 +277,14 @@ tcmModule.directive('ngRightNavPanel', function() {
             
             scope.hideTagsContainer = function(){
                 scope.hideTags = true
-                console.log('hidetags')
-                $('.ng-right-nav-panel #tags').stop(true,true).animate({left:400},function(){
+                $(element).find('#tags').stop(true,true).animate({left:400},function(){
                 });
             }
 
             scope.tagsTcsHidden = false
             scope.showTagTests = function(){
                 scope.hideTags = true
-                $('.ng-right-nav-panel #tagstestcases').stop(true,true).animate({left:0},function(){
+                $(element).find('#tagstestcases').stop(true,true).animate({left:0},function(){
                     scope.tagsTcsHidden = false
                 });
             }
@@ -257,7 +292,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.hideTagTests = function(){
                 scope.hideTags = false
                 scope.resetCurrentRequesterTags();
-                $('.ng-right-nav-panel #tagstestcases').stop(true,true).animate({left:400},function(){
+                $(element).find('#tagstestcases').stop(true,true).animate({left:400},function(){
                     scope.tagsTcsHidden = true
                 });
             }

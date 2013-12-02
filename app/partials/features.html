@@ -8,19 +8,19 @@ padding-bottom: 61px;
 </style>
 <div ng-hide="btns.hideBar == true" class="well action-bar">
 
-<div class="input-group">
+<div class="input-group" ng-hide="btns.hideSearch == true">
   <input type="text" class="form-control" placeholder="Search" ng-model="searchText">
 </div>
 
 	<div ng-hide="btns.hideBtns == true" class="btn-group btn-group-xs features-actions">
 		<div class="btn btn-default" ng-click="createFeature()">Add Item</div>
-      <div class="btn-group"  ng-show="statuses.length > 0"ng-class="(statusDDClosed == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; top:0px;cursor=pointer;">
+      <div class="btn-group"  ng-show="statuses.length > 0" ng-class="(statusDDClosed == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; top:0px;cursor=pointer;">
         <div ng-click="$event.stopPropagation(); openDD();" title="{{statusFilter.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
-            <div class="tcm-icon no-opacity" style="background: url('{{statusFilter.iconUrl}}') 0px -1px;"></div>
+            <div class="tcm-icon no-opacity" style="background: url('{{statusFilter.iconUrl}}') {{statusFilter.style}}"></div>
         </div>
         <ul class="dropdown-menu pull-right" role="menu" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; statusDDClosed = true;">
     		<li ng-click="$event.stopPropagation(); filterByStatus('all')">
-            	<a><span class="tcm-icon no-opacity" ng-attr-style="background: url('{{status.iconUrl}}') 0px -1px;" ></span>All
+            	<a><span class="tcm-icon no-opacity" style="background: url('/assets/images/all_icon.gif') -1px -17px;background-size: 16;" ></span>All
             </a>
             <div class="divider"></div>
           </li>
@@ -40,7 +40,7 @@ padding-bottom: 61px;
     <div class="panel-heading" >
       <input class="name editable" ng-model="newFeature.jiraKey"/>
     </div>
-    <div class="panel-body" ng-click="$event.stopPropagation()">
+    <div class="panel-body" ng-click="$event.stopPropagation()" style=" padding-top: 0; padding-left: 0; ">
       <div class="panel panel-default">
           <div class="panel-body">
           <div class="description-label field-label">Description</div>
@@ -49,7 +49,7 @@ padding-bottom: 61px;
       </div>
     </div>
     <div class="panel-footer">
-      <div class="btn btn-default btn-sm" ng-click="cancelNewFeature()">How about no</div>
+      <div class="btn btn-default btn-sm" ng-click="cancelNewFeature()">Close</div>
       <div class="btn btn-info btn-sm" ng-click="saveNewFeature()">Save</div>
     </div>
   </div>

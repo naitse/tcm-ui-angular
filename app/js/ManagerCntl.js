@@ -7,53 +7,22 @@ function ManagerCntl($scope, $routeParams, $http, $rootScope, tcm_model) {
 		suites:{active:false}
 	}
 
+	$scope.sprintTestInactive = false
+	$scope.suiteTestInactive = true
+
 	$scope.selectSprint = function(){
+		$scope.sprintTestInactive = false
+		$scope.suiteTestInactive = true
 		$scope.views.sprint.active = true
 		$scope.views.suites.active = false
 	}
 
 	$scope.selectSuites = function(){
+		$scope.sprintTestInactive = true
+		$scope.suiteTestInactive = false
 		$scope.views.sprint.active = false
 		$scope.views.suites.active = true
 	}
-
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-
-	// $scope.resetCurrentRequester = function(){
-	// 	$scope.currentRequester = {
-	// 		id:'',
-	// 		type:'',
-	// 		object:{}
-	// 	};
-	// }
-
-	// $scope.resetCurrentRequester();
-
-	// $scope.resetIteration = function() {
-
-	// 	$scope.iteration = {
-	// 		IterId : ''
-	// 	}
-
-	// }
-
-	// $scope.resetIteration();
-	
-	
-	// if($routeParams.projectId !== null){
-	// 	$scope.releases =  tcm_model.Releases.query();
-	// }
-	
-
-	// $scope.isEmpty = function(string){
-	// 	var result = /^\s*$/.test(string) || (string === null);
-	// 	return result;
-	// }
 
 
 }

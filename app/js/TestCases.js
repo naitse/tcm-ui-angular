@@ -141,7 +141,7 @@ tcmModule.directive('ngTestcases', function(){
         temp.$save(function(data){
           $scope.updateTestCasesList(data)
           $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
-          $scope.resetNewTestcase();
+          // $scope.resetNewTestcase();
         })
 
       }
@@ -274,7 +274,12 @@ $scope.$on('tcSelected', function(event, message){
        }
 
        $scope.updateGlobalDraggableArray =  function(){
-          _.findWhere($rootScope.draggedObjects, {id: $scope.uuid}).objects = $scope.testcases;
+        _.each($rootScope.draggedObjects, function(objectArray){
+          if(objectArray.id == $scope.uuid){
+            objectArray.objects = $scope.testcases
+          }
+        })
+          // _.findWhere($rootScope.draggedObjects, {id: $scope.uuid}).objects = $scope.testcases;
           $rootScope.currentDragUUID = $scope.uuid
        }
 
@@ -329,10 +334,11 @@ $scope.$on('tcSelected', function(event, message){
 
               $('.tcm-drag-helper').remove();
 
-              var current = _.findWhere($rootScope.draggedObjects, {id: $rootScope.currentDragUUID})
-              var dragSingle = _.findWhere(current.objects, {dragSingle: true})
+              var current = $scope.getDraggableObjectsArray()
+              console.log(angular.copy(current))
+              var dragSingle = $scope.getDragSingleObject()
               
-              if(typeof dragSingle == 'undefined'){
+              if(dragSingle == false){
                   $scope.manageDropObjects($scope.requester.id, current, 'draggable');
               }else{
                 current.objects = [dragSingle];
@@ -382,7 +388,7 @@ $scope.$on('tcSelected', function(event, message){
                   })
                   $scope.draggable = true
                 });
-
+                current.objects = []
                 return false;
               }
               _.each(current.objects, function(object){
@@ -396,10 +402,33 @@ $scope.$on('tcSelected', function(event, message){
                   })
                 }
               })
-
+              current.objects = []
             }
 
+            $scope.getDraggableObjectsArray = function(){
+              var objectsArray = []
+                _.each($rootScope.draggedObjects, function(current){
+                  if(current.id == $rootScope.currentDragUUID){
+                    objectsArray = current
+                  }
+                })
 
+                return objectsArray
+            }
+
+            $scope.getDragSingleObject = function(){
+                var object = false
+                _.each($rootScope.draggedObjects, function(current){
+                  if(current.id == $rootScope.currentDragUUID){
+                    _.each(current.objects, function(el){
+                      if(el.dragSingle == true){
+                        object = el
+                      }
+                    })
+                  }
+                })
+                return object
+            }
 
       }],
 

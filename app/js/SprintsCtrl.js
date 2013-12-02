@@ -11,6 +11,7 @@ tcmModule.directive('tcmSprintModule', function() {
             scope.features = [];
             scope.btnConfig = {hideBulk:true, hideStatus:true};
             releaseSelected = {};
+            scope.containerType = 'sprint'
             var duration = 200
 
             $("#accordion").collapse()

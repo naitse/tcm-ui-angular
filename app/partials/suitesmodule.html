@@ -1,5 +1,5 @@
 <style>
-	#tcm-suites-module .sprint-container{
+	#tcm-suites-module .lsprint-container{
 		position: relative;
 		height: 100%;
 		overflow: hidden;
@@ -15,7 +15,7 @@
 		padding-bottom: 40px;
 	}
 
-	#tcm-suites-module .sprint-container>div {
+	#tcm-suites-module .lsprint-container>div {
 		background-color: white;
 		position: absolute;
 		left: 0px;
@@ -28,16 +28,16 @@
 		left: 0px;
 	}
 
-	#tcm-suites-module .ng-left-nav-panel #iterations {
+	#tcm-suites-module .lsprint-container #iterations {
 		left: 400px;
 		top: 0px;
 	}
 
-	#tcm-suites-module .ng-left-nav-panel #features {
+	#tcm-suites-module .lsprint-container #features {
 		left: 400px;
 		top: 0px;
 	}
-	#tcm-suites-module .ng-left-nav-panel #testcases {
+	#tcm-suites-module .lsprint-container #testcases {
 		left: 400px;
 		top: 0px;
 	}
@@ -56,7 +56,7 @@
 		height: 36px;
 		margin-bottom: 0px !important;
 	}
-	#tcm-suites-module .sprint-container .panel {
+	#tcm-suites-module .lsprint-container .panel {
 		margin-bottom: 0px !important;	
 	}
 
@@ -66,7 +66,7 @@
 </style>
 
 
-	<div class="panels" ng-show="views.sprint.active == true">
+	<div class="panels">
 
 			<div class="panel panel-default panel-tcm left-panel" style=" overflow: hidden; ">
 			  <div class="panel-body panel-body-tcm" style=" overflow: hidden; height: 100%; padding-bottom: 257px; ">
@@ -80,7 +80,7 @@
 							
 				    	</div>
 					</div>
-			    	<div class="sprint-container" ng-show="sprintActiveClass == 'active'">
+			    	<div class="lsprint-container" >
 			    		<div id="releases">
 				    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases" ng-click="getIterations(rel)">
 							  <div class="panel-body">
@@ -105,14 +105,8 @@
 		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth" style="overflow: hidden;">
 
 
-			<div ng-show="views.sprint.active == true" id="sprintElements">
-				<div class="tcm-item">
-					<div class="item-header">
-						<div class="item-key"><a href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a></div>
-						<div class="item-name">{{currentRequester.object.featureName}}</div>
-					</div>
-				</div>
-				<ng-testcases class="tc-container" requester="currentRequester" trello="true"></ng-testcases>
+			<div id="sprintElements">
+				<ng-testcases class="tc-container" requester="currentRequester" tcminactive="suiteTestInactive"></ng-testcases>
 			</div>
 
 
@@ -120,6 +114,9 @@
 
 		</div>
 			<ng-right-nav-panel class="ng-right-nav-panel" ng-show="showRight == true"/>
+	</div>
+	<div class="panel-expander" ng-click="togglePanel()" style="right:{{panelExpanderRight}}">
+		<span class="glyphicon glyphicon-list"></span>
 	</div>
 
 

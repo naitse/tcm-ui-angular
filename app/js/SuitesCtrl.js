@@ -1,4 +1,4 @@
-tcmModule.directive('tcmSpuitesModule', function() {
+tcmModule.directive('tcmSuitesModule', function() {
     return {
         restrict: 'E',
         transclude:false,
@@ -6,156 +6,213 @@ tcmModule.directive('tcmSpuitesModule', function() {
         templateUrl: 'app/partials/suitesmodule.html',
         controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function(scope, element, $attrs, $rootScope, tcm_model){
             
-//             scope.releases = [];
-//             scope.iterations = [];
-//             scope.features = [];
-//             scope.btnConfig = {hideBulk:true, hideStatus:true};
-//             releaseSelected = {};
-//             var duration = 200
+            scope.releases = [];
+            scope.iterations = [];
+            scope.features = [];
+            scope.btnConfig = {hideBulk:true, hideStatus:true};
+            releaseSelected = {};
+            scope.containerType = 'suites'
+            var duration = 200
 
-//             scope.resetRelease = function(){
-//                 scope.release = {
-//                     releaseName:'',
-//                     id:''
-//                 }
-//             }
+            $("#accordion").collapse()
 
-//             scope.resetRelease();
+            scope.resetCurrentRequester = function(){
+             scope.currentRequester = {
+                 id:'',
+                 type:'',
+                 object:{}
+             };
+            }
 
-//             scope.resetIteration = function(){
-//                 scope.iteration = {
-//                     iterationName:''
-//                 }
-//             }
+            scope.resetCurrentRequester();
 
-//             scope.resetIteration();
+            scope.isEmpty = function(string){
+             var result = /^\s*$/.test(string) || (string === null);
+             return result;
+            }
 
-//             scope.resetFeature = function(){
-//                 scope.feature = {
-//                     featureName:''
-//                 }
-//             }
+            scope.resetRelease = function(){
+                scope.release = {
+                    releaseName:'',
+                    id:''
+                }
+            }
 
-//             scope.resetFeature();
+            scope.resetRelease();
 
-//             scope.back = {
-//                 state:false,
-//                 last:''
-//             }
+            scope.resetIteration = function(){
+                scope.iteration = {
+                    iterationName:''
+                }
+            }
 
-//             scope.loadSprint = function(){
-//                 scope.sprintActiveClass = 'active'
-//                 scope.suiteActiveClass = ''
-//                 scope.$parent.sprint = true
-//                 scope.$parent.suites = false
-//                 var releases = tcm_model.Releases.query();
-//                 scope.releases =  _.extend(releases, {hide:false})
+            scope.resetIteration();
 
-//             }
+            scope.resetFeature = function(){
+                scope.feature = {
+                    featureName:''
+                }
+            }
 
-//             scope.loadSprint();
+            scope.resetFeature();
 
-//             scope.loadSuites = function(){
-//                 scope.sprintActiveClass = ''
-//                 scope.suiteActiveClass = 'active'
-//                 scope.$parent.sprint = false
-//                 scope.$parent.suites = true
+            scope.back = {
+                state:false,
+                last:''
+            }
 
-//             }
+            scope.loadSprint = function(){
+                scope.sprintActiveClass = 'active'
+                scope.suiteActiveClass = ''
+                var releases = tcm_model.Releases.query();
+                scope.releases =  _.extend(releases, {hide:false})
+            }
 
-// /////////////////////////
+            scope.loadSprint();
 
-//             scope.getIterations = function(release){
-//                 scope.release = release;
-//                 _.each(scope.releases, function(rel){
-//                         rel.hide = true;
-//                 })
+/////////////////////////
 
-//                 tcm_model.Iterations.query({releaseId: scope.release.id}).$promise.then(function(data){
-//                     scope.iterations = _.extend(data, {hide:false});
-//                     scope.showIterations();
-//                     scope.back.state = true;
-//                     scope.back.last = scope.hideIterations;
-//                 })
-//             }
+            scope.getIterations = function(release){
+                scope.release = release;
+                _.each(scope.releases, function(rel){
+                        rel.hide = true;
+                })
 
-//             scope.getFeatures = function(iteration){
-//                 iteration.callback = function(){
-//                     scope.showFeatures();
-//                 }
-//                 scope.iteration = iteration
-//                 // scope.$parent.iteration = scope.iteration
+                tcm_model.Iterations.query({releaseId: scope.release.id}).$promise.then(function(data){
+                    scope.iterations = _.extend(data, {hide:false});
+                    scope.showIterations();
+                    scope.back.state = true;
+                    scope.back.last = scope.hideIterations;
+                })
+            }
 
-//                _.each(scope.iterations, function(iter){
-//                         iter.hide = true;
-//                 })
+            scope.getFeatures = function(iteration){
+                iteration.callback = function(){
+                    scope.showFeatures();
+                }
+                scope.iteration = iteration
+                // scope.$parent.iteration = scope.iteration
 
-//                // scope.showFeatures();
-//             }
+               _.each(scope.iterations, function(iter){
+                        iter.hide = true;
+                })
 
-//             scope.showIterations = function(){
+               // scope.showFeatures();
+            }
+
+            scope.showIterations = function(){
                 
-//                 $('.ng-left-nav-panel #iterations').stop(true,true).animate({left:0}, duration, function(){});
-//             }
-//             scope.hideIterations = function(){
-//                   scope.iterations = [];
-//                   scope.$parent.resetCurrentRequester();  
-//                   scope.loadSprint();
-//                 $('.ng-left-nav-panel #iterations').stop(true,true).animate({left:400}, duration, function(){
-//                     scope.$apply(function(){
-//                       scope.hideIteration = true
-//                       scope.resetRelease();
-//                       scope.back.state = false
-//                     });
-//                 });
-//             }
+                $('#tcm-suites-module .lsprint-container #iterations').stop(true,true).animate({left:0}, duration, function(){});
+            }
+            scope.hideIterations = function(){
+                  scope.iterations = [];
+                  scope.resetIteration();
+                  scope.resetCurrentRequester();  
+                  scope.loadSprint();
+                $('#tcm-suites-module .lsprint-container #iterations').stop(true,true).animate({left:400}, duration, function(){
+                    scope.$apply(function(){
+                      scope.hideIteration = true
+                      scope.resetRelease();
+                      scope.back.state = false
+                    });
+                });
+            }
 
-//             scope.showFeatures = function(){
-//                 $('.ng-left-nav-panel #features').stop(true,true).animate({left:0}, duration, function(){});
-//             }
+            scope.showFeatures = function(){
+                $('#tcm-suites-module .lsprint-container #features').stop(true,true).animate({left:0}, duration, function(){});
+            }
 
-//             scope.hideFeatures = function(){
-//                 scope.hideIteration = false
-//                 scope.features = [];
-//                 scope.resetFeature();
-//                 $('.ng-left-nav-panel #features').stop(true,true).animate({left:400}, duration, function(){
-//                     scope.$apply(function(){
-//                             scope.hideFeature = true
-//                             scope.resetIteration();
-//                             scope.back.last = scope.hideIterations;
-//                         }
-//                     );
-//                 });
-//             }
+            scope.hideFeatures = function(){
+                scope.hideIteration = false
+                scope.features = [];
+                scope.resetFeature();
+                $('#tcm-suites-module .lsprint-container #features').stop(true,true).animate({left:400}, duration, function(){
+                    scope.$apply(function(){
+                            scope.hideFeature = true
+                            scope.resetIteration();
+                            scope.back.last = scope.hideIterations;
+                        }
+                    );
+                });
+            }
 
-//             scope.backToReleases = function(){
-//                 scope.resetCurrentRequester();
-//                 scope.resetRelease();
-//                 scope.hideFeatures();
-//                 scope.hideIterations()
-//             }
-//             scope.backToIterations = function(){
-//                 scope.resetCurrentRequester();
-//                 scope.resetIteration();
-//                 scope.getIterations(scope.release)
-//                 scope.hideFeatures();
-//             }
+            scope.backToReleases = function(){
+                scope.resetCurrentRequester();
+                scope.resetRelease();
+                scope.loadSprint();
+                scope.hideFeatures();
+                scope.hideIterations();
+            }
+            scope.backToIterations = function(){
+                scope.resetCurrentRequester();
+                scope.resetIteration();
+                scope.getIterations(scope.release)
+                scope.hideFeatures();
+            }
 
-//             scope.backToFeatures = function(){
-//                 scope.getFeatures(scope.iteration)
-//             }
+            scope.backToFeatures = function(){
+                scope.getFeatures(scope.iteration)
+            }
 
-//             scope.setCurrentRequester = function(feature){
-//                 scope.$parent.currentRequester.id = feature.featureId
-//                 scope.$parent.currentRequester.type = "feature"
-//                 scope.$parent.currentRequester.object = feature
-//             }
+            scope.setCurrentRequester = function(feature){
+                scope.currentRequester.id = feature.featureId
+                scope.currentRequester.type = "feature"
+                scope.currentRequester.object = feature
+            }
 
-//             scope.resetCurrentRequester = function(){
-//                 scope.$parent.currentRequester.id = ''
-//                 scope.$parent.currentRequester.type = ""
-//                 scope.$parent.currentRequester.object = {}
-//             }
+            scope.resetCurrentRequester = function(){
+                scope.currentRequester.id = ''
+                scope.currentRequester.type = ""
+                scope.currentRequester.object = {}
+            }
+
+
+
+/////////////////////////
+
+            scope.showRight = true;
+            scope.toggleIcon = (scope.showRight == true)?'right':'left';
+            scope.panelExpanderRight = (scope.showRight == true)?334:0;
+
+            scope.togglePanel = function(){
+                scope.showRight = !scope.showRight
+                scope.toggleIcon = (scope.showRight == true)?'right':'left';
+                scope.panelExpanderRight = (scope.showRight == true)?334:0;
+            }
+
+            scope.middleWidth = {
+                width: window.innerWidth - 325
+            };
+
+
+            scope.getWidth = function() {
+                return window.innerWidth;
+            };
+
+            scope.$watch(scope.getWidth, function(newValue, oldValue) {
+                newWidth = (scope.showRight == false)? newValue - 325: newValue - 661;
+                scope.middleWidth = {
+                    width: newWidth
+                };
+            });
+
+            scope.$watch('showRight', function(value, old){
+                if(value == old){
+                    return false;
+                }
+
+                newWidth = (scope.showRight == false)? scope.getWidth() - 325: scope.getWidth() - 661;
+
+                scope.middleWidth = {
+                    width: newWidth
+                };
+                scope.$apply();
+
+            })
+
+            window.onresize = function(){
+                scope.$apply();
+            }
 
         }],
         link: function(scope, elm, attr, ngModelCtrl) {
