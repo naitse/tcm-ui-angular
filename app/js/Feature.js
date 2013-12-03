@@ -6,14 +6,14 @@ tcmModule.directive('ngFeature', function(){
        // scope:{ 
        //    tc: '='
        //  },
-       controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
+       controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', 'draggedObjects', function($scope, element, $attrs, $rootScope, tcm_model, DO){
 
           $scope.droppable = $scope.$parent.droppable || true;
             $scope.handleDrop = function(feature){
               $('.tcm-drag-helper').remove();
 
-              var current =  $scope.getDraggableObjectsArray()
-              var dragSingle = $scope.getDragSingleObject()
+              var current =  DO.getObjects()
+              var dragSingle = DO.getDragSingleObject()
               
               if(dragSingle == false){
                   $scope.manageDropObjects(feature, current, 'draggable');
@@ -25,8 +25,7 @@ tcmModule.directive('ngFeature', function(){
 
             $scope.manageDropObjects = function(feature, current, key){
 
-              _.each(current.objects, function(object){
-              // _.each($scope['testcases'], function(object){
+              _.each(dObjects, function(object){
 
                 if(object.type == 'test' && object[key]){
 
@@ -42,32 +41,6 @@ tcmModule.directive('ngFeature', function(){
                 }
 
               })
-            }
-
-
-            $scope.getDraggableObjectsArray = function(){
-              var objectsArray = []
-                _.each($rootScope.draggedObjects, function(current){
-                  if(current.id == $rootScope.currentDragUUID){
-                    objectsArray = current
-                  }
-                })
-
-                return objectsArray
-            }
-
-            $scope.getDragSingleObject = function(){
-                var object = false
-                _.each($rootScope.draggedObjects, function(current){
-                  if(current.id == $rootScope.currentDragUUID){
-                    _.each(current.objects, function(el){
-                      if(el.dragSingle == true){
-                        object = el
-                      }
-                    })
-                  }
-                })
-                return object
             }
 
             $scope.clone = function(){

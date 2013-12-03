@@ -3,7 +3,7 @@ tcmModule.directive('ngTestcase', function(){
       restrict: 'E',
       transclude: true,
        templateUrl: 'app/partials/testcase.html',
-       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', function($scope, element, $attrs, $rootScope, tcm_model, DO){
         
         $scope.deleteText = "Delete?";
         $scope.draggable = $scope.tc.draggable;
@@ -132,17 +132,18 @@ tcmModule.directive('ngTestcase', function(){
               $scope.tc.dragSingle = false;
             }else{
               $scope.tc.dragSingle = true;
-              $scope.$parent.updateGlobalDraggableArray();
+              // $scope.$parent.updateGlobalDraggableArray();
             }
           }else{
               $scope.tc.dragSingle = true;
-              $scope.$parent.updateGlobalDraggableArray();
+              // $scope.$parent.updateGlobalDraggableArray();
           }
+          $scope.$parent.updateGlobalDraggableArray();
         }
 
         $scope.handleDragRevert = function(tc){
           $scope.$parent.droppable = true;
-          $rootScope.currentDragUUID = '';
+          DO.cleanDraggable();
         }
 
        }],

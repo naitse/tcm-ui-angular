@@ -4,17 +4,19 @@ tcmModule.directive('ngTestcases', function(){
       transclude: false,
       scope:{requester:'=', btns:'=', tcminactive:'='},
       templateUrl: 'app/partials/testcases.html',
-       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', function($scope, element, $attrs, $rootScope, tcm_model, DO){
 
         $scope.showTCdelete = false
         $scope.selectall = false
         $scope.hideBulk = false;
         $scope.uuid = Math.floor(Math.random()*10000001);
+
         var draggedTests = {
           id: $scope.uuid,
           objects:[]
         }
-        $rootScope.draggedObjects.push(draggedTests)
+
+        DO.draggedObjects.push(draggedTests)
 
         if(typeof $scope.btns !== 'undefined'){
           if($scope.btns.hideBulk){
@@ -111,7 +113,7 @@ tcmModule.directive('ngTestcases', function(){
 
         $scope.cloneTcBulk = function(){
 
-            var contraryPanel = _.without($rootScope.draggedObjects,_.findWhere($rootScope.draggedObjects,{id:$scope.uuid}))
+            var contraryPanel = _.without(DO.draggedObjects,_.findWhere(DO.draggedObjects,{id:$scope.uuid}))
           _.each($scope.testcases,function(tc){
             if(tc.checked == true){
               var newTc = new tcm_model.TestCasesCloneTC({tcId:tc.tcId});
@@ -141,7 +143,6 @@ tcmModule.directive('ngTestcases', function(){
         temp.$save(function(data){
           $scope.updateTestCasesList(data)
           $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
-          // $scope.resetNewTestcase();
         })
 
       }
@@ -202,13 +203,13 @@ tcmModule.directive('ngTestcases', function(){
 
   $scope.tcChecked = function(){
     $scope.manageDragState();
-    $scope.updateGlobalDraggableArray();
+    // $scope.updateGlobalDraggableArray();
     $scope.verifyBulkDisplay()
  }
 
 $scope.tcUnchecked = function(){
     $scope.manageDragState();
-    $scope.updateGlobalDraggableArray();
+    // $scope.updateGlobalDraggableArray();
     $scope.verifyBulkDisplay();
  }
 
@@ -270,17 +271,16 @@ $scope.$on('tcSelected', function(event, message){
                     }
                   })
               }
-              $scope.updateGlobalDraggableArray();
+              // $scope.updateGlobalDraggableArray();
        }
 
        $scope.updateGlobalDraggableArray =  function(){
-        _.each($rootScope.draggedObjects, function(objectArray){
-          if(objectArray.id == $scope.uuid){
-            objectArray.objects = $scope.testcases
-          }
-        })
-          // _.findWhere($rootScope.draggedObjects, {id: $scope.uuid}).objects = $scope.testcases;
-          $rootScope.currentDragUUID = $scope.uuid
+          _.each(DO.draggedObjects, function(objectArray){
+            if(objectArray.id == $scope.uuid){
+              objectArray.objects = $scope.testcases
+            }
+          })
+          DO.currentDragUUID = $scope.uuid
        }
 
         $scope.verifyBulkDisplay = function(){
@@ -334,98 +334,74 @@ $scope.$on('tcSelected', function(event, message){
 
               $('.tcm-drag-helper').remove();
 
-              var current = $scope.getDraggableObjectsArray()
-              var dragSingle = $scope.getDragSingleObject()
+              var dObjects = DO.getObjects()
               
-              if(dragSingle == false){
-                  $scope.manageDropObjects($scope.requester.id, current, 'draggable');
-              }else{
-                current.objects = [dragSingle];
-                  $scope.manageDropObjects($scope.requester.id, current, 'dragSingle');
-              }
+              $scope.manageDropObjects($scope.requester.id, dObjects, 'draggable');
             
             }
 
-            $scope.manageDropObjects = function(featureId, current, key){
-              if($scope.requester.type == 'tag'){
-                // return false;
-                var verifyArrayTemp = angular.copy(current.objects)
+            $scope.manageDropObjects = function(featureId, dObjects){
 
-                _.each(verifyArrayTemp,function(tc){
-                  var exists = _.findWhere($scope.testcases, {tcId:tc.tcId})
-                  if(typeof exists != 'undefined'){
-                    current.objects = _.without(current.objects, _.findWhere(current.objects,{tcId:tc.tcId}))
-                  }
-                })
+              // if($scope.requester.type == 'tag'){
+              //    return false;
+              //   var verifyArrayTemp = angular.copy(current.objects)
 
-                if (current.objects.length == 0){
-                  $scope.draggable = true
-                  return false;
-                }
+              //   _.each(verifyArrayTemp,function(tc){
+              //     var exists = _.findWhere($scope.testcases, {tcId:tc.tcId})
+              //     if(typeof exists != 'undefined'){
+              //       current.objects = _.without(current.objects, _.findWhere(current.objects,{tcId:tc.tcId}))
+              //     }
+              //   })
 
-                if(key == 'dragSingle'){
-                  current.objects = [_.findWhere(current.objects, {dragSingle:true})]
-                }
+              //   if (current.objects.length == 0){
+              //     $scope.draggable = true
+              //     return false;
+              //   }
 
-                if(key == 'draggable'){
-                  var temp = []
-                  _.each(current.objects, function(obj){
-                    if(obj.draggable == true){
-                      temp.push(obj)
-                    }
-                  })
-                  current.objects = temp
-                }
+              //   if(key == 'dragSingle'){
+              //     current.objects = [_.findWhere(current.objects, {dragSingle:true})]
+              //   }
 
-                var tagTc = new tcm_model.TagsTcs({tid:featureId})
-                tagTc.tid = featureId;
-                tagTc.testArray = angular.copy(current.objects)
-                tagTc.$save(function(){
-                  _.each(tagTc.testArray, function(data){
-                    data.dragSingle = false;
-                    $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
-                  })
-                  $scope.draggable = true
-                });
-                return false;
-              }
-              _.each(current.objects, function(object){
-                  if(object.type == 'test' && object[key]){
+              //   if(key == 'draggable'){
+              //     var temp = []
+              //     _.each(current.objects, function(obj){
+              //       if(obj.draggable == true){
+              //         temp.push(obj)
+              //       }
+              //     })
+              //     current.objects = temp
+              //   }
+
+              //   var tagTc = new tcm_model.TagsTcs({tid:featureId})
+              //   tagTc.tid = featureId;
+              //   tagTc.testArray = angular.copy(current.objects)
+              //   tagTc.$save(function(){
+              //     _.each(tagTc.testArray, function(data){
+              //       data.dragSingle = false;
+              //       data.draggable = true;
+              //       $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
+              //     })
+              //     $scope.draggable = true
+              //   });
+              //   return false;
+              // }
+
+
+              _.each(dObjects, function(object){
+                  if(object.type == 'test'){
                       var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
                       newTc.featureId = featureId;
                       newTc.$save(function(data){
-                        object.dragSingle = false;
-                        $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
+                        //object.dragSingle = false;
+                        $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: dObjects.id});
                         $rootScope.$broadcast('tcStatusUpdated', {featureId: featureId});
                   })
                 }
               })
+
+              DO.cleanDraggable();
             }
 
-            $scope.getDraggableObjectsArray = function(){
-              var objectsArray = []
-                _.each($rootScope.draggedObjects, function(current){
-                  if(current.id == $rootScope.currentDragUUID){
-                    objectsArray = current
-                  }
-                })
-
-                return objectsArray
-            }
-
-            $scope.getDragSingleObject = function(){
-                var object = false
-                _.each($rootScope.draggedObjects, function(current){
-                  if(current.id == $rootScope.currentDragUUID){
-                    _.each(current.objects, function(el){
-                      if(el.dragSingle == true){
-                        object = el
-                      }
-                    })
-                  }
-                })
-                return object
-            }
 
       }],
 
