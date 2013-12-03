@@ -24,6 +24,29 @@ tcmModule.directive('ngTagsWidget', function(){
           $scope.tags = newVal
         })
 
+        $scope.handleTagInput = function(searchTag){
+          console.log(searchTag)
+          var tagFound = false;
+
+          _.each($scope.globalTags, function(tag){
+              if(tag.name == searchTag){
+                $scope.tagTc(tag);
+                $scope.searchTag = ''
+                tagFound = true;  
+              }
+          })
+
+          if(tagFound == false){
+            var newTag = new tcm_model.Tags();
+            newTag.name = searchTag
+            newTag.$save(function(data){
+              $scope.tagTc(data)
+              $scope.searchTag = ''
+            })
+          }
+
+        }
+
         $scope.getTags = function(){
           $scope.globalTags = [];
           $scope.loadingTags = true;
