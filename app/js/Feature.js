@@ -12,36 +12,11 @@ tcmModule.directive('ngFeature', function(){
             $scope.handleDrop = function(feature){
               $('.tcm-drag-helper').remove();
 
-              var current =  DO.getObjects()
-              var dragSingle = DO.getDragSingleObject()
-              
-              if(dragSingle == false){
-                  $scope.manageDropObjects(feature, current, 'draggable');
-              }else{
-                  $scope.manageDropObjects(feature, current, 'dragSingle');
-              }
+              DO.dropTestsOnFeature(feature)
+
             
             }
 
-            $scope.manageDropObjects = function(feature, current, key){
-
-              _.each(dObjects, function(object){
-
-                if(object.type == 'test' && object[key]){
-
-                  var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
-                  newTc.featureId = feature.featureId;
-                  newTc.$save(function(data){
-                    object.dragSingle = false;
-                    $rootScope.$broadcast('tcStatusUpdated', {featureId: feature.featureId});
-                    if(feature.current == true){
-                      $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
-                    }
-                  })
-                }
-
-              })
-            }
 
             $scope.clone = function(){
               feat = {

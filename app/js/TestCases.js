@@ -334,13 +334,12 @@ $scope.$on('tcSelected', function(event, message){
 
               $('.tcm-drag-helper').remove();
 
-              var dObjects = DO.getObjects()
-              
-              $scope.manageDropObjects($scope.requester.id, dObjects, 'draggable');
+              DO.dropTestsOnTestsContainer($scope.requester.id)
+
             
             }
 
-            $scope.manageDropObjects = function(featureId, dObjects){
+            // $scope.manageDropObjects = function(featureId, dObjects){
 
               // if($scope.requester.type == 'tag'){
               //    return false;
@@ -386,21 +385,7 @@ $scope.$on('tcSelected', function(event, message){
               //   return false;
               // }
 
-
-              _.each(dObjects, function(object){
-                  if(object.type == 'test'){
-                      var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
-                      newTc.featureId = featureId;
-                      newTc.$save(function(data){
-                        //object.dragSingle = false;
-                        $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: dObjects.id});
-                        $rootScope.$broadcast('tcStatusUpdated', {featureId: featureId});
-                  })
-                }
-              })
-
-              DO.cleanDraggable();
-            }
+            // }
 
 
       }],
