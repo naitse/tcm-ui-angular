@@ -3,7 +3,7 @@
 		overflow: hidden;
 		overflow-y: auto;
 		height: 100%;
-padding-bottom: 61px;
+    padding-bottom: 248px;
 	}
 </style>
 <div ng-hide="btns.hideBar == true" class="well action-bar">
@@ -31,12 +31,7 @@ padding-bottom: 61px;
         </ul>
       </div>
 	</div>
-</div>
-
-
-
-<div class="features-container">
-  <div ng-show="newFeature.create" class="panel panel-default current testcase" ng-class="">
+    <div ng-show="newFeature.create" class="panel panel-default current testcase" ng-class="">
     <div class="panel-heading" >
       <input class="name editable" ng-model="newFeature.jiraKey"/>
     </div>
@@ -53,5 +48,11 @@ padding-bottom: 61px;
       <div class="btn btn-info btn-sm" ng-click="saveNewFeature()">Save</div>
     </div>
   </div>
+</div>
+
+
+
+
+<div class="features-container">
 	<ng-feature ng-repeat="feature in features | filter:searchText" ng-hide="feature.hide"></ng-feature>
 </div>
