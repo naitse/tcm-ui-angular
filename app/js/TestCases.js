@@ -168,7 +168,7 @@ tcmModule.directive('ngTestcases', function(){
 
 
   $rootScope.$on('tcUntagged', function(event, message){
-    if($scope.requester.type == 'tag'){
+    if($scope.requester.type == 'tag' && $scope.requester.id == message.tag.id){
       $scope.removeTCfromScope(message.tc)
     }
   })
@@ -334,59 +334,15 @@ $scope.$on('tcSelected', function(event, message){
 
               $('.tcm-drag-helper').remove();
 
-              DO.dropTestsOnTestsContainer($scope.requester.id)
+              if($scope.requester.type == 'tag'){
+                DO.dropTestOnTagContainer($scope.requester, $scope.testcases)
+              }else{
+                DO.dropTestsOnTestsContainer($scope.requester.id)
+              }
 
-            
+              $scope.draggable = true            
+
             }
-
-            // $scope.manageDropObjects = function(featureId, dObjects){
-
-              // if($scope.requester.type == 'tag'){
-              //    return false;
-              //   var verifyArrayTemp = angular.copy(current.objects)
-
-              //   _.each(verifyArrayTemp,function(tc){
-              //     var exists = _.findWhere($scope.testcases, {tcId:tc.tcId})
-              //     if(typeof exists != 'undefined'){
-              //       current.objects = _.without(current.objects, _.findWhere(current.objects,{tcId:tc.tcId}))
-              //     }
-              //   })
-
-              //   if (current.objects.length == 0){
-              //     $scope.draggable = true
-              //     return false;
-              //   }
-
-              //   if(key == 'dragSingle'){
-              //     current.objects = [_.findWhere(current.objects, {dragSingle:true})]
-              //   }
-
-              //   if(key == 'draggable'){
-              //     var temp = []
-              //     _.each(current.objects, function(obj){
-              //       if(obj.draggable == true){
-              //         temp.push(obj)
-              //       }
-              //     })
-              //     current.objects = temp
-              //   }
-
-              //   var tagTc = new tcm_model.TagsTcs({tid:featureId})
-              //   tagTc.tid = featureId;
-              //   tagTc.testArray = angular.copy(current.objects)
-              //   tagTc.$save(function(){
-              //     _.each(tagTc.testArray, function(data){
-              //       data.dragSingle = false;
-              //       data.draggable = true;
-              //       $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: current.id});
-              //     })
-              //     $scope.draggable = true
-              //   });
-              //   return false;
-              // }
-
-            // }
-
 
       }],
 

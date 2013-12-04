@@ -253,6 +253,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.resetCurrentRequesterTags = function(){
                 scope.currentRequesterTags.id = ''
                 scope.currentRequesterTags.type = 'tag'
+                scope.currentRequesterTags.name = ''
             };
 
             scope.loadTags = function(){
@@ -282,6 +283,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.loadTagTc = function(tag){
                 scope.currentRequesterTags.id = tag.id
                 scope.currentRequesterTags.type = 'tag'
+                scope.currentRequesterTags.name = tag.name
                  _.each(scope.tags, function(tagEl){
                     if(tagEl.id != tag.id){
                         tagEl.hide = true;

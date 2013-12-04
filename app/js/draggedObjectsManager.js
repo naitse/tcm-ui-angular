@@ -75,6 +75,29 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
 
               DO.cleanDraggable();
 
+        },
+        dropTestOnTagContainer:function(tag, testCases){
+
+              var dObjects = DO.getObjects()
+
+                _.each(dObjects ,function(tc){
+                  var exists = _.findWhere(testCases, {tcId:tc.tcId})
+                  if(typeof exists != 'undefined'){
+                    dObjects = _.without(dObjects, _.findWhere(dObjects,{tcId:tc.tcId}))
+                  }
+                })
+
+                var tagTc = new tcm_model.TagsTcs({tid:tag.id})
+                tagTc.tid = tag.id;
+                tagTc.testArray = angular.copy(dObjects)
+                tagTc.$save(function(){
+                  _.each(tagTc.testArray, function(data){
+                    
+                    $rootScope.$broadcast('tcTagged', {tc: data, tag:angular.copy(tag)});
+                    // $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: DO.currentDragUUID});
+                  })
+                });
+
         }
     };
 

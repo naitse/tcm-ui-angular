@@ -13,6 +13,12 @@ tcmModule.directive('ngTagsWidget', function(){
           $scope.tags = _.without($scope.tags, _.findWhere($scope.tags, {id:message.tagId}))
         })
 
+        $rootScope.$on('tcTagged', function(event, message){
+          if($scope.$parent.tc.tcId == message.tc.tcId){
+            $scope.tags.push(message.tag)
+          }
+        })
+
         $scope.tags = [];
         $scope.globalTags = [];
         $scope.loadingTags = false;
@@ -29,7 +35,6 @@ tcmModule.directive('ngTagsWidget', function(){
         })
 
         $scope.handleTagInput = function(searchTag){
-          console.log(searchTag)
           var tagFound = false;
 
           _.each($scope.globalTags, function(tag){
@@ -85,7 +90,7 @@ tcmModule.directive('ngTagsWidget', function(){
           tagTc.tcId = tcId;
           tagTc.testArray = [$scope.$parent.tc]
           tagTc.$delete(function(){
-            $rootScope.$broadcast('tcUntagged', {tc: $scope.$parent.tc});
+            $rootScope.$broadcast('tcUntagged', {tc: $scope.$parent.tc, tag:tag});
             $scope.globalTags.push(tag);
             $scope.removeFromTags(tag)
           });
