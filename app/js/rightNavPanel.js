@@ -242,6 +242,14 @@ tcmModule.directive('ngRightNavPanel', function() {
             //////////////////////////TAGS
 
 
+            $rootScope.$on('tagCreated', function(event, message){
+                var cTag = new tcm_model.Tags()
+                cTag.name = message.tag.name
+                cTag.id = message.tag.id
+                cTag.hide = false;
+                scope.tags.push(cTag)
+            })
+
             scope.resetCurrentRequesterTags = function(){
                 scope.currentRequesterTags.id = ''
                 scope.currentRequesterTags.type = 'tag'
@@ -256,6 +264,19 @@ tcmModule.directive('ngRightNavPanel', function() {
                 tcm_model.Tags.query(function(res){
                     scope.tags = _.extend(res, {hide:false});
                 })
+            }
+
+            scope.deleteTag = function(tag, deleteText){
+
+                deleteText = 'Bye!'
+
+                var tagId = angular.copy(tag.id);
+
+                tag.$delete({tid:tag.id}, function(){
+                    scope.tags = _.without(scope.tags, _.findWhere(scope.tags,{id:tagId}))
+                    $rootScope.$broadcast('tagDeleted', {tagId: tagId});
+                })                
+
             }
 
             scope.loadTagTc = function(tag){

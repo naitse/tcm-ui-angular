@@ -76,6 +76,7 @@
 	.single-tag {
 		border-radius: 25px 6px 6px 25px;
 		height: 30px;
+		position: relative;
 	}
 
 	#tag .panel-body{
@@ -142,6 +143,10 @@
     			<div ng-repeat="tag in tags" id="tag" ng-hide="tag.hide" class="panel panel-default single-tag" ng-click="loadTagTc(tag)">
 	    			<div class="panel-body">
 	    				<div class="cordon"></div>{{tag.name}}
+	    			</div>
+	    			<div class="btn-group" style=" position: absolute; right: 0; top: 0; ">
+		    			<div class="btn" ng-hide="deleteFlag == true"><span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); deleteFlag = true;"></span></div>
+						<div class="btn btn-danger btn-xs btn-delete" ng-show="deleteFlag == true" ng-click="$event.stopPropagation(); deleteTag(tag, deleteText)" ng-mouseleave="$event.stopPropagation(); deleteFlag = false" style=" margin-top: 3px; margin-right: 3px; border-radius: 4px; ">{{(deleteText) || 'Delete?' }}</div>
 	    			</div>
     			</div>
     		</div>

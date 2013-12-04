@@ -9,6 +9,10 @@ tcmModule.directive('ngTagsWidget', function(){
        controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
 
 
+        $rootScope.$on('tagDeleted', function(event, message){
+          $scope.tags = _.without($scope.tags, _.findWhere($scope.tags, {id:message.tagId}))
+        })
+
         $scope.tags = [];
         $scope.globalTags = [];
         $scope.loadingTags = false;
@@ -40,8 +44,12 @@ tcmModule.directive('ngTagsWidget', function(){
             var newTag = new tcm_model.Tags();
             newTag.name = searchTag
             newTag.$save(function(data){
+              if(data.FALSE == 0){
+                return false;
+              }
               $scope.tagTc(data)
               $scope.searchTag = ''
+              $rootScope.$broadcast('tagCreated', {tag: data});
             })
           }
 
