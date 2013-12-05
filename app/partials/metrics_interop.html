@@ -1,0 +1,182 @@
+<div ng-controller="TopMenuCntl">
+    <ng-include src="topmenu"></ng-include>
+</div>
+<style>
+    .btn-pill div:hover {
+        text-decoration: none;
+        background-color: #f5f5f5;
+        cursor: pointer;
+    }
+    .btn-pill div:first-child {
+        -webkit-border-radius: 15px 0px 0px 15px;
+        -moz-border-radius: 15px 0px 0px 15px;
+        border-radius: 15px 0px 0px 15px;
+    }
+    .btn-pill .active {
+        border: 1px solid #ddd !important;
+        box-shadow: #d2e9fa 0 0 50px inset !important;
+        -moz-box-shadow: #d2e9fa 0 0 50px inset !important;
+        -webkit-box-shadow: #d2e9fa 0 0 50px inset !important;
+    }
+    .btn-pill div {
+        display: inline-block;
+        padding: 5px 14px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+    }
+
+    .btn-pill div:last-child {
+        -webkit-border-radius: 0px 15px 15px 0px;
+        -moz-border-radius: 0px 15px 15px 0px;
+        border-radius: 0px 15px 15px 0px;
+        margin-left: -5px;
+    }
+
+    #InteropMetrics #refresh-graph {
+        display: none;
+        padding: 7px 0px 7px 5px;
+        border-top: 1px solid #ddd;
+        margin-left: -5px;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+    }
+    .icon-refresh {
+        width: 20px;
+        height: 20px;
+    }
+
+    .btn-pill {
+        cursor: default;
+        width: 160px;
+        position: relative;
+        top: -15px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .icon-refresh {
+        width: 20px;
+        height: 20px;
+    }
+
+    #overal div {
+        height: 16%;
+        border-bottom: 1px dashed;
+        position: relative;
+        line-height: 2;
+        padding-left: 5px;
+        font-size: 16px;
+    }
+
+    #overal div .value {
+        position: absolute;
+        right: 4px;
+        top: 7;
+        font-size: 16px;
+    }
+    #overal div:nth-child(odd) {
+        background: #f7f7f7;
+    }
+    #InteropMetrics .graph-previews .graph {
+        width: 320px;
+        height: 200px;
+        padding: 6px;
+        margin-bottom: 20px;
+    }
+    .round-corner-all {
+        border-radius: 6px;
+    }
+
+    #InteropMetrics .graph-previews {
+        display: table-cell;
+        width: 300px;
+        vertical-align: top;
+        padding: 8px;
+        position: relative;
+        top: -30px;
+        min-height: 580px;
+        background: red;
+    }
+
+    .label-inverse {
+        background-color: #333;
+    }
+
+    .label-important {
+        background-color: #b94a48;
+    }
+</style>
+<div>
+    <div>
+        <ul class="nav nav-tabs" id="interopTabs" style=" margin-bottom: 0px; ">
+            <li class="active">
+                <a data-toggle="#rlscontrol">Release Overview</a>
+            </li>
+            <li class="">
+                <a data-toggle="#xteams" style="visibility: visible;">Teams Overview</a>
+            </li>
+            <li class="">
+                <a data-toggle="#report" id="rep" style="visibility: visible;">Report</a>
+            </li>
+        </ul>
+        <div class="tab-content" style="height: 522px;">
+            <div class="tab-pane active" id="rlscontrol">
+                <div id="metrics-controls">
+                    <div class="btn-pill" style="visibility: visible; width: 185px;">
+                        <div id="global" class="active" href="#">General</div>
+                        <a id="refresh-graph" style="display: inline;"><i class="icon-refresh"></i></a>
+                        <div id="byitem" href="#">By Item</div>
+                    </div>
+                </div>
+                <img src="assets/images/loading.gif" id="loading-indicator" style="margin-top: 10%; margin-left: 40%; position: absolute; z-index: 1000; display: none;">
+
+                <div id="metricsContainer" class="startup" style=" display: block;">
+                    <div class="graph-container" style="padding-left: 100px;padding-right: 100px;">
+                        <div class="main-container" style="vertical-align: top; display: table-cell">
+                            <div id="container">
+                                <highchart id="previewGraph" series="previewGraph.series" title="previewGraph.title" options="previewGraph.options"></highchart>
+                                <span class="glyphicon glyphicon-new-window" ng-click="switchGraph();" ></span>
+                            </div>
+                            <div class="graph-previews round-corner-all" style="margin-top: 40px;">
+
+                                <div id="overal" style="width: 300px; height: 200px; border: 1px solid rgb(212, 212, 212); margin-bottom: 20px;" class="graph round-corner-all">
+                                    <div class="rls-total">
+                                        <span>Total</span>
+                                        <span class="value label label-inverse">{{executionGraph.total}}</span>
+                                    </div>
+                                    <div class="rls-passed">
+                                        <span>Passed</span>
+                                        <span class="value label label-success">90</span>
+                                    </div>
+                                    <div class="rls-failed">
+                                        <span>Failed</span>
+                                        <span class="value label label-important">10</span>
+                                    </div>
+                                    <div class="rls-blocked">
+                                        <span>Blocked</span>
+                                        <span class="value label label-warning">0</span>
+                                    </div>
+                                    <div class="rls-inp">
+                                        <span>In Progress</span>
+                                        <span class="value label label-info">27</span>
+                                    </div>
+                                    <div class="rls-nrun">
+                                        <span>Not Run</span>
+                                        <span class="value label" style="background-color: #999;">49</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: table-cell">
+                            <div id="container">
+                                <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
