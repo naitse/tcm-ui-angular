@@ -6,10 +6,10 @@ tcmModule.directive('tcmSuitesModule', function() {
         templateUrl: 'app/partials/suitesmodule.html',
         controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function(scope, element, $attrs, $rootScope, tcm_model){
             
-            scope.releases = [];
+            scope.suites = [];
             scope.iterations = [];
             scope.features = [];
-            scope.btnConfig = {hideBulk:true, hideStatus:true};
+            scope.btnConfig = {hideDropdown:true};
             releaseSelected = {};
             scope.containerType = 'suites'
             var duration = 200
@@ -61,14 +61,24 @@ tcmModule.directive('tcmSuitesModule', function() {
                 last:''
             }
 
-            scope.loadSprint = function(){
+            scope.loadSuites = function(){
                 scope.sprintActiveClass = 'active'
                 scope.suiteActiveClass = ''
-                var releases = tcm_model.Releases.query();
-                scope.releases =  _.extend(releases, {hide:false})
+                var suite = tcm_model.Suites.query();
+                scope.suites =  _.extend(suite, {hide:false})
             }
 
-            scope.loadSprint();
+            scope.loadSuites();
+
+
+            scope.getSuiteTestcases = function(suite){
+                console.log(suite)
+                scope.currentRequester = {
+                     id:suite.id,
+                     type:'suite',
+                     object:suite
+                };
+            }
 
 /////////////////////////
 
@@ -165,7 +175,6 @@ tcmModule.directive('tcmSuitesModule', function() {
                 scope.currentRequester.type = ""
                 scope.currentRequester.object = {}
             }
-
 
 
 /////////////////////////

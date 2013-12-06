@@ -64,8 +64,8 @@
 		overflow: hidden;
 	}
 </style>
-<div class="panel panel-default panel-tcm left-panel" >
-  <div class="panel-body panel-body-tcm" style=" overflow: hidden; height: 100%; padding-bottom: 257px; ">
+<!-- <div class="panel panel-default panel-tcm left-panel" >
+  <div class="panel-body panel-body-tcm" style=" overflow: hidden; height: 100%; padding-bottom: 257px; "> -->
 		<ul class="nav nav-tabs left-panel">
 		  <li ng-click="$event.preventDefault(); loadSprint()" ng-class="sprintActiveClass"><a href="">Sprint</a></li>
 		  <li ng-click="$event.preventDefault(); loadSuites()" ng-class="suiteActiveClass"><a href="">Suites</a></li>
@@ -96,6 +96,15 @@
 	    		</div>
     		</div>
     		<div id="features">
-				<ng-features requester="iteration">
+				<ng-features requester="iteration"></ng-features>
+    		</div>
+    	</div>
+    	<div class="suite-container" ng-show="suiteActiveClass == 'active'">
+    		<div id="suites">
+	    		<div id="suite" class="panel panel-default" ng-hide="suite.hide" ng-repeat="suite in suites" ng-click="getSuiteTests(suite)">
+				  <div class="panel-body">
+    				{{suite.releaseName}}
+				  </div>
+	    		</div>
     		</div>
     	</div>

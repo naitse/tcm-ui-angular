@@ -85,6 +85,23 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     method: 'PUT'
                 }
         }),
+        Suites: $resource(basePath + 'api/projects/:id/suites', {id: $routeParams.projectId},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+        SuiteTests: $resource(basePath + 'api/projects/:id/suites/:sid/tests/:tcId', {id: $routeParams.projectId, sid:'@sid', tcId:'@tcId'},{
+                create:{
+                    method: 'POST',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    },
+                    responseType:'json'
+                },
+                update: {
+                    method: 'PUT'
+                }
+        }),
         admin: {
 
             Projects: $resource(basePath + 'api/admin/projects/:id', {id:'@id'}, {

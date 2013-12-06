@@ -37,18 +37,22 @@ tcmModule.directive('ngTestcase', function(){
         
         $scope.selectTc= function(){
 
-          if($scope.checked == true){
-            return false;
-          }
+          // if($scope.checked == true){
+          //   return false;
+          // }
           if($scope.tc.current == true){
             $scope.tc.current = false;
-            return false;
+            // return false;
+          }else{
+            $scope.tc.current = true;
           }
-          $scope.$parent.$broadcast('tcSelected', {tc: $scope.tc});
+          // $scope.$parent.testSelected($scope.tc)
+          // $scope.$parent.$broadcast('tcSelected', {tc: $scope.tc});
 
         }
 
         $scope.editTC = function(tc){
+          tc.current = true;
           tc.editMode = true; 
           var temp = angular.copy(tc);
           tc.tcTemp = temp;
@@ -65,6 +69,9 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.saveTC = function(tc){
           tc.editMode = false;
+          tc.sid = $scope.$parent.requester.id
+          tc.featureId = $scope.$parent.requester.id
+          tc.tid = $scope.$parent.requester.id
           var temp = angular.copy(tc);
           tc.$update();
         }
@@ -80,6 +87,9 @@ tcmModule.directive('ngTestcase', function(){
 
           $scope.deleteText = "OMG!";
           $scope.tc.delete = true;
+          $scope.tc.sid = $scope.$parent.requester.id
+          $scope.tc.featureId = $scope.$parent.requester.id
+          $scope.tc.tid = $scope.$parent.requester.id
           $scope.tc.$delete(function(){
               $scope.tcDeleted($scope.tc);
               $scope.$destroy()

@@ -7,6 +7,7 @@ tcmModule.directive('ngLeftNavPanel', function() {
         controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function(scope, element, $attrs, $rootScope, tcm_model){
             
             scope.releases = [];
+            scope.suites = [];
             scope.iterations = [];
             scope.features = [];
             scope.btnConfig = {hideBulk:true, hideStatus:true};
@@ -44,6 +45,7 @@ tcmModule.directive('ngLeftNavPanel', function() {
             }
 
             scope.loadSprint = function(){
+                console.log('hi',scope)
                 scope.sprintActiveClass = 'active'
                 scope.suiteActiveClass = ''
                 scope.$parent.sprint = true
@@ -60,6 +62,8 @@ tcmModule.directive('ngLeftNavPanel', function() {
                 scope.suiteActiveClass = 'active'
                 scope.$parent.sprint = false
                 scope.$parent.suites = true
+                var suites = tcm_model.Suites.query();
+                scope.suites = _.extend(suites, {hide:false})
 
             }
 
@@ -156,6 +160,12 @@ tcmModule.directive('ngLeftNavPanel', function() {
                 scope.$parent.currentRequester.type = ""
                 scope.$parent.currentRequester.object = {}
             }
+
+
+            ///////SUITES/////
+
+
+
 
         }],
         link: function(scope, elm, attr, ngModelCtrl) {

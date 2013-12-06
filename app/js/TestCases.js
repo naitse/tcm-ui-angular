@@ -35,7 +35,9 @@ tcmModule.directive('ngTestcases', function(){
           $scope.newTC = {
             create:false,
             name:'',
-            description:''
+            description:'',
+            priority:1,
+            proposed:0
           }
         }
 
@@ -48,7 +50,7 @@ tcmModule.directive('ngTestcases', function(){
             $scope.resetTestcasesObject();
               if(value != ''){
                 if(value != 'none'){
-                  $scope.getTestCases()
+                    $scope.getTestCases();
                   $scope.hideButtons = false
                 }else{
                   $scope.hideButtons = true
@@ -70,6 +72,11 @@ tcmModule.directive('ngTestcases', function(){
               })
             }else if($scope.requester.type == 'feature'){
               tcm_model.TestCases.query({featureId: $scope.requester.id},function(data){
+                $scope.testcases = data;
+                $scope.extendTcs();
+              })
+            }else if($scope.requester.type == 'suite'){
+              tcm_model.SuiteTests.query({sid: $scope.requester.id},function(data){
                 $scope.testcases = data;
                 $scope.extendTcs();
               })
@@ -133,17 +140,35 @@ tcmModule.directive('ngTestcases', function(){
           return false;
         }
         $scope.newTC.create = true;
-        $scope.newTC.featureId = $scope.requester.id;
+        if($scope.requester.type == "feature"){
+          $scope.newTC.featureId = $scope.requester.id;
+        }else if($scope.requester.type == "suite"){
+          $scope.newTC.sid = $scope.requester.id;
+        }
+        
       }
 
       $scope.saveNewTC = function(){
 
-        var temp = new tcm_model.TestCases($scope.newTC)
+        if($scope.requester.type == "feature"){
+          var temp = new tcm_model.TestCases($scope.newTC)
+          temp.$save(function(data){
+            $scope.updateTestCasesList(data)
+            $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+          })
+        }else if($scope.requester.type == "suite"){
+          var temp = new tcm_model.SuiteTests()
+          temp.sid = $scope.requester.id;
+          temp.testArray = [$scope.newTC]
+          temp.$create(function(data){
+            _.each(data.response,function(tc){
+              $scope.updateTestCasesList(tc)
+              $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: $scope.requester.id});
+            })
+          })
+        }
 
-        temp.$save(function(data){
-          $scope.updateTestCasesList(data)
-          $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
-        })
+
 
       }
 
@@ -186,7 +211,9 @@ tcmModule.directive('ngTestcases', function(){
   $scope.tcDeleted = function(tc){
     $scope.removeTCfromScope(tc)
    // $scope.updateParentTcArray();
-    $rootScope.$emit('tcDeleted', {featureId: tc.featureId});
+    if($scope.requester.type == 'feature'){
+      $rootScope.$emit('tcDeleted', {featureId: tc.featureId});
+    }
     $scope.manageDragState();
     $scope.verifyBulkDisplay();
   };
@@ -213,14 +240,20 @@ $scope.tcUnchecked = function(){
     $scope.verifyBulkDisplay();
  }
 
-     
-$scope.$on('tcSelected', function(event, message){
+$scope.testSelected = function(tc){
    _.each($scope.testcases, function(obj){
       obj.current = false;
     })
-    var setCurrent = _.findWhere($scope.testcases, {tcId: message.tc.tcId});
-    setCurrent.current = true;  
- })
+    var setCurrent = _.findWhere($scope.testcases, {tcId: tc.tcId});
+    setCurrent.current = true; 
+}     
+// $scope.$on('tcSelected', function(event, message){
+//    _.each($scope.testcases, function(obj){
+//       obj.current = false;
+//     })
+//     var setCurrent = _.findWhere($scope.testcases, {tcId: message.tc.tcId});
+//     setCurrent.current = true;  
+//  })
 
 
      
@@ -336,8 +369,10 @@ $scope.$on('tcSelected', function(event, message){
 
               if($scope.requester.type == 'tag'){
                 DO.dropTestOnTagContainer($scope.requester, $scope.testcases)
-              }else{
+              }else if($scope.requester.type == 'feature'){
                 DO.dropTestsOnTestsContainer($scope.requester.id)
+              }else if($scope.requester.type == 'suite'){
+                DO.dropTestOnSuite($scope.requester.object, $scope)
               }
 
               $scope.draggable = true            

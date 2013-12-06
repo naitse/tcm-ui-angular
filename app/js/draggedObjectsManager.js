@@ -98,7 +98,23 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
                   })
                 });
 
+        },
+        dropTestOnSuite:function(suite, scope){
+
+              var dObjects = DO.getObjects()
+
+              var temp = new tcm_model.SuiteTests()
+              temp.sid = suite.id;
+              temp.testArray = dObjects
+              temp.$create(function(data){
+                _.each(data.response,function(tc){
+                  scope.updateTestCasesList(tc)
+                  $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: suite.id});
+                })
+              })
+
         }
+
     };
 
     return DO;
