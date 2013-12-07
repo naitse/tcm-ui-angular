@@ -23,21 +23,25 @@
 	</div>
 
 	<div class="panel-body" ng-show="tc.current" ng-click="$event.stopPropagation()">
-		<ng-tags-widget test="tc" ></ng-tags-widget>
+		<span ng-hide="btns.hideDropdown">
+			<ng-tags-widget test="tc" ></ng-tags-widget>
+		</span>
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div class="description-label field-label">Description</div>
 				<textarea class="panel-body textarea-tcm" ng-class="tc.editMode==true?'editable':''" ng-model="tc.description" ng-disabled="tc.editMode==false?true:''"></textarea>
 			</div>
 		</div>
-		<div ng-hide="isEmpty(tc.actualResult) && tc.editARMode==false" class="panel panel-default">
-				<div class="panel-body">
-				<div class="actual-result-label field-label">Last Run Result</div>
-				<textarea class="panel-body textarea-tcm" ng-class="tc.editARMode==true?'editable':''" ng-model="tc.actualResult" ng-disabled="tc.editARMode==false?true:''"></textarea>
-				<div ng-hide="tc.editARMode==false" class="btn btn-default" ng-click="undoRun()">Discard Run</div>
-				<div ng-hide="tc.editARMode==false" class="btn btn-info" ng-click="saveRun()">Save Run</div>
+		<span ng-hide="btns.hideDropdown">
+			<div ng-hide="isEmpty(tc.actualResult) && tc.editARMode==false" class="panel panel-default">
+					<div class="panel-body">
+					<div class="actual-result-label field-label">Last Run Result</div>
+					<textarea class="panel-body textarea-tcm" ng-class="tc.editARMode==true?'editable':''" ng-model="tc.actualResult" ng-disabled="tc.editARMode==false?true:''"></textarea>
+					<div ng-hide="tc.editARMode==false" class="btn btn-default" ng-click="undoRun()">Discard Run</div>
+					<div ng-hide="tc.editARMode==false" class="btn btn-info" ng-click="saveRun()">Save Run</div>
+				</div>
 			</div>
-		</div>
+		</span>
 	</div>
 	<!-- <div class="panel-footer"  ng-show="tc.current"></div> -->
 </div>

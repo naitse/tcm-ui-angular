@@ -120,7 +120,18 @@ tcmModule.directive('ngTestcases', function(){
 
         $scope.cloneTcBulk = function(){
 
-            var contraryPanel = _.without(DO.draggedObjects,_.findWhere(DO.draggedObjects,{id:$scope.uuid}))
+          if($scope.requester.type == 'suite'){
+            var tcArray = [];
+            _.each($scope.testcases,function(tc){
+              if(tc.checked == true){
+                tcArray.push(tc.tcId)
+              }
+            })
+            $scope.cloneTCSuiteBulk(tcArray)
+            return false;
+          }
+
+            // var contraryPanel = _.without(DO.draggedObjects,_.findWhere(DO.draggedObjects,{id:$scope.uuid}))
           _.each($scope.testcases,function(tc){
             if(tc.checked == true){
               var newTc = new tcm_model.TestCasesCloneTC({tcId:tc.tcId});
@@ -132,6 +143,18 @@ tcmModule.directive('ngTestcases', function(){
             }
           })
 
+        }
+
+        $scope.cloneTCSuiteBulk = function(tcArray){
+            var temp = new tcm_model.SuiteTestsClone({tcId:0, sid: $scope.requester.id});
+            temp.testArray = tcArray
+            temp.$clone(function(data){
+              _.each(data.response, function(tc){
+                var ntc = new tcm_model.SuiteTests(tc)
+                $scope.updateTestCasesList(ntc)
+                $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: $scope.requester.id});
+              })
+            })
         }
 /* NEW TCs */
 
