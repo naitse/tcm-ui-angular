@@ -118,7 +118,7 @@ tcmModule.directive('ngTestcases', function(){
           })
         }
 
-        $scope.cloneTcBulk = function(){
+        $scope.cloneTcBulk = function(tcArray){
 
           if($scope.requester.type == 'suite'){
             var tcArray = [];
@@ -131,17 +131,24 @@ tcmModule.directive('ngTestcases', function(){
             return false;
           }
 
-            // var contraryPanel = _.without(DO.draggedObjects,_.findWhere(DO.draggedObjects,{id:$scope.uuid}))
-          _.each($scope.testcases,function(tc){
-            if(tc.checked == true){
-              var newTc = new tcm_model.TestCasesCloneTC({tcId:tc.tcId});
-              newTc.featureId = $scope.requester.id;
-              newTc.$save(function(data){
-                $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
-                $scope.updateTestCasesList(data)
-              })
+          if($scope.requester.type == 'feature'){
+
+            if(typeof tcArray == 'undefined'){
+                var tcArray = angular.copy(_.findWhere($scope.testcases,{checked:true}))
             }
-          })
+
+            _.each(tcArray,function(tc){
+                var newTc = new tcm_model.TestCasesCloneTC({tcId:tc.tcId});
+                newTc.featureId = $scope.requester.id;
+                newTc.$save(function(data){
+                  $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+                  $scope.updateTestCasesList(data)
+                })
+            })
+
+            
+          }
+
 
         }
 

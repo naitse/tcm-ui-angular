@@ -10,8 +10,52 @@ tcmModule.directive('tcmSuitesModule', function() {
             scope.btnConfig = {hideDropdown:true};
             scope.containerType = 'suites'
             var duration = 200
+            scope.resetBarHeight = function(){
+
+                scope.helperBarHeight= 36
+            }
+
+            scope.resetBarHeight();
 
             $("#accordion").collapse()
+
+
+
+        scope.resetNewSuite = function(){
+        scope.resetBarHeight();
+          scope.newSuite = {
+            create:false,
+            name:''
+          }
+        }
+        
+        scope.resetNewSuite();
+
+
+        scope.createSuite =  function(){
+        if(scope.newSuite.create == true){
+          return false;
+        }
+        scope.helperBarHeight= 160
+        scope.newSuite.create = true;
+      }
+
+        scope.saveNewSuite = function(){
+        var temp = new tcm_model.Suites(scope.newSuite)
+
+        temp.$save(function(data){
+            scope.suites.push(data);
+            scope.resetNewSuite();
+        })
+
+      }
+
+        scope.cancelNewSuite = function(){
+
+        scope.resetNewSuite()
+
+      }
+
 
             scope.resetCurrentRequester = function(){
              scope.currentRequester = {
@@ -51,6 +95,13 @@ tcmModule.directive('tcmSuitesModule', function() {
                 };
             }
 
+            scope.deleteSuite = function(suite, deleteText){
+                suite.$delete(function(){
+                    console.log('deleted', suite.id)
+                    scope.suites = _.without(scope.suites, _.findWhere(scope.suites, {id: suite.id}))
+                })
+            }
+
 /////////////////////////
 
             
@@ -58,7 +109,7 @@ tcmModule.directive('tcmSuitesModule', function() {
 
 /////////////////////////
 
-            scope.showRight = true;
+            scope.showRight = false;
             scope.toggleIcon = (scope.showRight == true)?'right':'left';
             scope.panelExpanderRight = (scope.showRight == true)?334:0;
 

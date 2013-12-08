@@ -90,12 +90,7 @@ tcmModule.directive('ngTestcase', function(){
         $scope.cloneTc = function(tc){
             var contraryPanel = _.without($rootScope.draggedObjects,_.findWhere($rootScope.draggedObjects,{id:$scope.$parent.uuid}))
               if($scope.$parent.requester.type == 'feature'){
-                var newTc = new tcm_model.TestCasesCloneTC({tcId:tc.tcId});
-                newTc.featureId = $scope.$parent.requester.id;
-                newTc.$save(function(data){
-                  $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.$parent.requester.id});
-                  $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: contraryPanel[0].id});
-                })
+                  $scope.$parent.cloneTcBulk([tc])
               }else if($scope.$parent.requester.type == 'tag'){
                   newTc.tid = $scope.$parent.requester.id
               }else if($scope.$parent.requester.type == 'suite'){

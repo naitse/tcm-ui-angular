@@ -73,13 +73,33 @@
 
 			<div class="panel panel-default panel-tcm left-panel" style=" overflow: hidden; ">
 			  <div class="panel-body panel-body-tcm" style=" overflow: hidden; height: 100%; padding-bottom: 257px; ">
-					<div class="position-reference panel">
-				    	<div class="btn-group btn-group-sm pull-left" ng-show="views.suites.active == true">
+					<div class="position-reference panel" >
+				    	<div class="btn-group btn-group-sm pull-left" ng-show="views.suites.active == true" style=" width: 100%; display: inline-flex;">
 							<div class="input-group" ng-hide="btns.hideSearch == true">
 							  <input type="text" class="form-control" placeholder="Search" ng-model="searchSuiteText">
 							</div>
+
+							<div class="btn btn-default" ng-click="createSuite()">Add Suite</div>
+
 				    	</div>
 					</div>
+
+
+					    <div ng-show="newSuite.create" class="panel panel-default current testcase" ng-class="">
+					    <div class="panel-body" >
+					      <input class="name editable" ng-model="newSuite.name"/>
+					    </div>
+
+					    <div class="panel-footer">
+					      <div class="btn btn-default btn-sm" ng-click="cancelNewSuite()">Close</div>
+					      <div class="btn btn-info btn-sm" ng-click="saveNewSuite()">Save</div>
+					    </div>
+					  </div>
+
+
+
+
+
 			    	<div class="lsuite-container">
 			    		<div id="suites">
 				    		<div id="suite" class="panel panel-default" ng-hide="suite.hide" ng-repeat="suite in suites | filter:searchSuiteText" ng-class="(suite.active == true)?'active':'';" ng-click="getSuiteTestcases(suite)">

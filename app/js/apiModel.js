@@ -85,7 +85,7 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     method: 'PUT'
                 }
         }),
-        Suites: $resource(basePath + 'api/projects/:id/suites', {id: $routeParams.projectId},{
+        Suites: $resource(basePath + 'api/projects/:pid/suites/:id', {pid: $routeParams.projectId, id:'@id'},{
                 update: {
                     method: 'PUT'
                 }
