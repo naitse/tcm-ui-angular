@@ -1,8 +1,6 @@
 <div class="panel panel-default testcase  {{(checked == true)?'tcmselected':''}}" ng-class="(tc.current == true)?'active':''" ng-click="selectTc(tc)" tcm-draggable  tcmDragStart="handleDragStart(tc)" tcmDragRevert="handleDragRevert(tc)" >
 	<div class="panel-heading" >
 		<div class="draggable-handle"></div>
-
-
 		<input style="margin-left:-8px;" type="checkbox" ng-model="tc.checked" ng-click="$event.stopPropagation();"/>
 
 		<!-- <input class="priority" ng-class="tc.editMode==true?'editable':''" ng-model="tc.priority" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>		 -->
@@ -42,6 +40,10 @@
 				</div>
 			</div>
 		</span>
+		<span ng-show="tc.editMode==true">
+			<div ng-show="tc.parentId != null" class="panel-footer">
+				<div class="update-parent"><input type="checkbox" ng-model="tc.updateParent">Update Parent</input></div>
+			</div>
+		</span>
 	</div>
-	<!-- <div class="panel-footer"  ng-show="tc.current"></div> -->
 </div>

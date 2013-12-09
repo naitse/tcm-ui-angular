@@ -45,7 +45,8 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.editTC = function(tc){
           tc.current = true;
-          tc.editMode = true; 
+          tc.editMode = true;
+          tc.updateParent = false; 
           tc.tcTemp = angular.copy(tc);
         }
 

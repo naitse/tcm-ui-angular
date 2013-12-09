@@ -197,9 +197,11 @@ padding: 5px;
 }
 
 .jira-comments-container {
-	height: 100%;
-	overflow-y: auto;
-	display: inline-block; 
+	height: auto;
+overflow-y: auto;
+display: inline-block;
+max-height: 100%;
+padding-bottom: 100px;
 }
 
 .comment-author-avatar {
