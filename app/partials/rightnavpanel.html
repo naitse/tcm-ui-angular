@@ -1,5 +1,5 @@
 <style>
-	.sprint-container, .tag-container{
+	.sprint-container, .tag-container, .suite-container{
 		position: relative;
 		height: 100%;
 		overflow: hidden;
@@ -45,6 +45,12 @@
 		left: 0px;
 	}
 
+	.ng-right-nav-panel 	#suites {
+		height: auto;
+		left: 0px;
+		position: relative;
+	}
+
 	.ng-right-nav-panel 	#testcases {
 		left: 400px;
 		top: 93px;
@@ -57,6 +63,16 @@
 		height: 100%;
 		padding-bottom: 50px;
 	}
+
+	.ng-right-nav-panel 	#suitetestcases {
+		left: 400px;
+		top: 50px;
+		height: 100%;
+		padding-bottom: 50px;
+		position: absolute;
+		width: 100%;
+	}
+
 	.nav.right-panel {
 		position: fixed;
 		top: 76px;
@@ -109,10 +125,11 @@
 				<div ng-show="release.releaseName != ''" ng-click="backToIterations();"class="btn btn-default">Release {{release.releaseName}}</div>
 				<div ng-show="iteration.iterationName != '' " ng-click="backToFeatures(); "class="btn btn-default">{{iteration.iterationName}}</div>
 	    	</div>
+	    	<div ng-show="suiteActiveClass == 'active'" class="btn-group btn-group-sm pull-left">
+				<div ng-show="suites.length > 0 && hideSuites == true" ng-click="backToSuites()"class="btn btn-default">Back</div>
+	    	</div>
 	    	<div ng-show="tagActiveClass == 'active'" class="btn-group btn-group-sm pull-left">
 				<div ng-show="tags.length > 0 && hideTags == true" ng-click="backToTags()"class="btn btn-default">Back</div>
-<!-- 				<div ng-show="release.releaseName != ''" ng-click="backToIterations();"class="btn btn-default">Release {{release.releaseName}}</div>
-				<div ng-show="iteration.iterationName != '' " ng-click="backToFeatures(); "class="btn btn-default">{{iteration.iterationName}}</div> -->
 	    	</div>
 		</div>
     	<div class="sprint-container" ng-show="sprintActiveClass == 'active'">
@@ -134,10 +151,24 @@
     			<ng-features requester="iteration" btns="featBtnConfig" hidenotcurrent="true">
     		</div>
     		<div id="testcases">
-    			{{tcsHidden}}
 				<ng-testcases requester="currentRequester" btns="btnConfig" tcminactive="tcsHidden"></ng-testcases>
     		</div>
     	</div>
+
+    	<div class="suite-container" ng-show="suiteActiveClass == 'active'">
+	    		<div id="suites">
+		    		<div id="suite" class="panel panel-default" ng-hide="suite.hide" ng-repeat="suite in suites" ng-class="(suite.active == true)?'active':'';" ng-click="getSuiteTestcases(suite)">
+					  <div class="panel-body">
+	    				{{suite.name}}
+					  </div>
+		    		</div>
+	    		</div>
+    		<div id="suitetestcases">
+				<ng-testcases requester="currentRequesterSuite" btns="btnConfig" tcminactive="suiteTcsHidden"></ng-testcases>
+    		</div>
+    	</div>
+
+
     	<div class="tag-container" ng-show="tagActiveClass == 'active'">
     		<div id="tags">
     			<div ng-repeat="tag in tags" id="tag" ng-hide="tag.hide" class="panel panel-default single-tag" ng-click="loadTagTc(tag)">
@@ -151,7 +182,6 @@
     			</div>
     		</div>
     		<div id="tagstestcases">
-    			{{tagsTcsHidden}}
 				<ng-testcases requester="currentRequesterTags" btns="btnConfig" tcminactive="tagsTcsHidden"></ng-testcases>
     		</div>
     	</div>

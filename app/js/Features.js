@@ -248,11 +248,17 @@ tcmModule.directive('ngFeatures', function(){
 
             $scope.filterFeatures = function(){
             	_.each($scope.features,function(feature){
-            		if(feature.remote.fields.status.id != $scope.statusFilter.id && $scope.statusFilter.name != 'All'){
-            			feature.hide = true;
-            		}else{
-            			feature.hide = false;
-            		}
+                if(feature.featureType == 1){
+              		if(feature.remote.fields.status.id != $scope.statusFilter.id && $scope.statusFilter.name != 'All'){
+              			feature.hide = true;
+              		}else{
+              			feature.hide = false;
+              		}
+                }else if($scope.statusFilter.name != 'All'){
+                  feature.hide = true
+                }else{
+                  feature.hide = false
+                }
             	})
 
             	if(typeof _.findWhere($scope.features, {hide:false}) == 'undefined'){
@@ -269,9 +275,11 @@ tcmModule.directive('ngFeatures', function(){
             $scope.refreshStatuses = function(){
             	$scope.statuses = [];
             	_.each($scope.features,function(feature){
-					if(typeof _.findWhere($scope.statuses, {name:feature.remote.fields.status.name}) == 'undefined'){
-						$scope.statuses.push(feature.remote.fields.status)
-					}
+                if(feature.featureType == 1){
+        					if(typeof _.findWhere($scope.statuses, {name:feature.remote.fields.status.name}) == 'undefined'){
+        						$scope.statuses.push(feature.remote.fields.status)
+        					}
+                }
             	})
 
             }

@@ -85,6 +85,44 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     method: 'PUT'
                 }
         }),
+        Suites: $resource(basePath + 'api/projects/:pid/suites/:id', {pid: $routeParams.projectId, id:'@id'},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+        SuiteTests: $resource(basePath + 'api/projects/:id/suites/:sid/tests/:tcId', {id: $routeParams.projectId, sid:'@sid', tcId:'@tcId'},{
+                create:{
+                    method: 'POST',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    },
+                    responseType:'json'
+                },
+                update: {
+                    method: 'PUT',
+                    responseType:'json'
+                }
+        }),
+        SuiteTestsClone: $resource(basePath + 'api/projects/:id/suites/:sid/tests/:tcId/cloneSuiteTC', {id: $routeParams.projectId, sid:'@sid', tcId:'@tcId'},{
+                clone:{
+                    method: 'POST',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    },
+                    responseType:'json'
+                },
+                update: {
+                    method: 'PUT',
+                    responseType:'json'
+                },
+                delete: {
+                    method: 'DELETE',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    },
+                    responseType:'json'
+                }
+        }),
         admin: {
 
             Projects: $resource(basePath + 'api/admin/projects/:id', {id:'@id'}, {

@@ -1,4 +1,4 @@
-tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_model, $rootScope) {
+tcmModule.factory('suitesFactory', ['tcm_model', '$rootScope', function(tcm_model, $rootScope) {
 
     var DO = {
         draggedObjects: [],

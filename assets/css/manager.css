@@ -250,3 +250,16 @@ display: inline-block;
 #iteration{
 	border-left: 6px solid #006b99;
 }
+
+
+
+
+	#suite.active{
+		font-weight: bold;
+		background-color: #e2f2ff;
+	}
+	#suite {
+		margin: 0px;
+		border-left: 6px solid #004766;
+		position: relative;
+	}

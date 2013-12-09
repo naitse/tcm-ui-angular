@@ -170,7 +170,7 @@ tcmModule.directive('tcmSprintModule', function() {
 
 /////////////////////////
 
-            scope.showRight = true;
+            scope.showRight = false;
             scope.toggleIcon = (scope.showRight == true)?'right':'left';
             scope.panelExpanderRight = (scope.showRight == true)?334:0;
 
