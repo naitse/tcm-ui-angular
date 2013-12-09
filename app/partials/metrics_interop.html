@@ -46,6 +46,7 @@
     .icon-refresh {
         width: 20px;
         height: 20px;
+        cursor: pointer;
     }
 
     .btn-pill {
@@ -55,10 +56,6 @@
         top: -15px;
         margin-left: auto;
         margin-right: auto;
-    }
-    .icon-refresh {
-        width: 20px;
-        height: 20px;
     }
 
     #overal div {
@@ -123,16 +120,16 @@
         </ul>
         <div class="tab-content" style="height: 522px;">
             <div class="tab-pane active" id="rlscontrol">
-                <div id="metrics-controls">
+                <div id="metrics-controls" ng-init="display_general=true">
                     <div class="btn-pill" style="visibility: visible; width: 185px;">
-                        <div id="global" class="active" href="#">General</div>
-                        <a id="refresh-graph" style="display: inline;"><i class="icon-refresh"></i></a>
-                        <div id="byitem" href="#">By Item</div>
+                        <div id="global" ng-class="(display_general==true)?'active':''" ng-click="display_general=true">General</div>
+                        <span class="icon-refresh glyphicon glyphicon-refresh" ng-click="refreshReleaseOverview();"></span>
+                        <div id="byitem" ng-class="(display_general==true)?'':'active'" ng-click="display_general=false">By Item</div>
                     </div>
                 </div>
                 <img src="assets/images/loading.gif" id="loading-indicator" style="margin-top: 10%; margin-left: 40%; position: absolute; z-index: 1000; display: none;">
 
-                <div id="metricsContainer" class="startup" style=" display: block;">
+                <div id="metricsContainer" class="startup" ng-show="display_general" style=" display: block;">
                     <div class="graph-container" style="padding-left: 100px;padding-right: 100px;">
                         <div class="main-container" style="vertical-align: top; display: table-cell">
                             <div id="container">
@@ -148,23 +145,23 @@
                                     </div>
                                     <div class="rls-passed">
                                         <span>Passed</span>
-                                        <span class="value label label-success">90</span>
+                                        <span class="value label label-success">{{executionGraph.chartData[0].Passed}}</span>
                                     </div>
                                     <div class="rls-failed">
                                         <span>Failed</span>
-                                        <span class="value label label-important">10</span>
+                                        <span class="value label label-important">{{executionGraph.chartData[0].Failed}}</span>
                                     </div>
                                     <div class="rls-blocked">
                                         <span>Blocked</span>
-                                        <span class="value label label-warning">0</span>
+                                        <span class="value label label-warning">{{executionGraph.chartData[0].Blocked}}</span>
                                     </div>
                                     <div class="rls-inp">
                                         <span>In Progress</span>
-                                        <span class="value label label-info">27</span>
+                                        <span class="value label label-info">{{executionGraph.chartData[0]['In Progress']}}</span>
                                     </div>
                                     <div class="rls-nrun">
                                         <span>Not Run</span>
-                                        <span class="value label" style="background-color: #999;">49</span>
+                                        <span class="value label" style="background-color: #999;">{{executionGraph.chartData[0]['Not Run']}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -174,6 +171,12 @@
                                 <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div ng-hide="display_general" >
+                    <div class="graph-feature rlscontrol" style="width: 450px; height: 350px; display: inline-block" ng-repeat="item in byItemGraphs" >
+                        <highchart id="item.id" series="item.series" title="item.title" options="item.options"></highchart>
                     </div>
                 </div>
             </div>
