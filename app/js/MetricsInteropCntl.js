@@ -82,7 +82,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }
 
     $scope.refreshReleaseExecutedGraph = function(){
-        tcm_model.metrics.ReleaseExecuted.query({'releaseId': 84}, function(metricsExecuted){
+        tcm_model.metrics.ReleaseExecuted.query({'releaseId': $routeParams.releaseId}, function(metricsExecuted){
             var chartData = new Array();
 
             $scope.iterName = metricsExecuted[0].iterName;
@@ -114,7 +114,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }
 
     $scope.refreshReleaseDailyGraph = function(){
-        tcm_model.metrics.ReleaseDaily.query({'releaseId': 84}, function(metricsDaily){
+        tcm_model.metrics.ReleaseDaily.query({'releaseId': $routeParams.releaseId}, function(metricsDaily){
 
             if(metricsDaily.length > 0){
 
@@ -147,7 +147,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
 
     $scope.refreshExecutionByItem = function(){
 
-        tcm_model.metrics.ReleaseExecutedByItem.query({'releaseId': 84}, function(data){
+        tcm_model.metrics.ReleaseExecutedByItem.query({'releaseId': $routeParams.releaseId}, function(data){
             $scope.byItemGraphs = [];
 
             _.each(data, function(ftr){
@@ -229,6 +229,42 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
         });
     }
 
+    $scope.refreshReleaseReport = function(){
+        $scope.ReleaseReport = tcm_model.metrics.ReleaseReport.query({'releaseId': $routeParams.releaseId});
+        $scope.ReleaseReportOriginal = $.extend(true,{},$scope.ReleaseReport);
+    }
+
+   /* $scope.filterByStatus = function(statusId){
+        //$scope.ReleaseReport = $.extend(true,{},$scope.ReleaseReportOriginal);
+
+        console.log($scope.ReleaseReport);
+
+        if(statusId == null){return;}
+
+        _.each($scope.ReleaseReport, function(team, kt, teamindex){
+            _.each(team.features, function(ftr, kftr, ftrindex){
+                _.each(ftr.tests, function(tc, ktc, tcindex){
+                    console.log(tc.statusId,statusId);
+                    if (! tc.statusId===statusId ){
+                        delete $scope.ReleaseReport[teamindex][ftrindex][tcindex]
+                    }
+                });
+
+                if( ftr.tests.length == 0 ){
+                    delete $scope.ReleaseReport[teamindex][ftrindex];
+                }
+            });
+
+            /*if( team.features.length == 0 ){
+                delete $scope.ReleaseReport[teamindex];
+            } /
+
+        });
+
+        console.log($scope.ReleaseReport);
+
+    }      */
+
     $scope.setPreviewGraph = function(graph){
         $scope.previewGraph = $.extend(true, {}, graph);
         $scope.previewGraph.options.chart.width = 300;
@@ -257,6 +293,8 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }
 
     $scope.refreshReleaseOverview();
+    $scope.refreshReleaseReport();
+
 }
 
 MetricsInteropCntl.$inject = [ '$scope', '$routeParams', 'tcm_model'];
