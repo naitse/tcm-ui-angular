@@ -45,10 +45,12 @@ tcmModule.directive('tcmSuitesModule', function() {
 
         temp.$save(function(data){
             scope.suites.push(data);
+            $rootScope.$broadcast('suiteAdded', {suite: data});
             scope.resetNewSuite();
         })
 
       }
+
 
         scope.cancelNewSuite = function(){
 
@@ -96,10 +98,12 @@ tcmModule.directive('tcmSuitesModule', function() {
             }
 
             scope.deleteSuite = function(suite, deleteText){
+                if(suite.id == scope.currentRequester.id){
+                    scope.resetCurrentRequester();
+                }
+                var rem =angular.copy(suite)
                 suite.$delete(function(){
-                    if(suite.id == scope.currentRequester.id){
-                        scope.resetCurrentRequester() 
-                    }
+                    $rootScope.$broadcast('suiteRemoved', {suite: rem});
                     scope.suites = _.without(scope.suites, _.findWhere(scope.suites, {id: suite.id}))
                 })
             }

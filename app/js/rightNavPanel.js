@@ -123,6 +123,20 @@ tcmModule.directive('ngRightNavPanel', function() {
              return result;
             }
 
+            $rootScope.$on('suiteAdded', function(event, message){
+                if(scope.currentRequester.id != message.suite.id){
+                  scope.suites.push(_.extend(angular.copy(message.suite), {hide:false}));
+                }
+              })
+
+            $rootScope.$on('suiteRemoved', function(event, message){
+                if(scope.currentRequesterSuite.id == message.suite.id){
+                    scope.backToSuites()
+                    return false;
+                }
+                scope.suites = _.without(scope.suites, _.findWhere(scope.suites, {id: message.suite.id}))
+              })
+
 
             scope.loadSuites = function(){
                 scope.sprintActiveClass = ''
