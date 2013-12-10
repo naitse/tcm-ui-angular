@@ -1,6 +1,11 @@
 function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
 
     $scope.byItemGraphs = [];
+    $scope.selection = {
+            iteration: {
+                name: '',
+                id: 0 }
+    };
 
     $scope.executionGraph = {
         options: {
@@ -60,6 +65,8 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
         }
     };
 
+    $scope.executionByTeamGraph = $.extend(true, {}, $scope.executionGraph );
+
     $scope.dailyGraph = {
         options: {
             chart: {
@@ -75,11 +82,13 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                 title: {
                     text: 'Test Cases'
                 }
-            },
+            }
 
         }
 
     }
+
+    $scope.dailyGraphByTeam = $.extend(true, {}, $scope.dailyGraph );
 
     $scope.refreshReleaseExecutedGraph = function(){
         tcm_model.metrics.ReleaseExecuted.query({'releaseId': $routeParams.releaseId}, function(metricsExecuted){
@@ -142,6 +151,38 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
             }
 
             $scope.setPreviewGraph($scope.dailyGraph);
+        });
+    }
+
+    $scope.refreshReleaseDailyGraphByTeam = function(){
+        tcm_model.metrics.IterationDaily.query({'releaseId': $routeParams.releaseId, 'iterId':$scope.selection.iteration.id }, function(metricsDaily){
+
+            if(metricsDaily.length > 0){
+
+                var days = new Array();
+                var testcases = new Array();
+
+
+                _.each(metricsDaily, function(value, key, list){
+                    days.push(value.day);
+                    testcases.push(value.testcases);
+                });
+
+
+                $scope.dailyGraphByTeam.series = [{
+                    showInLegend: false,
+                    data: testcases
+                }];
+
+                $scope.dailyGraphByTeam.options.chart.xAxis = {
+                    categories: days,
+                    title: {
+                        text: 'Days'
+                    }
+                };
+            }
+
+            $scope.setPreviewGraphByTeam($scope.dailyGraphByTeam);
         });
     }
 
@@ -234,36 +275,47 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
         $scope.ReleaseReportOriginal = $.extend(true,{},$scope.ReleaseReport);
     }
 
-   /* $scope.filterByStatus = function(statusId){
-        //$scope.ReleaseReport = $.extend(true,{},$scope.ReleaseReportOriginal);
+   //teams are iterations, thanks naitse
+    $scope.teams = tcm_model.Iterations.query({'releaseId': $routeParams.releaseId}, function(teams){
 
-        console.log($scope.ReleaseReport);
+        $scope.selection.iteration.name = teams[0].iterationName;
+        $scope.selection.iteration.id = teams[0].IterId;
+        $scope.refreshExecutionByTeam();
+        $scope.refreshReleaseDailyGraphByTeam();
+    });
 
-        if(statusId == null){return;}
 
-        _.each($scope.ReleaseReport, function(team, kt, teamindex){
-            _.each(team.features, function(ftr, kftr, ftrindex){
-                _.each(ftr.tests, function(tc, ktc, tcindex){
-                    console.log(tc.statusId,statusId);
-                    if (! tc.statusId===statusId ){
-                        delete $scope.ReleaseReport[teamindex][ftrindex][tcindex]
-                    }
-                });
+    $scope.refreshExecutionByTeam = function(){
 
-                if( ftr.tests.length == 0 ){
-                    delete $scope.ReleaseReport[teamindex][ftrindex];
-                }
+        tcm_model.metrics.IterationExecuted.query({'releaseId': $routeParams.releaseId, 'iterId':$scope.selection.iteration.id }, function(metricsExecuted){
+            var chartData = [];
+
+            $scope.executionByTeamGraph.title= {
+                text: metricsExecuted[0].iterName
+            }
+            delete metricsExecuted[0].iterName;
+            var total = 0;
+
+            _.each(metricsExecuted[0], function(value, key, list){
+
+                chartData.push(new Array( key, value));
+                total += value
             });
 
-            /*if( team.features.length == 0 ){
-                delete $scope.ReleaseReport[teamindex];
-            } /
+            $scope.executionByTeamGraph.total = total;
+            $scope.executionByTeamGraph.chartData = metricsExecuted;
 
+            $scope.executionByTeamGraph.series = [{
+                type: 'pie',
+                name: 'Test Cases',
+                data: chartData
+            }];
+
+            $scope.setActiveGraphByTeam($scope.executionByTeamGraph);
         });
 
-        console.log($scope.ReleaseReport);
 
-    }      */
+    };
 
     $scope.setPreviewGraph = function(graph){
         $scope.previewGraph = $.extend(true, {}, graph);
@@ -277,6 +329,17 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
         $scope.selectedGraph.options.chart.height = 550;
     }
 
+    $scope.setActiveGraphByTeam = function(graph){
+        $scope.byTeamSelectedGraph = $.extend(true, {}, graph);
+        $scope.byTeamSelectedGraph.options.chart.width = 900;
+        $scope.byTeamSelectedGraph.options.chart.height = 550;
+    }
+
+    $scope.setPreviewGraphByTeam = function(graph){
+        $scope.byTeamPreviewGraph = $.extend(true, {}, graph);
+        $scope.byTeamPreviewGraph.options.chart.width = 300;
+        $scope.byTeamPreviewGraph.options.chart.height = 200;
+    }
 
     $scope.switchGraph = function(){
         var toPreview = $.extend(true, {}, $scope.selectedGraph);
@@ -290,6 +353,14 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
         $scope.refreshReleaseExecutedGraph();
         $scope.refreshReleaseDailyGraph();
         $scope.refreshExecutionByItem();
+    }
+
+    $scope.switchByTeamGraph = function(){
+        var toPreview = $.extend(true, {}, $scope.byTeamSelectedGraph);
+        var toSelected = $.extend(true, {}, $scope.byTeamPreviewGraph);
+
+        $scope.setPreviewGraphByTeam(toPreview);
+        $scope.setActiveGraphByTeam(toSelected);
     }
 
     $scope.refreshReleaseOverview();
