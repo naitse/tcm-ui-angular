@@ -10,7 +10,7 @@
     <div ng-hide="btns.hideFeatureActions == true" class="btn-group btn-group-xs pull-right">
       <div class="btn-group"  ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; cursor=pointer;" ng-show="feature.featureType == 1">
         <div ng-click="$event.stopPropagation(); openDD();" title="{{feature.remote.fields.status.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
-            <div class="tcm-icon no-opacity" style="background: url('{{feature.remote.fields.status.iconUrl}}') 0px -1px;"></div>
+            <div class="tcm-icon no-opacity" ng-attr-style="background: url('{{feature.remote.fields.status.iconUrl}}') 0px -1px;"></div>
         </div>
         <ul class="dropdown-menu pull-right" role="menu" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; dropDownClose = true;">
           <li ng-click="$event.stopPropagation(); updateIssueState(feature, transition)" ng-repeat="transition in feature.remote.transitions">

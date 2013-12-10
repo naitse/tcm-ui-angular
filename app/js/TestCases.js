@@ -11,12 +11,12 @@ tcmModule.directive('ngTestcases', function(){
         $scope.hideBulk = false;
         $scope.uuid = Math.floor(Math.random()*10000001);
 
-        var draggedTests = {
+        $scope.draggedTests = {
           id: $scope.uuid,
           objects:[]
         }
 
-        DO.draggedObjects.push(draggedTests)
+        DO.draggedObjects.push($scope.draggedTests)
 
         if(typeof $scope.btns !== 'undefined'){
           if($scope.btns.hideBulk){
@@ -45,7 +45,13 @@ tcmModule.directive('ngTestcases', function(){
         $scope.resetNewTestcase();
 
 
-          $scope.$watch("requester.id",function(value){
+          $scope.$watch("requester.id",function(value, old){
+
+            if(value == old){
+              return false;//prone to error
+            }
+
+            $scope.draggedTests.type = $scope.requester.type
 
             $scope.resetTestcasesObject();
               if(value != ''){
@@ -134,7 +140,12 @@ tcmModule.directive('ngTestcases', function(){
           if($scope.requester.type == 'feature'){
 
             if(typeof tcArray == 'undefined'){
-                var tcArray = angular.copy(_.findWhere($scope.testcases,{checked:true}))
+              var tcArray = [];
+                _.each($scope.testcases,function(tc){
+                  if(tc.checked == true){
+                    tcArray.push(tc)
+                  }
+                })
             }
 
             _.each(tcArray,function(tc){

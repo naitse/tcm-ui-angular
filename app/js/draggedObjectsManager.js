@@ -28,6 +28,20 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
 
             return objectsArray
         },
+        getOriginType: function(){
+
+          var type = ''
+
+            _.each(DO.draggedObjects, function(current){
+                if(current.id == DO.currentDragUUID){
+
+                  type = current.type
+
+                }
+            })
+
+           return type; 
+        },
         cleanDraggable: function(){
             _.each(DO.draggedObjects, function(current){
                 _.each(current.objects, function(object){
@@ -43,6 +57,7 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
               if(object.type == 'test'){
                   var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
                   newTc.featureId = featureId;
+                  newTc.origin = DO.getOriginType()
                   newTc.$save(function(data){
                     $rootScope.$broadcast('featureCurrentTCadded', {tc: data, uuid: dObjects.id});
                     $rootScope.$broadcast('tcStatusUpdated', {featureId: featureId});
@@ -62,6 +77,7 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
                 if(object.type == 'test'){
                   var newTc = new tcm_model.TestCasesCloneTC({tcId:object.tcId});
                   newTc.featureId = feature.featureId;
+                  newTc.origin = DO.getOriginType()
                   newTc.$save(function(data){
                     object.dragSingle = false;
                     $rootScope.$broadcast('tcStatusUpdated', {featureId: feature.featureId});
