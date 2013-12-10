@@ -182,7 +182,10 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
             TCsByStatus: $resource(basePath + 'api/metrics/iterations/:id/status/:statusId'),
             ReleaseExecuted: $resource(basePath + 'api/metrics/interop/releases/:releaseId/executed'),
             ReleaseDaily: $resource(basePath + 'api/metrics/interop/releases/:releaseId/daily'),
-            ReleaseExecutedByItem: $resource(basePath + 'api/metrics/interop/releases/:releaseId/executed_by_item')
+            ReleaseExecutedByItem: $resource(basePath + 'api/metrics/interop/releases/:releaseId/executed_by_item'),
+            ReleaseReport: $resource(basePath + 'api/metrics/interop/releases/:releaseId/report'),
+            IterationExecuted: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterId/executed'),
+            IterationDaily: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterId/daily')
         }
     };
 }]);

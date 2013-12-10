@@ -104,23 +104,46 @@
     .label-important {
         background-color: #b94a48;
     }
+
+
+    .bs-sidebar.affix-bottom .bs-sidenav, .bs-sidebar.affix .bs-sidenav {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .bs-sidenav {
+
+        margin-bottom: 30px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-shadow: 0 1px 0 #fff;
+        background-color: #f7f5fa;
+        border-radius: 5px;
+    }
+
+    .report-tc-priority {
+        width: 30px;
+        box-shadow: 0px 0px 11px -3px inset;
+        border-radius: 6px;
+        text-align: center;
+    }
 </style>
 <div>
     <div>
-        <ul class="nav nav-tabs" id="interopTabs" style=" margin-bottom: 0px; ">
-            <li class="active">
-                <a data-toggle="#rlscontrol">Release Overview</a>
+        <ul class="nav nav-tabs" id="interopTabs" style=" margin-bottom: 0px; " ng-init="panel='rlscontrol'">
+            <li ng-class="panel==='rlscontrol'?'active':''">
+                <a data-toggle="#rlscontrol" ng-click="panel='rlscontrol'">Release Overview</a>
             </li>
-            <li class="">
-                <a data-toggle="#xteams" style="visibility: visible;">Teams Overview</a>
+            <li ng-class="panel==='xteams'?'active':''">
+                <a data-toggle="#xteams" style="visibility: visible;" ng-click="panel='xteams'">Teams Overview</a>
             </li>
-            <li class="">
-                <a data-toggle="#report" id="rep" style="visibility: visible;">Report</a>
+            <li ng-class="panel==='report'?'active':''">
+                <a data-toggle="#report" id="rep" style="visibility: visible;" ng-click="panel='report'">Report</a>
             </li>
         </ul>
-        <div class="tab-content" style="height: 522px;">
-            <div class="tab-pane active" id="rlscontrol">
+        <div class="tab-content" style="height: 100%">
+            <div class="tab-pane" ng-class="panel==='rlscontrol'?'active':''" ng-show="panel==='rlscontrol'" id="rlscontrol">
                 <div id="metrics-controls" ng-init="display_general=true">
+                    <div style="margin-top: 35px;"></div>
                     <div class="btn-pill" style="visibility: visible; width: 185px;">
                         <div id="global" ng-class="(display_general==true)?'active':''" ng-click="display_general=true">General</div>
                         <span class="icon-refresh glyphicon glyphicon-refresh" ng-click="refreshReleaseOverview();"></span>
@@ -167,7 +190,7 @@
                             </div>
                         </div>
                         <div style="display: table-cell">
-                            <div id="container">
+                            <div id="container2x">
                                 <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
                             </div>
                         </div>
@@ -177,6 +200,149 @@
                 <div ng-hide="display_general" >
                     <div class="graph-feature rlscontrol" style="width: 450px; height: 350px; display: inline-block" ng-repeat="item in byItemGraphs" >
                         <highchart id="item.id" series="item.series" title="item.title" options="item.options"></highchart>
+                    </div>
+                </div>
+            </div>
+            <div id="xteams" ng-class="panel==='xteams'?'active':''" ng-show="panel==='xteams'" >
+                <div id="metrics-controls2" ng-init="display_general=true">
+                    <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; ">
+                        <li class="dropdown ioteams active">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">{{selection.iteration.name}}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li  ng-repeat="team in teams" ng-class="(selection.iteration.id===team.IterId)?'active':''"><a data-toggle="tab" ng-click="selection.iteration.name=team.iterationName;selection.iteration.id=team.IterId;refreshExecutionByTeam();refreshReleaseDailyGraphByTeam();">{{team.iterationName}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="btn-pill" style="visibility: visible; width: 185px;">
+                        <div id="global " ng-class="(display_general==true)?'active':''" ng-click="display_general=true">General</div>
+                        <span class="icon-refresh glyphicon glyphicon-refresh" ng-click="refreshReleaseOverview();"></span>
+                        <div id="byitem" ng-class="(display_general==true)?'':'active'" ng-click="display_general=false">By Item</div>
+                    </div>
+                </div>
+
+                <div class="graph-container" style="padding-left: 100px;padding-right: 100px;">
+                    <div class="main-container" style="vertical-align: top; display: table-cell">
+                        <div id="container">
+                            <highchart id="byTeamPreviewGraph" series="byTeamPreviewGraph.series" title="byTeamPreviewGraph.title" options="byTeamPreviewGraph.options"></highchart>
+                            <span class="glyphicon glyphicon-new-window" ng-click="switchByTeamGraph();" ></span>
+                        </div>
+                        <div class="graph-previews round-corner-all" style="margin-top: 40px;">
+
+                            <div id="overal" style="width: 300px; height: 200px; border: 1px solid rgb(212, 212, 212); margin-bottom: 20px;" class="graph round-corner-all">
+                                <div class="rls-total">
+                                    <span>Total</span>
+                                    <span class="value label label-inverse">{{executionByTeamGraph.total}}</span>
+                                </div>
+                                <div class="rls-passed">
+                                    <span>Passed</span>
+                                    <span class="value label label-success">{{executionByTeamGraph.chartData[0].Passed}}</span>
+                                </div>
+                                <div class="rls-failed">
+                                    <span>Failed</span>
+                                    <span class="value label label-important">{{executionByTeamGraph.chartData[0].Failed}}</span>
+                                </div>
+                                <div class="rls-blocked">
+                                    <span>Blocked</span>
+                                    <span class="value label label-warning">{{executionByTeamGraph.chartData[0].Blocked}}</span>
+                                </div>
+                                <div class="rls-inp">
+                                    <span>In Progress</span>
+                                    <span class="value label label-info">{{executionByTeamGraph.chartData[0]['In Progress']}}</span>
+                                </div>
+                                <div class="rls-nrun">
+                                    <span>Not Run</span>
+                                    <span class="value label" style="background-color: #999;">{{executionByTeamGraph.chartData[0]['Not Run']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: table-cell">
+                        <div id="container2x">
+                            <highchart id="byTeamSelectedGraph" series="byTeamSelectedGraph.series" title="byTeamSelectedGraph.title" options="byTeamSelectedGraph.options"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="report" ng-class="panel==='report'?'active':''" ng-show="panel==='report'" >
+                <div class="col-md-3" style="overflow: auto; height: 100%">
+                    <div style="width: 100%; padding-top: 20px;">
+                        <div style="width: 100%">
+                            <input style="width: 100%" type="input"  placeholder="Filter ..." ng-model="teamFilter">
+                        </div>
+                        <div style="width: 100%; margin-top: 5px;">
+                            <ul class="nav nav-pills" style="display: inline-block">
+                                <li class="dropdown repstates open">
+                                    <a href="" class="dropdown-toggle" data-toggle="dropdown">State <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li class=""><a ng-click="filterStatusId=''">All States</a></li>
+                                        <li class=""><a ng-click="filterStatusId=0">Not Run</a></li>
+                                        <li class=""><a ng-click="filterStatusId=1">In Progress</a></li>
+                                        <li class=""><a ng-click="filterStatusId=2">Blocked</a></li>
+                                        <li class=""><a ng-click="filterStatusId=3">Failed</a></li>
+                                        <li class=""><a ng-click="filterStatusId=4">Passed</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-pills" style="display: inline-block">
+                                <li class="dropdown reppriority">
+                                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Priority <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="addedp"><a ng-click="filterPriority=''">All priorities</a></li>
+                                        <li class="addedp"><a ng-click="filterPriority=1">P1</a></li></ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bs-sidebar hidden-print" role="complementary" style="width: 100%">
+                        <ul class="nav bs-sidenav" class="navbar-report">
+                            <li class="active" ng-repeat="team in ReleaseReport | filter:teamFilter">
+                                <a class="active">{{team.name}}</a>
+
+                                <ul class="nav">
+                                    <li class="active" ng-repeat="ftr in team.features" style="margin-left: 20px;">
+                                        <a href="#affix-ftr-{{team.name}}-{{$index}}">{{ftr.name}}</a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9" role="main" style="overflow: auto; height: 100%" data-spy="scroll" data-target=".navbar-report">
+                    <div class="bs-docs-section" ng-repeat="team in ReleaseReport | filter:teamFilter">
+                        <div class="page-header">
+                            <h1 id="affix">{{team.name}}</h1>
+                        </div>
+
+                        <div ng-repeat="feature in team.features " id="affix-ftr-{{team.name}}-{{$index}}">
+                            <h2 id="affix-usage">{{feature.name}}</h2>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-success" style="width: {{(feature.pass*100)/feature.total}}%">
+                                    <span class="sr-only">{{(feature.pass*100)/feature.total}}% Complete (success)</span>
+                                </div>
+                                <div class="progress-bar progress-bar-warning" style="width: {{(feature.blocked*100)/feature.total}}%">
+                                    <span class="sr-only">{{(feature.blocked*100)/feature.total}}% Blocked (warning)</span>
+                                </div>
+                                <div class="progress-bar progress-bar-danger" style="width: {{(feature.failed*100)/feature.total}}%">
+                                    <span class="sr-only">{{(feature.failed*100)/feature.total}}% Failed (danger)</span>
+                                </div>
+                                <div class="progress-bar progress-bar-info" style="width: {{(feature.inprogress*100)/feature.total}}%">
+                                    <span class="sr-only">{{(feature.inprogress*100)/feature.total}}% In Progress</span>
+                                </div>
+                            </div>
+                            <h3>Test Cases</h3>
+                            <ol>
+                                <li ng-repeat="test in feature.tests  | filter:{statusId: filterStatusId} | filter:{priority: filterPriority}" ng-switch on="test.statusId">
+                                    <div style="display: inline" class="report-tc-priority">P{{test.priority}}</div>
+                                    <div style="display: inline" ng-switch-when="0" class="label label-inverse">Not Run</div>
+                                    <div style="display: inline" ng-switch-when="1" class="label label-info">In Progress</div>
+                                    <div style="display: inline" ng-switch-when="2" class="label label-warning">Blocked</div>
+                                    <div style="display: inline" ng-switch-when="3" class="label label-important">Failed</div>
+                                    <div style="display: inline" ng-switch-when="4" class="label label-success">Pass</div>
+                                    <div style="display: inline">{{test.name}}</div>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
