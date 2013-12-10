@@ -5,7 +5,7 @@ tcmModule.directive('ngTestcase', function(){
        templateUrl: 'app/partials/testcase.html',
        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', function($scope, element, $attrs, $rootScope, tcm_model, DO){
         
-        $scope.deleteText = "Delete?";
+        $scope.deleteText = ($scope.tc.linked == 0 )?"Delete?":"Unlink?";
         $scope.draggable = $scope.tc.draggable;
         var saveCallback = function(){};
 
@@ -61,14 +61,43 @@ tcmModule.directive('ngTestcase', function(){
 
         $scope.saveTC = function(tc){
           $scope.tc.editMode = false;
+
+          if($scope.tc.linked == 1){
+
+            var newTc = new tcm_model.TestCasesCloneTC({tcId:$scope.tc.tcId});
+            newTc.sid = $scope.$parent.requester.id
+            newTc.name = $scope.tc.name
+            newTc.description = $scope.tc.description
+            newTc.priority = $scope.tc.priority
+            newTc.$update(function(){})
+
+            return false;
+
+          }
+
           $scope.tc.sid = $scope.$parent.requester.id
           $scope.tc.featureId = $scope.$parent.requester.id
           $scope.tc.tid = $scope.$parent.requester.id
-          $scope.tc.$update(function(){console.log($scope.tc)});
+          $scope.tc.$update(function(){});
 
         }
 
         $scope.deleteTC = function(){
+
+          if($scope.$parent.requester.type=='suite' && $scope.tc.linked == 1){
+              var temp = new tcm_model.SuiteTestsLink()
+              temp.sid = $scope.requester.id;
+              temp.testArray = [$scope.tc]
+              temp.$unlink(function(data){
+                _.each(data.response,function(tc){
+                  $scope.removeTCfromScope(tc);
+                  $rootScope.$broadcast('suiteTcLinked', {suiteId: $scope.requester.id, tc:tc});
+                })
+              })
+            return false;
+          }
+
+
           if($scope.$parent.requester.type=="tag"){
             var toDel =  new tcm_model.TagsTcs({tid:$scope.$parent.requester.id, tcId:$scope.tc.tcId});
             toDel.$delete(function(){

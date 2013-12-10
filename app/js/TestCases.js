@@ -115,10 +115,33 @@ tcmModule.directive('ngTestcases', function(){
 
 
         $scope.deleteTCsBulk = function(){
+
+          var toUnlink =[]
+
           _.each($scope.testcases,function(tc){
-            if(tc.checked == true){
+
+            if(tc.linked == 1){
+
+              if(tc.checked == true){
+                  toUnlink.push(tc)
+              }
+              
+            }else if(tc.checked == true){
               tc.$delete(function(){
                   $scope.tcDeleted(tc);
+              })
+            }
+
+
+            if(toUnlink.length > 0){
+            var temp = new tcm_model.SuiteTestsLink()
+              temp.sid = $scope.requester.id;
+              temp.testArray = toUnlink
+              temp.$unlink(function(data){
+                _.each(data.response,function(tc){
+                  $scope.removeTCfromScope(tc);
+                  $rootScope.$broadcast('suiteTcLinked', {suiteId: $scope.requester.id, tc:tc});
+                })
               })
             }
           })
@@ -242,6 +265,26 @@ tcmModule.directive('ngTestcases', function(){
   $rootScope.$on('tcTagged', function(event, message){
     if($scope.requester.type == 'tag' && $scope.requester.id == message.tag.id){
       $scope.updateTestCasesList(angular.copy(message.tc))
+    }
+  })
+
+    $rootScope.$on('suiteTcLinked', function(event, message){
+    if($scope.requester.type == 'suite'){
+      _.each($scope.testcases, function(tc){
+        if(tc.tcId == message.tc.tcId){
+          tc.linked = 1
+        }
+      })
+    }
+  })
+
+  $rootScope.$on('suiteTcUnLinked', function(event, message){
+    if($scope.requester.type == 'suite'){
+      _.each($scope.testcases, function(tc){
+        if(tc.tcId == message.tc.tcId){
+          tc.linked = 0
+        }
+      })
     }
   })
 

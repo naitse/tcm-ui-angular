@@ -1,6 +1,6 @@
 <div class="panel panel-default testcase  {{(checked == true)?'tcmselected':''}}" ng-class="(tc.current == true)?'active':''" ng-click="selectTc(tc)" tcm-draggable  tcmDragStart="handleDragStart(tc)" tcmDragRevert="handleDragRevert(tc)" >
 	<div class="panel-heading" >
-		<div class="draggable-handle"></div>
+		<div class="draggable-handle" ng-class="(tc.linked == 1)?'linked':'';"></div>
 		<input style="margin-left:-8px;" type="checkbox" ng-model="tc.checked" ng-click="$event.stopPropagation();"/>
 
 		<!-- <input class="priority" ng-class="tc.editMode==true?'editable':''" ng-model="tc.priority" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>		 -->
@@ -11,9 +11,13 @@
             <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveTC(tc)"></span></div>
             <div title="Clone Test" class="btn copy-icon"  ng-click="$event.stopPropagation(); cloneTc(tc)"></div>
 			
-			<div class="btn" ng-hide="tc.delete"><span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); tc.delete = true; cancelEditTC(tc, element);"></span></div>
+			
 
-			<div class="btn btn-danger btn-delete" ng-show="tc.delete" ng-click="$event.stopPropagation(); deleteTC(tc)" ng-mouseleave="$event.stopPropagation(); tc.delete = false">{{deleteText}}</div>
+				<div class="btn" ng-hide="tc.delete"><span class="glyphicon" ng-class="(tc.linked == 0)?'glyphicon-trash':'glyphicon-link' " ng-click="$event.stopPropagation(); tc.delete = true; cancelEditTC(tc, element);"></span></div>
+
+				<div class="btn btn-danger btn-delete" ng-show="tc.delete" ng-click="$event.stopPropagation(); deleteTC(tc)" ng-mouseleave="$event.stopPropagation(); tc.delete = false">{{deleteText}}</div>
+
+
 			<span ng-hide="btns.hideDropdown">
 				<tc-status-dropdown test="tc"></tc-status-dropdown>
 			</span>

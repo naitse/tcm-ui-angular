@@ -117,6 +117,11 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
         },
         dropTestOnSuite:function(suite, scope){
 
+              if(DO.getOriginType() == 'suite'){
+                DO.linkTCsToSuite(suite, scope);
+                return false;
+              }
+
               var dObjects = DO.getObjects()
 
               var temp = new tcm_model.SuiteTests()
@@ -126,6 +131,33 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
                 _.each(data.response,function(tc){
                   scope.updateTestCasesList(tc)
                   $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: suite.id});
+                })
+              })
+
+        },
+        linkTCsToSuite:function(suite, scope){
+
+              var dObjects = DO.getObjects()
+
+              _.each(dObjects ,function(tc){
+                var exists = _.findWhere(scope.testcases, {tcId:tc.tcId})
+                if(typeof exists != 'undefined'){
+
+                  dObjects = _.without(dObjects, _.findWhere(dObjects,{tcId:tc.tcId}))
+                }
+              })
+
+              if(dObjects.length == 0){
+                return false;
+              }
+
+              var temp = new tcm_model.SuiteTestsLink()
+              temp.sid = suite.id;
+              temp.testArray = dObjects
+              temp.$create(function(data){
+                _.each(data.response,function(tc){
+                  scope.updateTestCasesList(tc)
+                  $rootScope.$broadcast('suiteTcLinked', {suiteId: suite.id, tc:tc});
                 })
               })
 

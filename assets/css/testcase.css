@@ -113,3 +113,7 @@ margin-bottom: 2px;
     top: 2px;
     position: relative; 
 }
+
+.draggable-handle.linked {
+background-color: #2b2b9b;
+}

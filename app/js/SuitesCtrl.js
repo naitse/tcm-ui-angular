@@ -97,7 +97,9 @@ tcmModule.directive('tcmSuitesModule', function() {
 
             scope.deleteSuite = function(suite, deleteText){
                 suite.$delete(function(){
-                    console.log('deleted', suite.id)
+                    if(suite.id == scope.currentRequester.id){
+                        scope.resetCurrentRequester() 
+                    }
                     scope.suites = _.without(scope.suites, _.findWhere(scope.suites, {id: suite.id}))
                 })
             }

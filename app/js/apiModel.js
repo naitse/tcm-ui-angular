@@ -123,6 +123,29 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     responseType:'json'
                 }
         }),
+        SuiteTestsLink: $resource(basePath + 'api/projects/:id/suites/:sid/linkTestCases', {id: $routeParams.projectId, sid:'@sid'},{
+                create:{
+                    method: 'POST',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    },
+                    responseType:'json'
+                },
+                unlink: {
+                    method: 'PUT',
+                    responseType:'json',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    }
+                },
+                delete: {
+                    method: 'DELETE',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    },
+                    responseType:'json'
+                }
+        }),
         admin: {
 
             Projects: $resource(basePath + 'api/admin/projects/:id', {id:'@id'}, {
