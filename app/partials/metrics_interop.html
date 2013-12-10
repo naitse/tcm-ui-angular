@@ -265,7 +265,7 @@
             </div>
             <div id="report" ng-class="panel==='report'?'active':''" ng-show="panel==='report'" >
                 <div class="col-md-3" style="overflow: auto; height: 100%">
-                    <div style="width: 100%; padding-top: 20px;">
+                    <div style="width: 100%; padding-top: 20px; overflow: auto;">
                         <div style="width: 100%">
                             <input style="width: 100%" type="input"  placeholder="Filter ..." ng-model="teamFilter">
                         </div>
@@ -293,7 +293,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="bs-sidebar hidden-print" role="complementary" style="width: 100%">
+                    <div class="bs-sidebar hidden-print" role="complementary" style="width: 100% ; overflow: auto; height: 100%">
                         <ul class="nav bs-sidenav" class="navbar-report">
                             <li class="active" ng-repeat="team in ReleaseReport | filter:teamFilter">
                                 <a class="active">{{team.name}}</a>
