@@ -101,6 +101,13 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                 update: {
                     method: 'PUT',
                     responseType:'json'
+                },
+                delete: {
+                    method: 'DELETE',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    },
+                    responseType:'json'
                 }
         }),
         SuiteTestsClone: $resource(basePath + 'api/projects/:id/suites/:sid/tests/:tcId/cloneSuiteTC', {id: $routeParams.projectId, sid:'@sid', tcId:'@tcId'},{
@@ -146,6 +153,9 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     responseType:'json'
                 }
         }),
+        getTCLinkState: function(tcId, callback){
+            return $http.get( basePath + 'api/tests/:tcId/linked'.replace(':tcId',tcId) ).success(callback).error();
+        },
         admin: {
 
             Projects: $resource(basePath + 'api/admin/projects/:id', {id:'@id'}, {

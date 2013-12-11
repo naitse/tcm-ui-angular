@@ -42,6 +42,20 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
 
            return type; 
         },
+        getOriginLinkFlag: function(){
+
+          var link = false
+
+            _.each(DO.draggedObjects, function(current){
+                if(current.id == DO.currentDragUUID){
+
+                  link = current.link
+
+                }
+            })
+
+           return link; 
+        },
         cleanDraggable: function(){
             _.each(DO.draggedObjects, function(current){
                 _.each(current.objects, function(object){
@@ -117,8 +131,8 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
         },
         dropTestOnSuite:function(suite, scope){
 
-              if(DO.getOriginType() == 'suite'){
-                DO.linkTCsToSuite(suite, scope);
+              if(DO.getOriginLinkFlag() == true){
+                  DO.linkTCsToSuite(suite, scope);
                 return false;
               }
 
@@ -130,7 +144,7 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
               temp.$create(function(data){
                 _.each(data.response,function(tc){
                   scope.updateTestCasesList(tc)
-                  $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: suite.id});
+                  // $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: suite.id});
                 })
               })
 
@@ -157,8 +171,8 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
               temp.$create(function(data){
                 _.each(data.response,function(tc){
                   scope.updateTestCasesList(tc)
-                  $rootScope.$broadcast('suiteTcLinked', {suiteId: suite.id, tc:tc});
                 })
+                  $rootScope.$broadcast('suiteTcLinked', {suiteId: suite.id, tcArray:data.response});
               })
 
         }

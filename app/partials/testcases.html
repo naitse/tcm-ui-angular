@@ -1,6 +1,14 @@
 
 	<div ng-show="requester.id != ''" class="well action-bar">
 		<input style="float: left; position: relative;top: -9px;" type="checkbox" ng-model="selectall" ng-click="$event.stopPropagation(); selectAll()"/>
+				<span style=" float: left; position: relative; top: -6px; ">
+					Link Tcs
+					<div class="switch demo3">
+						<input type="checkbox" ng-model="linkTcs" ng-click="linkTcs = !LinkTcs">
+						<label><i></i></label>
+					</div>
+				</span>
+
 		<div ng-class="(hideBulk == true)?'ng-hide':'';" class="btn-group btn-group-xs pull-right">
 			<div class="btn copy-icon"  ng-show="showTCdelete" ng-click="$event.stopPropagation(); cloneTcBulk()"></div>
 			<div class="btn" ng-show="showTCdelete" ng-click="deleteTCsBulk()"><span class="glyphicon glyphicon-trash"></span></div>

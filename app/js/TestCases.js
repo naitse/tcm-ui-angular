@@ -10,11 +10,17 @@ tcmModule.directive('ngTestcases', function(){
         $scope.selectall = false
         $scope.hideBulk = false;
         $scope.uuid = Math.floor(Math.random()*10000001);
+        $scope.linkTcs = false;
 
         $scope.draggedTests = {
           id: $scope.uuid,
+          link: $scope.linkTcs, 
           objects:[]
         }
+
+        $scope.$watch('linkTcs', function(linkFlag){
+          $scope.draggedTests.link = linkFlag
+        })
 
         DO.draggedObjects.push($scope.draggedTests)
 
@@ -125,7 +131,7 @@ tcmModule.directive('ngTestcases', function(){
               if(tc.checked == true){
                   toUnlink.push(tc)
               }
-              
+
             }else if(tc.checked == true){
               tc.$delete(function(){
                   $scope.tcDeleted(tc);
@@ -140,8 +146,8 @@ tcmModule.directive('ngTestcases', function(){
               temp.$unlink(function(data){
                 _.each(data.response,function(tc){
                   $scope.removeTCfromScope(tc);
-                  $rootScope.$broadcast('suiteTcLinked', {suiteId: $scope.requester.id, tc:tc});
                 })
+                  $rootScope.$broadcast('suiteTcUnLinked', {suiteId: $scope.requester.id, tcArray:data.response});
               })
             }
           })
@@ -269,21 +275,33 @@ tcmModule.directive('ngTestcases', function(){
   })
 
     $rootScope.$on('suiteTcLinked', function(event, message){
+      if(typeof $scope.requester == 'undefined'){
+        return false;
+      }
     if($scope.requester.type == 'suite'){
       _.each($scope.testcases, function(tc){
-        if(tc.tcId == message.tc.tcId){
-          tc.linked = 1
-        }
+        _.each(message.tcArray, function(remoteTc){
+          if(tc.tcId == remoteTc.tcId){
+            tc.linked = 1
+          }
+        })
       })
     }
   })
 
   $rootScope.$on('suiteTcUnLinked', function(event, message){
+      if(typeof $scope.requester == 'undefined'){
+        return false;
+      }
     if($scope.requester.type == 'suite'){
       _.each($scope.testcases, function(tc){
-        if(tc.tcId == message.tc.tcId){
-          tc.linked = 0
-        }
+        _.each(message.tcArray, function(remoteTc){
+          if(tc.tcId == remoteTc.tcId){
+            tcm_model.getTCLinkState(tc.tcId, function(data){
+              tc.linked = data.linked
+            })
+          }
+        })
       })
     }
   })

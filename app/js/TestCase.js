@@ -91,8 +91,8 @@ tcmModule.directive('ngTestcase', function(){
               temp.$unlink(function(data){
                 _.each(data.response,function(tc){
                   $scope.removeTCfromScope(tc);
-                  $rootScope.$broadcast('suiteTcLinked', {suiteId: $scope.requester.id, tc:tc});
                 })
+                $rootScope.$broadcast('suiteTcUnLinked', {suiteId: $scope.requester.id, tcArray:data.response});
               })
             return false;
           }

@@ -2,7 +2,6 @@
 	<div class="panel-heading" >
 		<div class="draggable-handle" ng-class="(tc.linked == 1)?'linked':'';"></div>
 		<input style="margin-left:-8px;" type="checkbox" ng-model="tc.checked" ng-click="$event.stopPropagation();"/>
-
 		<!-- <input class="priority" ng-class="tc.editMode==true?'editable':''" ng-model="tc.priority" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>		 -->
 		<input class="name" ng-class="tc.editMode==true?'editable':''" title="{{tc.name}}" ng-model="tc.name" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>
 		<div ng-hide="btns.hideStatus == true" class="btn-group btn-group-xs pull-right">
