@@ -105,7 +105,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
             _.each(metricsExecuted[0], function(value, key, list){
 
                 chartData.push(new Array( key, value));
-                total += value
+                total += value;
             });
 
             $scope.executionGraph.total = total;
@@ -294,15 +294,13 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                 text: metricsExecuted[0].iterName
             }
             delete metricsExecuted[0].iterName;
-            var total = 0;
 
             _.each(metricsExecuted[0], function(value, key, list){
 
                 chartData.push(new Array( key, value));
-                total += value
+
             });
 
-            $scope.executionByTeamGraph.total = total;
             $scope.executionByTeamGraph.chartData = metricsExecuted;
 
             $scope.executionByTeamGraph.series = [{
