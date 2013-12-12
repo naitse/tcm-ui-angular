@@ -57,7 +57,29 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     method: 'PUT'
                 }
         }),
-
+        // TestCasesLink: $resource(basePath + 'api/testcases/:tcId/linkTest', {tcId: '@tcId'},{
+        //         create:{
+        //             method: 'POST',
+        //             transformResponse:function(data, headersGetter){
+        //                 return {response:data}
+        //             },
+        //             responseType:'json'
+        //         },
+        //         unlink: {
+        //             method: 'PUT',
+        //             responseType:'json',
+        //             transformResponse:function(data, headersGetter){
+        //                 return {response:data}
+        //             }
+        //         },
+        //         delete: {
+        //             method: 'DELETE',
+        //             transformResponse:function(data, headersGetter){
+        //                 return {response:data}
+        //             },
+        //             responseType:'json'
+        //         }
+        // }),
         JiraIterations: $resource(basePath + 'api/projects/:id/jira/iterations', {id: $routeParams.projectId}),
         JiraIssues: $resource(basePath + 'api/projects/:projectId/jira/iteration/:id/issues', {projectId: $routeParams.projectId, id: '@id'}),
         JiraIssue: { //$resource(basePath + 'api/projects/:projectId/jira/issue/:key', {projectId: $routeParams.projectId, key: '@key'}),

@@ -56,6 +56,16 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
 
            return link; 
         },
+        setOriginLinkFlag: function(state){
+
+            _.each(DO.draggedObjects, function(current){
+                if(current.id == DO.currentDragUUID){
+
+                  current.sc.linkTcs = state
+
+                }
+            })
+        },
         cleanDraggable: function(){
             _.each(DO.draggedObjects, function(current){
                 _.each(current.objects, function(object){
@@ -64,6 +74,11 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
             })
         },
         dropTestsOnTestsContainer:function(featureId){
+
+              // if(DO.getOriginLinkFlag() == true){
+              //     DO.linkTcToFeature(featureId);
+              //   return false;
+              // }
 
             var dObjects = DO.getObjects()
           
@@ -82,6 +97,24 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
           DO.cleanDraggable();
 
         },
+        // linkTcToFeature:function(featureId){
+
+        //     var dObjects = DO.getObjects()
+          
+        //     var newTc = new tcm_model.TestCasesLink({tcId:object.tcId});
+        //     newTc.featureId = featureId;
+        //     newTc.origin = DO.getOriginType()
+        //     newTc.tcArray = dObjects
+        //     newTc.$create(function(data){
+        //       _.each(data.response,function(tc){
+        //         $rootScope.$broadcast('featureCurrentTCadded', {tc: tc, uuid: dObjects.id});
+        //         $rootScope.$broadcast('tcStatusUpdated', {featureId: featureId});
+        //       })
+        //     })
+
+        //   DO.cleanDraggable();
+
+        // },
         dropTestsOnFeature: function(feature){
               
             var dObjects = DO.getObjects()

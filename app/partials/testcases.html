@@ -1,13 +1,13 @@
 
 	<div ng-show="requester.id != ''" class="well action-bar">
 		<input style="float: left; position: relative;top: -9px;" type="checkbox" ng-model="selectall" ng-click="$event.stopPropagation(); selectAll()"/>
-				<span style=" float: left; position: relative; top: -6px; ">
-					Link Tcs
-					<div class="switch demo3">
-						<input type="checkbox" ng-model="linkTcs" ng-click="linkTcs = !LinkTcs">
-						<label><i></i></label>
-					</div>
-				</span>
+			<span ng-show="requester.type == 'suite'" style=" float: left; position: relative; top: -6px; ">
+				Link Tcs
+				<div class="switch demo3">
+					<input type="checkbox" ng-model="linkTcs" ng-click="linkTcs = !LinkTcs">
+					<label><i></i></label>
+				</div>
+			</span>
 
 		<div ng-class="(hideBulk == true)?'ng-hide':'';" class="btn-group btn-group-xs pull-right">
 			<div class="btn copy-icon"  ng-show="showTCdelete" ng-click="$event.stopPropagation(); cloneTcBulk()"></div>
@@ -32,7 +32,7 @@
 			<div class="btn btn-info btn-sm" ng-click="saveNewTC()">Save</div>
 		</div>
 	</div>
-	<div tcm-droppable drop="true" tcmDrop="handleDrop()" style=" height: 100%; padding-bottom: 61px; overflow: hidden; overflow-y: auto; ">
+	<div tcm-droppable drop="true" tcmDrop="handleDrop()" tcmDropOver="handleHover()" tcmDropOut="droppable = true" style=" height: 100%; padding-bottom: 61px; overflow: hidden; overflow-y: auto; ">
 <!-- 		<div class="well" ng-show="testcases.length == 0 && requester.id != ''">No Items Found</div> -->
 			<ng-testcase ng-repeat="tc in testcases"></ng-testcase>
 	</div>

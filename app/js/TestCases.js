@@ -15,7 +15,8 @@ tcmModule.directive('ngTestcases', function(){
         $scope.draggedTests = {
           id: $scope.uuid,
           link: $scope.linkTcs, 
-          objects:[]
+          objects:[],
+          sc:$scope
         }
 
         $scope.$watch('linkTcs', function(linkFlag){
@@ -479,6 +480,12 @@ $scope.testSelected = function(tc){
 
               $scope.draggable = true            
 
+            }
+
+            $scope.handleHover = function(){
+              if(DO.getOriginLinkFlag() == true && $scope.requester.type != 'suite'){
+                DO.setOriginLinkFlag(false)
+              }
             }
 
       }],
