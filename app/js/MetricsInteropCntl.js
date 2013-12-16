@@ -17,8 +17,8 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                 animation:true
 
             },
-            //'[{"Not Run":6,"In Progress":0,"Passed":10,"Failed":0,"Blocked":0}]'
-            colors: ['#c6c6c6','#46ACCA', '#5DB95D', '#CD433D', '#FAA328'],
+            //'[{"Not Run":6,"In Progress":0,"Blocked":0,"Passed":10,"Failed":0}]'
+            colors: ['#c6c6c6','#46ACCA', '#FAA328', '#CD433D', '#5DB95D' ],
 
             plotOptions: {
                 pie: {
@@ -40,20 +40,12 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                     point: {
                         events: {
                             select: function() {
-                                $('#InteropMetrics #tc-container').css('visibility','visible');
-                                // console.log(this)
-                                $(container).data('series',this.x);
-                                $(container).data('name',iterName);
+                                //$('#InteropMetrics #tc-container').css('visibility','visible');
+                                console.log(this)
+                                console.log(this.x);
+                                console.log(iterName);
 
-                                chart = $(container);
-
-                                // console.log(chart)
-
-                                $('#info-tc-modal-io #tc-container').children().remove();
-
-                                $('#info-tc-modal-io').find('.feature-title').text($(container).find('.highcharts-title tspan').text() +' - '+ this.name + ' test cases')
-                                // console.log(this,$(container))
-                                InteropMetricsView.fetchTCsbyStatus(this.x,chart);
+                                //InteropMetricsView.fetchTCsbyStatus(this.x,chart);
                             },
                             unselect: function() {
                                 $('#InteropMetrics #tc-container').children().remove();
@@ -294,6 +286,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                 text: metricsExecuted[0].iterName
             }
             delete metricsExecuted[0].iterName;
+            delete metricsExecuted[0].total;
 
             _.each(metricsExecuted[0], function(value, key, list){
 
@@ -308,6 +301,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                 name: 'Test Cases',
                 data: chartData
             }];
+
 
             $scope.setActiveGraphByTeam($scope.executionByTeamGraph);
         });
