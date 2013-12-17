@@ -1,5 +1,18 @@
 function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
 
+    var tc_statuses = {
+        "Not Run": 0,
+        "In Progress": 1,
+        "Blocked": 2,
+        "Failed": 3,
+        "Passed": 4
+    }
+
+    $scope.details = {
+        title: '',
+        tcs: []
+    }
+
     $scope.byItemGraphs = [];
     $scope.selection = {
             iteration: {
@@ -40,12 +53,14 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                     point: {
                         events: {
                             select: function() {
-                                //$('#InteropMetrics #tc-container').css('visibility','visible');
-                                console.log(this)
-                                console.log(this.x);
-                                console.log(iterName);
 
-                                //InteropMetricsView.fetchTCsbyStatus(this.x,chart);
+
+                                tcm_model.metrics.ReleasesTCsbyStatusByFtr.query({'releaseId': $routeParams.releaseId, 'statusId': tc_statuses[this.name]}, function(data){
+                                    $scope.details.title = 'Test Cases for status: ' + this.name;
+                                    $scope.details.tcs = data;
+                                    $('#modal-showMetric').modal();
+                                })
+
                             },
                             unselect: function() {
                                 $('#InteropMetrics #tc-container').children().remove();
