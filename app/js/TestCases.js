@@ -54,6 +54,8 @@ tcmModule.directive('ngTestcases', function(){
 
           $scope.$watch("requester.id",function(value, old){
 
+            $scope.droppable = false;
+
             if(value == old){
               return false;//prone to error
             }
@@ -82,16 +84,19 @@ tcmModule.directive('ngTestcases', function(){
               tcm_model.TagsTcs.query({tid: $scope.requester.id},function(data){
                 $scope.testcases = data;
                 $scope.extendTcs();
+                $scope.droppable = true;
               })
             }else if($scope.requester.type == 'feature'){
               tcm_model.TestCases.query({featureId: $scope.requester.id},function(data){
                 $scope.testcases = data;
                 $scope.extendTcs();
+                $scope.droppable = true;
               })
             }else if($scope.requester.type == 'suite'){
               tcm_model.SuiteTests.query({sid: $scope.requester.id},function(data){
                 $scope.testcases = data;
                 $scope.extendTcs();
+                $scope.droppable = true;
               })
             }
 
@@ -464,7 +469,7 @@ $scope.testSelected = function(tc){
 
 ////////////////////DROP SECTION
 
-            $scope.droppable = true;
+            $scope.droppable = false;
 
             $scope.handleDrop = function(){
 
