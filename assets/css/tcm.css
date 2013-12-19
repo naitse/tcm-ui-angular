@@ -7,6 +7,7 @@ html{
     min-height:100%;
    position:relative;
    outline: none;
+   background: url('assets/images/bg_dark.png');
 
 }
 
@@ -20,6 +21,12 @@ body{
     color:#454545
     min-height:100%;
    position:relative;
+
+   width: 1350px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5px;
+padding-right: 5px;
 }
 
 pre{
