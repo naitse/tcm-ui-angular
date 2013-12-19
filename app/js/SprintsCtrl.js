@@ -181,27 +181,27 @@ tcmModule.directive('tcmSprintModule', function() {
             }
 
             scope.middleWidth = {
-                width: window.innerWidth - 325
+                width: 1350 - 325
             };
 
 
-            scope.getWidth = function() {
-                return window.innerWidth;
-            };
+            // scope.getWidth = function() {
+            //     return 1350;
+            // };
 
-            scope.$watch(scope.getWidth, function(newValue, oldValue) {
-                newWidth = (scope.showRight == false)? newValue - 325: newValue - 661;
-                scope.middleWidth = {
-                    width: newWidth
-                };
-            });
+            // scope.$watch(scope.getWidth, function(newValue, oldValue) {
+            //     newWidth = (scope.showRight == false)? newValue - 325: newValue - 661;
+            //     scope.middleWidth = {
+            //         width: newWidth
+            //     };
+            // });
 
             scope.$watch('showRight', function(value, old){
                 if(value == old){
                     return false;
                 }
 
-                newWidth = (scope.showRight == false)? scope.getWidth() - 325: scope.getWidth() - 661;
+                newWidth = (scope.showRight == false)? 1350 - 325: 1350 - 661;
 
                 scope.middleWidth = {
                     width: newWidth
@@ -209,9 +209,9 @@ tcmModule.directive('tcmSprintModule', function() {
 
             })
 
-            window.onresize = function(){
-                scope.$apply();
-            }
+            // window.onresize = function(){
+            //     scope.$apply();
+            // }
 
         }],
         link: function(scope, elm, attr, ngModelCtrl) {

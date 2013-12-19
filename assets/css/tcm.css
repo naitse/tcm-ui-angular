@@ -7,7 +7,7 @@ html{
     min-height:100%;
    position:relative;
    outline: none;
-   background: url('assets/images/bg_dark.png');
+   background: url('/assets/images/bg_dark.png');
 
 }
 
@@ -22,7 +22,7 @@ body{
     min-height:100%;
    position:relative;
 
-   width: 1350px;
+   width: 1360px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 5px;
@@ -154,5 +154,14 @@ input, textarea {
 .jira-status-icon {
 
 }
+.nav-pills a {
+height: 48px;
+text-align: center;
+font-size: 15px;
+}
 
+.nav.nav-tabs.left-panel li.active a {
+color: #fff;
+background-color: #428bca;
+}
 

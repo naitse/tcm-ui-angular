@@ -68,7 +68,7 @@
 	}
 
 	.nav.right-panel {
-		position: fixed;
+		position: absolute;
 		top: 76px;
 		right: 0px;
 	}
@@ -105,15 +105,25 @@
 		margin-right: 10px;
 	}
 
+.ng-right-nav-panel .testcase .name {
+	width: 248px;
+}
 
 </style>
 <div class="panel panel-default panel-tcm right-panel" >
   <div class="panel-body panel-body-tcm" >
-		<ul class="nav nav-tabs right-panel">
+		<ul class="nav nav-tabs right-panel" ng-show="hideInit == true">
 		  <li ng-click="$event.preventDefault(); loadSprint()" ng-class="sprintActiveClass"><a href="">Sprint</a></li>
 		  <li ng-click="$event.preventDefault(); loadSuites()" ng-class="suiteActiveClass"><a href="">Suites</a></li>
 		  <li ng-click="$event.preventDefault(); loadTags()" ng-class="tagActiveClass"><a href="">Tags</a></li>
 		</ul>
+		<div>
+			<ul class="nav nav-pills nav-stacked" ng-hide="hideInit == true">
+			  <li ng-click="$event.preventDefault(); hideInit= true; loadSprint()" ><a href="">Sprint</a></li>
+			  <li ng-click="$event.preventDefault(); hideInit= true; loadSuites()" ><a href="">Suites</a></li>
+			  <li ng-click="$event.preventDefault(); hideInit= true; loadTags()" ><a href="">Tags</a></li>
+ 			</ul>
+		</div>
 		<div class="position-reference panel">
 	    	<div ng-show="sprintActiveClass == 'active'" class="btn-group btn-group-sm pull-left">
 				<div ng-show="releases.length > 0" ng-click="backToReleases()"class="btn btn-default">&#47;</div>
