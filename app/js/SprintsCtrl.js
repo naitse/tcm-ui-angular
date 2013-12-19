@@ -4,7 +4,7 @@ tcmModule.directive('tcmSprintModule', function() {
         transclude:false,
         scope:true,
         templateUrl: 'app/partials/sprintsmodule.html',
-        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function(scope, element, $attrs, $rootScope, tcm_model){
+        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$timeout', function(scope, element, $attrs, $rootScope, tcm_model,$timeout){
             
             scope.releases = [];
             scope.iterations = [];
@@ -206,7 +206,6 @@ tcmModule.directive('tcmSprintModule', function() {
                 scope.middleWidth = {
                     width: newWidth
                 };
-                scope.$apply();
 
             })
 

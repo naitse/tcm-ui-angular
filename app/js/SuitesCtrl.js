@@ -151,7 +151,6 @@ tcmModule.directive('tcmSuitesModule', function() {
                 scope.middleWidth = {
                     width: newWidth
                 };
-                scope.$apply();
 
             })
 

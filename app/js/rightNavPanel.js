@@ -58,7 +58,7 @@ tcmModule.directive('ngRightNavPanel', function() {
                 }
             }
 
-            scope.btnConfig = {hideBulk:true, hideStatus:true};
+            scope.btnConfig = {hideBulk:true, hideStatus:true, hideDropdown:true};
             releaseSelected = {};
 
             scope.resetRelease = function(){

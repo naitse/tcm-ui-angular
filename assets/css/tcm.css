@@ -118,6 +118,13 @@ input, textarea {
     background-size: 100%;
 }
 
+.loading-big {
+    background: url('/assets/images/loading1.gif');
+    height: 50px;
+    width: 50px;
+    background-size: 100%;
+}
+
 .tcm-icon {
         height: 16px;
     width: 16px;

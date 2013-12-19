@@ -1,5 +1,5 @@
 <style>
-	.sprint-container, .tag-container, .suite-container{
+	.tab-content{
 		position: relative;
 		height: 100%;
 		overflow: hidden;
@@ -14,54 +14,48 @@
 		padding-bottom: 40px;
 	}
 
-	.sprint-container>div, .tag-container>div{
-		background-color: white;
-		position: absolute;
-		left: 0px;
-		top: 0px;
-		width: 100%;
-		height:100%;
-		overflow-y: auto; 
-	}
-
 	.ng-right-nav-panel 	#releases {
 		height: auto;
 			left: 0px;
+			position: relative;
 	}
 
 	.ng-right-nav-panel 	#iterations {
 		height: auto;
 		left: 400px;
-		top: 0px;
+		top: -50px;
+		position: relative;
 	}
 
 	.ng-right-nav-panel 	#features {
 		height: auto;
 		left: 400px;
-		top: 0px;
+		top: -100px;
+		position: relative;
+		background: white;
 	}	
-	.ng-right-nav-panel 	#tags {
-		height: auto;
-		left: 0px;
-	}
 
-	.ng-right-nav-panel 	#suites {
+	 .ng-right-nav-panel .tab-content-element{
 		height: auto;
 		left: 0px;
 		position: relative;
-	}
+	 }
 
 	.ng-right-nav-panel 	#testcases {
 		left: 400px;
 		top: 93px;
 		height: 100%;
 		padding-bottom: 93px;
+		position: absolute;
+		width: 100%;
 	}
 	.ng-right-nav-panel 	#tagstestcases {
 		left: 400px;
-		top: 50px;
+		top: 31px;
 		height: 100%;
 		padding-bottom: 50px;
+		position: absolute;
+		width: 100%;
 	}
 
 	.ng-right-nav-panel 	#suitetestcases {
@@ -84,7 +78,8 @@
 		height: 36px;
 		margin-bottom: 0px !important;
 	}
-	.sprint-container .panel, .tag-container .panel {
+
+	#release, #iteration, #tag {
 		margin-bottom: 0px !important;	
 	}
 
@@ -132,7 +127,7 @@
 				<div ng-show="tags.length > 0 && hideTags == true" ng-click="backToTags()"class="btn btn-default">Back</div>
 	    	</div>
 		</div>
-    	<div class="sprint-container" ng-show="sprintActiveClass == 'active'">
+    	<div class="sprint-container  tab-content" ng-show="sprintActiveClass == 'active'">
     		<div id="releases">
 	    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases" ng-click="getIterations(rel)" ng-class="(release ==  rel)?'active':'';">
 				  <div class="panel-body">
@@ -155,8 +150,8 @@
     		</div>
     	</div>
 
-    	<div class="suite-container" ng-show="suiteActiveClass == 'active'">
-	    		<div id="suites">
+    	<div class="suite-container tab-content" ng-show="suiteActiveClass == 'active'">
+	    		<div id="suites"  class="tab-content-element">
 		    		<div id="suite" class="panel panel-default" ng-hide="suite.hide" ng-repeat="suite in suites" ng-class="(suite.active == true)?'active':'';" ng-click="getSuiteTestcases(suite)">
 					  <div class="panel-body">
 	    				{{suite.name}}
@@ -169,8 +164,8 @@
     	</div>
 
 
-    	<div class="tag-container" ng-show="tagActiveClass == 'active'">
-    		<div id="tags">
+    	<div class="tag-container  tab-content" ng-show="tagActiveClass == 'active'">
+    		<div id="tags" class="tab-content-element">
     			<div ng-repeat="tag in tags" id="tag" ng-hide="tag.hide" class="panel panel-default single-tag" ng-click="loadTagTc(tag)">
 	    			<div class="panel-body">
 	    				<div class="cordon"></div>{{tag.name}}
