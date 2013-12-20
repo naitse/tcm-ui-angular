@@ -201,7 +201,7 @@ tcmModule.directive('tcmDraggable', function($rootScope) {
                             return true;
                         },
                         handle: ".draggable-handle",
-                        appendTo: 'body',
+                        appendTo: 'html',
                         helper:function(){
                                 return $('<div class="tcm-drag-helper"><span class="glyphicon glyphicon-file"></span></div>')
                         },

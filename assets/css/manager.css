@@ -190,6 +190,9 @@ background: transparent;
 font-size: 13px;
 line-height: 1.3077;
 font-family: Arial,FreeSans,Helvetica,sans-serif;
+border-bottom: 1px solid #cccccc;
+padding-top: 20px;
+margin-top: 10px;
 }
 .item-comment {
 padding: 5px;
