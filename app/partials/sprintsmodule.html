@@ -132,7 +132,7 @@
 					      <h4 class="panel-title">
 					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="isopend = !isopend">
 					        	<span class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': isopend, 'glyphicon-chevron-right': !isopend}" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
-								<a href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   {{currentRequester.object.featureName}}     </div>
+								<a ng-click="$event.stopPropagation();" href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   {{currentRequester.object.featureName}}     </div>
 					      </h4>
 					    </div>
 					    <div id="collapseOne" class="panel-collapse collapse">
