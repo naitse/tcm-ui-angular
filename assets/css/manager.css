@@ -194,7 +194,9 @@ background: transparent;
 font-size: 13px;
 line-height: 1.3077;
 font-family: Arial,FreeSans,Helvetica,sans-serif;
-border-bottom: 1px solid #cccccc;
+border: none;
+border-radius: 0px;
+border-bottom: 1px dashed #cccccc;
 padding-top: 20px;
 margin-top: 10px;
 }
@@ -229,7 +231,7 @@ display: inline-block;
 display: inline-block;
 border: 2px solid white;
 border-radius: 0px 6px 6px 0px;
-box-shadow: 0px 1px 10px -3px black;
+box-shadow: 3px 3px 10px -6px black;
 font-size: 13px;
 margin-left: -4;
 padding-left: 8;
@@ -237,14 +239,14 @@ position: relative;
 top: 0px;
 z-index: 2;
 border-left: none;
-background: black;
-color: white;
 padding-right: 6px;
 float: left;
 }
 
 .comment-created {
 display: inline-block;
+float: right;
+font-size: 12px;
 }
 
 .tc-container .dropdown-menu:last-of-type {

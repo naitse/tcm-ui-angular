@@ -157,7 +157,7 @@
 						                        <div ng-repeat="comment in currentRequester.object.remote.fields.comment.comments" class="item-comment">
 						                                <div class="comment-author-avatar" style="background: url('{{comment.author.avatarUrls.48x48}}') 0px -1px;"></div> 
 						                                <div class="comment-author-name">{{comment.author.displayName}}</div>
-						                                <div class="comment-created">{{comment.created}}</div>
+						                                <div class="comment-created">{{comment.created | date:'medium'}}</div>
 						                                <pre>{{comment.body}}</pre>
 						                        </div>
 						                </div>

@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="assets/css/login.css">
 <div class="form-container">
-    <h2>TCM</h2>
+    <div class="header">TCM</div>
     <form id="login-form" method="post" class="form-horizontal" ng:submit="login()">
        <!--<div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-user"/></span>
@@ -13,15 +13,15 @@
         <div ng-hide="loginErrorMessage == '' " class="alert alert-danger">{{loginErrorMessage}}</div>
           -->
         <div class="githubLoginButton">
-            <img src="assets/images/Octocat_large_verge_medium_portrait.jpg" style="width: 80;"/>
             <a class="githubLoginButtonLink" href="http://localhost:9000/auth/github">
+                <img src="assets/images/githublogo.png" style="width: 80;"/>
                 <span class="githubLoginButtonInside">Login with GitHub</span>
             </a>
         </div>
 
         <div class="githubLoginButton">
-            <img src="assets/images/googleaccount.jpeg" style="width: 80;"/>
             <a class="githubLoginButtonLink" href="http://localhost:9000/auth/google">
+                <img src="assets/images/google.png" style="width: 80;"/>
                 <span class="githubLoginButtonInside">Login with Google Account</span>
             </a>
         </div>

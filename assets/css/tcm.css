@@ -21,11 +21,15 @@ body{
     color:#454545
     min-height:100%;
    position:relative;
-
+    background: transparent;
    width: 1360px;
     margin-left: auto;
     margin-right: auto;
 
+}
+
+.cont{
+    background: white;
 }
 
 pre{

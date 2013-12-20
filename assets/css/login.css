@@ -1,9 +1,11 @@
 .form-container {
-	width: 400px;
-	margin-left: auto;
-	margin-right: auto;
-	top: 20%;
-	position: relative;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    top: 20%;
+    position: relative;
+    padding: 20px;
+    border-radius: 6px;
 }
 
 .input-group {
@@ -21,15 +23,16 @@
     margin-top: 30px;
 }
 .githubLoginButtonLink {
-    -webkit-border-radius: 2em;
-    border-radius: 2em;
-    padding: 1em 0 1em 54px;
-    background-color: #948cf1;
+    -webkit-border-radius: 1em;
+    border-radius: 1em;
+    background-color: #afc2d3;
     display: inline-block;
     overflow: hidden;
-    color: #fff;
+    color: black;
     font-family: TitilliumText,sans-serif;
-    font-weight: 200;
+    font-weight: 400;
+    width: 100%;
+    font-size: 20;
 }
 
 .githubLoginButtonLink .githubLoginButtonInside {
@@ -41,4 +44,36 @@
     padding-left: 12px;
     padding-right: 20px;
     position: relative;
+}
+
+.header {
+    text-align: center;
+    font-size: 160px;
+    font-weight: bold;
+    border-bottom: 3px solid #4b94d4;
+    /*text-shadow: 0px 0px 1px #fff;*/
+    -webkit-animation: cssAnimation 3.7169s infinite ease;
+    -moz-animation: cssAnimation 3.7169s infinite ease;
+    -o-animation: cssAnimation 3.7169s infinite ease;
+}
+
+.githubLoginButtonLink:hover {
+box-shadow: -1px 1px 4px 2px black inset;
+}
+
+
+@-webkit-keyframes cssAnimation {
+    0% { text-shadow: 0px 0px 1px #fff; }
+    50% { text-shadow: 0px 0px 10px #fff; }
+    100% { text-shadow: 0px 0px 1px #fff; }
+}
+@-moz-keyframes cssAnimation {
+    0% { text-shadow: 0px 0px 1px #fff; }
+    50% { text-shadow: 0px 0px 10px #fff; }
+    100% { text-shadow: 0px 0px 1px #fff; }
+}
+@-o-keyframes cssAnimation {
+    0% { text-shadow: 0px 0px 1px #fff; }
+    50% { text-shadow: 0px 0px 10px #fff; }
+    100% { text-shadow: 0px 0px 1px #fff; }
 }
