@@ -163,6 +163,9 @@ tcmModule.directive('ngFeatures', function(){
 		});
 
 		$rootScope.$on('featureDeleted', function(event, message){
+      if(message.feature.current == true){
+        $scope.$parent.resetCurrentRequester();
+      }
 			$scope.features = _.without($scope.features, _.findWhere($scope.features, {featureId: message.featureId}));
 			//$scope.testcases = [];
 		});

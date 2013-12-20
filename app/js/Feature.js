@@ -49,8 +49,10 @@ tcmModule.directive('ngFeature', function(){
               $scope.deleteFeature = function(feature){
                 $scope.placeholders.feature.delete = "OMG!";
 
+                var obj = angular.copy(feature);
+
                 feature.$delete(function(){
-                  $rootScope.$broadcast('featureDeleted', {featureId: feature.featureId});
+                  $rootScope.$broadcast('featureDeleted', {featureId: feature.featureId, feature: obj});
                   $scope.placeholders.feature.delete = "Delete?";
                   $scope.featureSelected = false;
                 })
