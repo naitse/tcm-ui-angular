@@ -269,13 +269,13 @@ tcmModule.directive('ngTestcases', function(){
 
 
   $rootScope.$on('tcUntagged', function(event, message){
-    if($scope.requester.type == 'tag' && $scope.requester.id == message.tag.id){
+    if(typeof $scope.requester !== 'undefined' && $scope.requester.type == 'tag' && $scope.requester.id == message.tag.id){
       $scope.removeTCfromScope(message.tc)
     }
   })
 
   $rootScope.$on('tcTagged', function(event, message){
-    if($scope.requester.type == 'tag' && $scope.requester.id == message.tag.id){
+    if( typeof $scope.requester !== 'undefined' && $scope.requester.type == 'tag' && $scope.requester.id == message.tag.id){
       $scope.updateTestCasesList(angular.copy(message.tc))
     }
   })

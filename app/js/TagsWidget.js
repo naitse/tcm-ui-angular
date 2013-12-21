@@ -14,7 +14,7 @@ tcmModule.directive('ngTagsWidget', function(){
         })
 
         $rootScope.$on('tcTagged', function(event, message){
-          if($scope.$parent.tc.tcId == message.tc.tcId){
+          if(typeof $scope.$parent.requester !== 'undefined' && $scope.$parent.requester.id !== message.parentRequester.id && $scope.$parent.tc.tcId == message.tc.tcId){
             $scope.tags.push(message.tag)
           }
         })
@@ -77,7 +77,7 @@ tcmModule.directive('ngTagsWidget', function(){
           tagTc.tid = tag.id;
           tagTc.testArray = [$scope.$parent.tc]
           tagTc.$save(function(){
-            $rootScope.$broadcast('tcTagged', {tc: $scope.$parent.tc, tag:tag});
+            $rootScope.$broadcast('tcTagged', {tc: $scope.$parent.tc, tag:tag, parentRequester:$scope.$parent.$parent.requester});
             $scope.removeFromGtags(tag)
             $scope.tags.push(tag)
           });
