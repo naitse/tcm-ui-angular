@@ -80,7 +80,21 @@ tcmModule.directive('ngTestcases', function(){
             $scope.resetNewTestcase();
             $scope.selectall = false
             $scope.showTCdelete = false
-            if($scope.requester.type == 'tag'){
+            if($scope.requester.type == 'multitag'){
+              console.log($scope.requester.tagsArray)
+              if($scope.requester.tagsArray.length == 0){
+                $scope.testcases = [];
+                return false;
+              }
+              var multi = new tcm_model.MultiTagsTcs()
+              multi.tagsArray = $scope.requester.tagsArray;
+
+              multi.$fetch(function(data){
+                $scope.testcases = data.response;
+                $scope.extendTcs();
+                $scope.droppable = true;
+              })
+            }else if($scope.requester.type == 'tag'){
               tcm_model.TagsTcs.query({tid: $scope.requester.id},function(data){
                 $scope.testcases = data;
                 $scope.extendTcs();

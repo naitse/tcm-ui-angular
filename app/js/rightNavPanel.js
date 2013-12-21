@@ -4,7 +4,7 @@ tcmModule.directive('ngRightNavPanel', function() {
         transclude:false,
         scope:true,
         templateUrl: 'app/partials/rightnavpanel.html',
-        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', function(scope, element, $attrs, $rootScope, tcm_model){
+        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$q', function(scope, element, $attrs, $rootScope, tcm_model, $q){
             
             if(scope.containerType == 'sprint'){
                 scope.$watch('sprintTestInactive', function(newVal, oldVal){
@@ -333,6 +333,8 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             //////////////////////////TAGS
 
+            scope.tagstringToFecthArray = [];
+            scope.tagsToFecthArray = [];
 
             $rootScope.$on('tagCreated', function(event, message){
                 var cTag = new tcm_model.Tags()
@@ -344,8 +346,32 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.resetCurrentRequesterTags = function(){
                 scope.currentRequesterTags.id = ''
-                scope.currentRequesterTags.type = 'tag'
+                scope.currentRequesterTags.type = 'multitag'
                 scope.currentRequesterTags.name = ''
+                scope.currentRequesterTags.tagsArray = []
+                scope.showTagTests();
+            };
+
+            scope.getTagInput = function(){
+                var deferred = $q.defer();
+                deferred.resolve(scope.tagInput)
+                return deferred.promise;
+            }
+
+            scope.addTagToFetch = function(tag){
+                scope.tagsToFecthArray.push(_.findWhere(scope.tags, {name:tag}))
+                scope.setMultiTagReq();
+            }
+
+            scope.removeTagToFetch = function(tag){
+                scope.tagsToFecthArray = _.without(scope.tagsToFecthArray, _.findWhere(scope.tagsToFecthArray, {name:tag}))
+                scope.setMultiTagReq();
+            }
+
+            scope.setMultiTagReq = function(){
+                scope.currentRequesterTags.id = Math.floor(Math.random()*9999)
+                scope.currentRequesterTags.type = 'multitag'
+                scope.currentRequesterTags.tagsArray = scope.tagsToFecthArray
             };
 
             scope.loadTags = function(){
@@ -354,11 +380,15 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.sprintActiveClass = ''
                 scope.suiteActiveClass = ''
                 scope.tagActiveClass = 'active'
+                scope.tagInput =[];
                 if(scope.tags.length !== 0){
                     return false;
                 }
                 tcm_model.Tags.query(function(res){
                     scope.tags = _.extend(res, {hide:false});
+                    _.each(scope.tags, function(tag){
+                        scope.tagInput.push(tag.name)
+                    })
                 })
             }
 
