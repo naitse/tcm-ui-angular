@@ -92,7 +92,7 @@ tcmModule.directive('ngTestcases', function(){
               multi.$fetch(function(data){
                 $scope.testcases = data.response;
                 $scope.extendTcs();
-                $scope.droppable = true;
+                $scope.droppable = false;
               })
             }else if($scope.requester.type == 'tag'){
               tcm_model.TagsTcs.query({tid: $scope.requester.id},function(data){

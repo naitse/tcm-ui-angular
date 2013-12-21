@@ -34,7 +34,7 @@ tcmModule.directive('ngRightNavPanel', function() {
                     }
             }
 
-            var duration = 200
+            var duration = 150
             scope.releases = [];
             scope.iterations = [];
             scope.features = [];
@@ -167,7 +167,7 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.showIterations = function(){
                 
-                $(element).find('#iterations').stop(true,true).animate({left:0},function(){});
+                $(element).find('#iterations').stop(true,true).animate({left:0},duration, function(){});
             }
             scope.hideIterations = function(){
                   scope.iterations = [];
@@ -182,7 +182,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.showFeatures = function(){
-                $(element).find('#features').css('height','100%').stop(true,true).animate({left:0},function(){});
+                $(element).find('#features').css('height','100%').stop(true,true).animate({left:0},duration, function(){});
             }
 
             scope.hideFeatures = function(){
@@ -202,7 +202,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.tcsHidden = false
             scope.showTests = function(){
                 scope.featBtnConfig.hideBar = true
-                $(element).find('#testcases').stop(true,true).animate({left:0},function(){
+                $(element).find('#testcases').stop(true,true).animate({left:0},duration, function(){
                     scope.tcsHidden = false
                 });
             }
@@ -210,7 +210,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.hideTests = function(){
                 scope.hideFeature = false
                 scope.resetCurrentRequester();
-                $(element).find('#testcases').stop(true,true).animate({left:400},function(){
+                $(element).find('#testcases').stop(true,true).animate({left:400},duration, function(){
                     scope.tcsHidden = true
                     scope.featBtnConfig.hideBar = false
                 });
@@ -288,7 +288,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.showSuites = function(){
                 scope.hideSuites = false
                 scope.hideSuiteTests();
-                $(element).find('#suites').stop(true,true).animate({left:0},function(){});
+                $(element).find('#suites').stop(true,true).animate({left:0}, duration, function(){});
             }
             
             scope.hideSuitesContainer = function(suite){
@@ -304,7 +304,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.suiteTcsHidden = false
             scope.showSuiteTests = function(){
                 scope.hideSuites = true
-                $(element).find('#suitetestcases').stop(true,true).animate({left:0},function(){
+                $(element).find('#suitetestcases').stop(true,true).animate({left:0},duration, function(){
                     scope.suiteTcsHidden = false
                 });
             }
@@ -312,7 +312,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.hideSuiteTests = function(){
                 scope.hideSuites = false
                 scope.resetCsuiteR();
-                $(element).find('#suitetestcases').stop(true,true).animate({left:400},function(){
+                $(element).find('#suitetestcases').stop(true,true).animate({left:400},duration, function(){
                     scope.suiteTcsHidden = true
                 });
             }
@@ -335,6 +335,7 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             scope.tagstringToFecthArray = [];
             scope.tagsToFecthArray = [];
+            scope.tagInput =[];
 
             $rootScope.$on('tagCreated', function(event, message){
                 var cTag = new tcm_model.Tags()
@@ -380,7 +381,6 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.sprintActiveClass = ''
                 scope.suiteActiveClass = ''
                 scope.tagActiveClass = 'active'
-                scope.tagInput =[];
                 if(scope.tags.length !== 0){
                     return false;
                 }
@@ -420,19 +420,19 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.showTags = function(){
                 scope.hideTags = false
                 scope.hideTagTests();
-                $('.ng-right-nav-panel #tags').stop(true,true).animate({left:0},function(){});
+                $('.ng-right-nav-panel #tags').stop(true,true).animate({left:0},duration, function(){});
             }
             
             scope.hideTagsContainer = function(){
                 scope.hideTags = true
-                $(element).find('#tags').stop(true,true).animate({left:400},function(){
+                $(element).find('#tags').stop(true,true).animate({left:400},duration, function(){
                 });
             }
 
             scope.tagsTcsHidden = false
             scope.showTagTests = function(){
                 scope.hideTags = true
-                $(element).find('#tagstestcases').stop(true,true).animate({left:0},function(){
+                $(element).find('#tagstestcases').stop(true,true).animate({left:0},duration, function(){
                     scope.tagsTcsHidden = false
                 });
             }
@@ -440,7 +440,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.hideTagTests = function(){
                 scope.hideTags = false
                 scope.resetCurrentRequesterTags();
-                $(element).find('#tagstestcases').stop(true,true).animate({left:400},function(){
+                $(element).find('#tagstestcases').stop(true,true).animate({left:400},duration, function(){
                     scope.tagsTcsHidden = true
                 });
             }
