@@ -13,11 +13,11 @@ tcmModule.directive('ngTagsWidget', function(){
           $scope.tags = _.without($scope.tags, _.findWhere($scope.tags, {id:message.tagId}))
         })
 
-        $rootScope.$on('tcTagged', function(event, message){
-          if(typeof $scope.$parent.requester !== 'undefined' && $scope.$parent.requester.id !== message.parentRequester.id && $scope.$parent.tc.tcId == message.tc.tcId){
-            $scope.tags.push(message.tag)
-          }
-        })
+        // $rootScope.$on('tcTagged', function(event, message){
+        //   if(typeof $scope.$parent.requester !== 'undefined' && $scope.$parent.requester.id !== message.parentRequester.id && $scope.$parent.tc.tcId == message.tc.tcId){
+        //     $scope.tags.push(message.tag)
+        //   }
+        // })
 
         $scope.tags = [];
         $scope.tagstring = [];
@@ -86,7 +86,6 @@ tcmModule.directive('ngTagsWidget', function(){
           var deffered = $q.defer();
           tcm_model.Tags.query(function(res){
             $scope.globalTags = res;
-            console.log(res)
                 var temp =[];
               _.each($scope.tags, function(tag){
                   $scope.removeFromGtags(tag);
