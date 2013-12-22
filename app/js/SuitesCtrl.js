@@ -74,6 +74,10 @@ tcmModule.directive('tcmSuitesModule', function() {
              return result;
             }
 
+            scope.refreshSuites =function(){
+                scope.resetCurrentRequester();
+                scope.loadSuites()
+            }
 
             scope.loadSuites = function(){
                 scope.sprintActiveClass = 'active'

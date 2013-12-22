@@ -247,7 +247,9 @@ tcmModule.directive('ngRightNavPanel', function() {
 
             $rootScope.$on('suiteAdded', function(event, message){
                 if(scope.currentRequester.id != message.suite.id){
-                  scope.suites.push(_.extend(angular.copy(message.suite), {hide:false}));
+                    if(scope.suites.length > 0){
+                        scope.suites.push(_.extend(angular.copy(message.suite), {hide:false}));
+                    }
                 }
               })
 
@@ -376,6 +378,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             };
 
             scope.loadTags = function(){
+                scope.setMultiTagReq()
                 scope.tcsHidden = true
                 scope.tagsTcsHidden = false
                 scope.sprintActiveClass = ''

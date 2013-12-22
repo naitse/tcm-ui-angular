@@ -2,17 +2,28 @@
 	<div ng-show="requester.id != ''" class="well action-bar">
 		<input style="float: left; position: relative;top: -9px;" type="checkbox" ng-model="selectall" ng-click="$event.stopPropagation(); selectAll()"/>
 			<span ng-show="requester.type == 'suite'" style=" float: left; position: relative; top: -6px; ">
-				Link Tcs
 				<div class="switch demo3">
 					<input type="checkbox" ng-model="linkTcs" ng-click="linkTcs = !LinkTcs">
 					<label><i></i></label>
 				</div>
+				Link Tcs
 			</span>
-
+		<div class="btn-group btn-group-xs pull-right no-opacity" ng-show="createSuiteBtn == true">
+			<div class="btn btn-default" ng-class="(createSuiteBtnEnabled == true)?'no-opacity':'';" ng-click="createNewSuite()" ng-disabled="createSuiteBtnEnabled == false">Create Suite</div>
+		</div>
 		<div ng-class="(hideBulk == true)?'ng-hide':'';" class="btn-group btn-group-xs pull-right">
 			<div class="btn copy-icon"  ng-show="showTCdelete" ng-click="$event.stopPropagation(); cloneTcBulk()"></div>
 			<div class="btn" ng-show="showTCdelete" ng-click="deleteTCsBulk()"><span class="glyphicon glyphicon-trash"></span></div>
 			<div class="btn btn-default" ng-click="createTC()">Add Test</div>
+		</div>
+	</div>
+	<div ng-show="createSuite.create && requester.id != ''" class="panel panel-default current testcase" ng-class="">
+		<div class="panel-body" >
+			<input class="name editable" ng-model="createSuite.name"/>
+		</div>
+		<div class="panel-footer" style=" position: relative; ">
+			<div class="btn btn-default btn-sm" ng-click="cancelCreateSuite()">Close</div>
+			<div class="btn btn-info btn-sm" ng-click="saveCreateSuite()">Save</div>
 		</div>
 	</div>
 	<div ng-show="newTC.create && requester.id != ''" class="panel panel-default current testcase" ng-class="">

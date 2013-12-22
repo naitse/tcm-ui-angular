@@ -11,6 +11,7 @@ tcmModule.directive('ngTestcases', function(){
         $scope.hideBulk = false;
         $scope.uuid = Math.floor(Math.random()*10000001);
         $scope.linkTcs = false;
+        $scope.createSuiteBtn = false;
 
         $scope.draggedTests = {
           id: $scope.uuid,
@@ -48,8 +49,17 @@ tcmModule.directive('ngTestcases', function(){
           }
         }
 
+        $scope.resetCreateSuite = function(){
+          $scope.createSuite = {
+            create:false,
+            name:'',
+            description:''
+          }
+        }
+
         $scope.resetTestcasesObject();
         $scope.resetNewTestcase();
+        $scope.resetCreateSuite();
 
 
           $scope.$watch("requester.id",function(value, old){
@@ -81,9 +91,10 @@ tcmModule.directive('ngTestcases', function(){
             $scope.selectall = false
             $scope.showTCdelete = false
             if($scope.requester.type == 'multitag'){
-              console.log($scope.requester.tagsArray)
               if($scope.requester.tagsArray.length == 0){
                 $scope.testcases = [];
+                $scope.createSuiteBtn = true;
+                $scope.createSuiteBtnEnabled = false;
                 return false;
               }
               var multi = new tcm_model.MultiTagsTcs()
@@ -92,29 +103,31 @@ tcmModule.directive('ngTestcases', function(){
               multi.$fetch(function(data){
                 $scope.testcases = data.response;
                 $scope.extendTcs();
+                $scope.createSuiteBtn = true;
+                $scope.createSuiteBtnEnabled = true;
                 $scope.droppable = false;
               })
             }else if($scope.requester.type == 'tag'){
               tcm_model.TagsTcs.query({tid: $scope.requester.id},function(data){
-                $scope.testcases = data;
-                $scope.extendTcs();
-                $scope.droppable = true;
+                  procesTc(data)
               })
             }else if($scope.requester.type == 'feature'){
               tcm_model.TestCases.query({featureId: $scope.requester.id},function(data){
-                $scope.testcases = data;
-                $scope.extendTcs();
-                $scope.droppable = true;
+                  procesTc(data)
               })
             }else if($scope.requester.type == 'suite'){
               tcm_model.SuiteTests.query({sid: $scope.requester.id},function(data){
-                $scope.testcases = data;
-                $scope.extendTcs();
-                $scope.droppable = true;
+                  procesTc(data)
               })
             }
 
           }
+
+        function procesTc(data){
+            $scope.testcases = data;
+            $scope.extendTcs();
+            $scope.droppable = true;
+        }  
 
         $scope.extendTcs = function(data){
           _.each($scope.testcases, function(obj){
@@ -265,6 +278,48 @@ tcmModule.directive('ngTestcases', function(){
       $scope.cancelNewTC = function(){
 
         $scope.resetNewTestcase()
+
+      }
+
+
+
+////////////////////createSuite
+
+      $scope.createNewSuite =  function(){
+        if($scope.createSuite.create == true){
+          return false;
+        }
+        $scope.createSuite.create = true;
+      }
+
+      $scope.saveCreateSuite = function(){
+
+          var temp = new tcm_model.Suites($scope.createSuite)
+
+          temp.$save(function(data){
+              $rootScope.$broadcast('suiteAdded', {suite: data});
+              $scope.resetCreateSuite();
+              manageCreatedSuite(data);
+          })
+
+        
+
+      }
+
+      function manageCreatedSuite(suite){
+        if($scope.requester.type == "multitag"){
+            var temp = new tcm_model.SuiteTests()
+              temp.sid = suite.id;
+              temp.testArray = $scope.testcases
+              temp.$create(function(data){
+                $scope.cancelCreateSuite();
+              })
+        }
+      }
+
+      $scope.cancelCreateSuite = function(){
+
+        $scope.resetCreateSuite()
 
       }
 
