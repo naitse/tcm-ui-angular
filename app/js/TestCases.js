@@ -307,10 +307,18 @@ tcmModule.directive('ngTestcases', function(){
       }
 
       function manageCreatedSuite(suite){
+
+        var tcSuiteArray = _.where($scope.testcases, {checked:true});
+
+        if(tcSuiteArray.length == 0){
+          tcSuiteArray = $scope.testcases;
+        }
+
+
         if($scope.requester.type == "multitag"){
             var temp = new tcm_model.SuiteTests()
               temp.sid = suite.id;
-              temp.testArray = $scope.testcases
+              temp.testArray = tcSuiteArray
               temp.$create(function(data){
                 $scope.cancelCreateSuite();
               })

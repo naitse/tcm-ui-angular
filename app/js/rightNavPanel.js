@@ -246,7 +246,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             $rootScope.$on('suiteAdded', function(event, message){
-                if(scope.currentRequester.id != message.suite.id){
+                if(typeof scope.currentRequesterSuite !== 'undefined' && scope.currentRequesterSuite.id != message.suite.id){
                     if(scope.suites.length > 0){
                         scope.suites.push(_.extend(angular.copy(message.suite), {hide:false}));
                     }
@@ -254,7 +254,7 @@ tcmModule.directive('ngRightNavPanel', function() {
               })
 
             $rootScope.$on('suiteRemoved', function(event, message){
-                if(scope.currentRequesterSuite.id == message.suite.id){
+                if(typeof scope.currentRequesterSuite !== 'undefined' && scope.currentRequesterSuite.id == message.suite.id){
                     scope.backToSuites()
                     return false;
                 }
