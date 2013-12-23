@@ -107,6 +107,15 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     method: 'PUT'
                 }
         }),
+        MultiTagsTcs: $resource(basePath + 'api/projects/:id/multitags', {id: $routeParams.projectId},{
+                fetch: {
+                    method: 'POST',
+                    transformResponse:function(data, headersGetter){
+                        return {response:data}
+                    },
+                    responseType:'json'
+                }
+        }),
         Suites: $resource(basePath + 'api/projects/:pid/suites/:id', {pid: $routeParams.projectId, id:'@id'},{
                 update: {
                     method: 'PUT'

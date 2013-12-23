@@ -1,6 +1,6 @@
 'use strict';
 
-var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 'ngCookies', 'ui.bootstrap', 'ngResource']).
+var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 'ngCookies', 'ui.bootstrap', 'ngResource', 'ngTagsInput']).
     config(['$routeProvider', '$locationProvider', '$httpProvider',
         function($routeProvider, $locationProvider, $httpProvider ) {
             var access = routingConfig.accessLevels;
@@ -201,7 +201,7 @@ tcmModule.directive('tcmDraggable', function($rootScope) {
                             return true;
                         },
                         handle: ".draggable-handle",
-                        appendTo: 'body',
+                        appendTo: 'html',
                         helper:function(){
                                 return $('<div class="tcm-drag-helper"><span class="glyphicon glyphicon-file"></span></div>')
                         },

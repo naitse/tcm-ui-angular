@@ -50,8 +50,8 @@
 		width: 100%;
 	}
 	.ng-right-nav-panel 	#tagstestcases {
-		left: 400px;
-		top: 31px;
+		left: 0px;
+		top: 0px;
 		height: 100%;
 		padding-bottom: 50px;
 		position: absolute;
@@ -106,7 +106,21 @@
 	}
 
 .ng-right-nav-panel .testcase .name {
-	width: 248px;
+	width: 240px;
+}
+
+.ng-right-nav-panel .ngTagsInput {
+	width: 320px !important;
+	opacity: 1 !important;
+}
+
+
+.ng-right-nav-panel .ngTagsInput .tags{
+	opacity: 1 !important;
+}
+
+.ng-right-nav-panel .ngTagsInput .autocomplete{
+	opacity: 1 !important;
 }
 
 </style>
@@ -133,8 +147,22 @@
 	    	<div ng-show="suiteActiveClass == 'active'" class="btn-group btn-group-sm pull-left">
 				<div ng-show="suites.length > 0 && hideSuites == true" ng-click="backToSuites()"class="btn btn-default">Back</div>
 	    	</div>
-	    	<div ng-show="tagActiveClass == 'active'" class="btn-group btn-group-sm pull-left">
-				<div ng-show="tags.length > 0 && hideTags == true" ng-click="backToTags()"class="btn btn-default">Back</div>
+	    	<div ng-show="tagActiveClass == 'active'" class="btn-group btn-group-sm pull-left no-opacity" style=" position: absolute; z-index: 99999; ">
+				<!-- <div ng-show="tags.length > 0 && hideTags == true" ng-click="backToTags()"class="btn btn-default">Back</div> -->
+				<tags-input ng-model="tagstringToFecthArray"
+				            custom-class="bootstrap"
+				            placeholder="Tag me now!"
+				            replace-spaces-with-dashes="false"
+				            add-on-comma="true"
+				            add-on-space="false"
+				            max-length="20"
+				            on-tag-added="addTagToFetch($tag)"
+				            on-tag-removed="removeTagToFetch($tag)">
+				  <auto-complete source="getTagInput($query)"
+				                 min-length="1"
+				                 max-results-to-show="5000">
+				  </auto-complete>
+				</tags-input>
 	    	</div>
 		</div>
     	<div class="sprint-container  tab-content" ng-show="sprintActiveClass == 'active'">
@@ -175,7 +203,7 @@
 
 
     	<div class="tag-container  tab-content" ng-show="tagActiveClass == 'active'">
-    		<div id="tags" class="tab-content-element">
+<!--     		<div id="tags" class="tab-content-element">
     			<div ng-repeat="tag in tags" id="tag" ng-hide="tag.hide" class="panel panel-default single-tag" ng-click="loadTagTc(tag)">
 	    			<div class="panel-body">
 	    				<div class="cordon"></div>{{tag.name}}
@@ -185,7 +213,7 @@
 						<div class="btn btn-danger btn-xs btn-delete" ng-show="deleteFlag == true" ng-click="$event.stopPropagation(); deleteTag(tag, deleteText)" ng-mouseleave="$event.stopPropagation(); deleteFlag = false" style=" margin-top: 3px; margin-right: 3px; border-radius: 4px; ">{{(deleteText) || 'Delete?' }}</div>
 	    			</div>
     			</div>
-    		</div>
+    		</div> -->
     		<div id="tagstestcases">
 				<ng-testcases requester="currentRequesterTags" btns="btnConfig" tcminactive="tagsTcsHidden"></ng-testcases>
     		</div>

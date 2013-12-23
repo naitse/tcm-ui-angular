@@ -27,7 +27,7 @@
 		<span ng-hide="btns.hideDropdown">
 			<ng-tags-widget test="tc" ></ng-tags-widget>
 		</span>
-		<div class="panel panel-default">
+		<div ng-show="(isEmpty(tc.description) == false || tc.editMode == true)" class="panel panel-default">
 			<div class="panel-body">
 				<div class="description-label field-label">Description</div>
 				<textarea class="panel-body textarea-tcm" ng-class="tc.editMode==true?'editable':''" ng-model="tc.description" ng-disabled="tc.editMode==false?true:''"></textarea>

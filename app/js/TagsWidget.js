@@ -6,20 +6,21 @@ tcmModule.directive('ngTagsWidget', function(){
        scope:{ 
           test: '='
         },
-       controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', function($scope, element, $attrs, $rootScope, tcm_model){
+       controller: ["$scope", "$element", "$attrs", "$rootScope",'tcm_model', '$q', function($scope, element, $attrs, $rootScope, tcm_model, $q){
 
 
         $rootScope.$on('tagDeleted', function(event, message){
           $scope.tags = _.without($scope.tags, _.findWhere($scope.tags, {id:message.tagId}))
         })
 
-        $rootScope.$on('tcTagged', function(event, message){
-          if($scope.$parent.tc.tcId == message.tc.tcId){
-            $scope.tags.push(message.tag)
-          }
-        })
+        // $rootScope.$on('tcTagged', function(event, message){
+        //   if(typeof $scope.$parent.requester !== 'undefined' && $scope.$parent.requester.id !== message.parentRequester.id && $scope.$parent.tc.tcId == message.tc.tcId){
+        //     $scope.tags.push(message.tag)
+        //   }
+        // })
 
         $scope.tags = [];
+        $scope.tagstring = [];
         $scope.globalTags = [];
         $scope.loadingTags = false;
 
@@ -27,11 +28,30 @@ tcmModule.directive('ngTagsWidget', function(){
           $scope.dropDownClose = true;
           $scope.hovered = false
         }
+        $scope.loadGT = function(tags){
+
+          var deferred = $q.defer();
+
+          var defer = $q.defer();
+
+          defer.resolve($scope.getTags())
+
+          defer.promise.then(function(){
+            
+            deferred.resolve()
+
+          })
+
+              return deferred.promise;
+        }
 
         $scope.setDefaults();
 
         $scope.$parent.$watch('tc.tags', function(newVal, oldVal){
           $scope.tags = newVal
+          _.each($scope.tags, function(tag){
+            $scope.tagstring.push(tag.name)
+          })
         })
 
         $scope.handleTagInput = function(searchTag){
@@ -63,13 +83,29 @@ tcmModule.directive('ngTagsWidget', function(){
         $scope.getTags = function(){
           $scope.globalTags = [];
           $scope.loadingTags = true;
+          var deffered = $q.defer();
           tcm_model.Tags.query(function(res){
             $scope.globalTags = res;
+                var temp =[];
               _.each($scope.tags, function(tag){
                   $scope.removeFromGtags(tag);
               })
               $scope.loadingTags = false;
+                _.each($scope.globalTags, function(tag){
+                  temp.push(tag.name);
+                })
+              deffered.resolve(temp);
           })
+
+          return deffered.promise;
+        }
+
+        $scope.addedTag = function(tag){
+          $scope.handleTagInput(tag)
+        }
+
+        $scope.removedTag = function(tag){
+          $scope.unassignTag(_.findWhere($scope.tags, {name:tag}))
         }
 
         $scope.tagTc = function(tag){
@@ -77,7 +113,7 @@ tcmModule.directive('ngTagsWidget', function(){
           tagTc.tid = tag.id;
           tagTc.testArray = [$scope.$parent.tc]
           tagTc.$save(function(){
-            $rootScope.$broadcast('tcTagged', {tc: $scope.$parent.tc, tag:tag});
+            $rootScope.$broadcast('tcTagged', {tc: $scope.$parent.tc, tag:tag, parentRequester:$scope.$parent.$parent.requester});
             $scope.removeFromGtags(tag)
             $scope.tags.push(tag)
           });

@@ -127,25 +127,25 @@
 
 
 					<div class="panel-group" id="accordion">
-					  <div class="panel panel-default">
+					  <div class="panel panel-default" >
 					    <div class="panel-heading">
 					      <h4 class="panel-title">
 					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="isopend = !isopend">
-					        	<span class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': isopend, 'glyphicon-chevron-right': !isopend}" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
-								<a href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   {{currentRequester.object.featureName}}     </div>
+					        	<span class="pull-left glyphicon" ng-class="(isopend == true)?'glyphicon-chevron-down':'glyphicon-chevron-right'" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
+								<a ng-click="$event.stopPropagation();" href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   {{currentRequester.object.featureName}}     </div>
 					      </h4>
 					    </div>
 					    <div id="collapseOne" class="panel-collapse collapse">
-					      <div class="panel-body">
+					      <div class="panel-body" style=" height: auto; overflow-y: auto; max-height: 40%;">
 								 <pre class="item-description">{{currentRequester.object.featureDescription}}</pre>
 					      </div>
 					    </div>
 					  </div>
-					  <div class="panel panel-default" ng-show="(currentRequester.object.remote.fields.comment.comments.length > 0)?true:false">
-					    <div class="panel-heading">
+					  <div class="panel panel-default" ng-show="(currentRequester.object.remote.fields.comment.comments.length > 0)?true:false" style=" margin-top: 0px; border: none; ">
+					    <div class="panel-heading  comments-trigger">
 					      <h4 class="panel-title">
 					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" ng-click="isopen = !isopen">
-					        	<span class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
+					        	<span class="pull-left glyphicon" ng-class="(isopen == true)?'glyphicon-chevron-down':'glyphicon-chevron-right'" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
 					Comments:    <span class="badge">{{currentRequester.object.remote.fields.comment.comments.length}}</span>    </div>
 					      </h4>
 					    </div>
@@ -157,7 +157,7 @@
 						                        <div ng-repeat="comment in currentRequester.object.remote.fields.comment.comments" class="item-comment">
 						                                <div class="comment-author-avatar" style="background: url('{{comment.author.avatarUrls.48x48}}') 0px -1px;"></div> 
 						                                <div class="comment-author-name">{{comment.author.displayName}}</div>
-						                                <div class="comment-created">{{comment.created}}</div>
+						                                <div class="comment-created">{{comment.created | date:'medium'}}</div>
 						                                <pre>{{comment.body}}</pre>
 						                        </div>
 						                </div>

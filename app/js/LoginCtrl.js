@@ -2,6 +2,8 @@ tcmModule.controller('LoginCtrl',
     ['$rootScope', '$scope', '$location', '$window', 'Auth', '$cookieStore', 'tcm_model', function($rootScope, $scope, $location, $window, Auth, $cookieStore, tcm_model) {
         $scope.loginErrorMessage = "";
 
+        $scope.loginBackGround = 'transparent;';
+
         $scope.login = function() {
             Auth.login({
                     username: $scope.username,

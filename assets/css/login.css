@@ -1,9 +1,11 @@
 .form-container {
-	width: 400px;
-	margin-left: auto;
-	margin-right: auto;
-	top: 20%;
-	position: relative;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    top: 20%;
+    position: relative;
+    padding: 20px;
+    border-radius: 6px;
 }
 
 .input-group {
@@ -14,22 +16,30 @@
 	text-align: center;
 }
 
-
+.githubLoginButton {
+    width: 302;
+    margin-left: auto;
+    margin-right: auto;
+}
 .githubLoginButtonLink {
 
     color: #444;
     margin-top: 30px;
 }
 .githubLoginButtonLink {
-    -webkit-border-radius: 2em;
-    border-radius: 2em;
-    padding: 1em 0 1em 54px;
-    background-color: #948cf1;
+    -webkit-border-radius: 1em;
+    border-radius: 1em;
+    background-color: #afc2d3;
     display: inline-block;
     overflow: hidden;
-    color: #fff;
+    color: black;
     font-family: TitilliumText,sans-serif;
-    font-weight: 200;
+    font-weight: 400;
+    width: 100%;
+    font-size: 20;
+    font-weight: bold;
+    text-shadow: 0px 0px 3px whitesmoke;
+    border: 1px solid #444;
 }
 
 .githubLoginButtonLink .githubLoginButtonInside {
@@ -41,4 +51,83 @@
     padding-left: 12px;
     padding-right: 20px;
     position: relative;
+}
+
+.githubLoginButtonLink:hover{
+    text-decoration: none;
+    font-weight: bold;
+    color: whitesmoke;
+    text-shadow: 0px 0px 3px black;
+}
+
+.header {
+    text-align: center;
+    font-size: 160px;
+    font-weight: bold;
+    border-bottom: 3px solid #4b94d4;
+    /*text-shadow: 0px 0px 1px #fff;*/
+    -webkit-animation: cssAnimation 3.7169s infinite ease;
+    -moz-animation: cssAnimation 3.7169s infinite ease;
+    -o-animation: cssAnimation 3.7169s infinite ease;
+}
+
+.creators {
+    background: url('/assets/images/creators.png') no-repeat 0px 0px;
+    background-size: 100%;
+    position: absolute;
+    top: 162;
+    left: 46;
+    height: 86px;
+    width: 75%;
+    -webkit-animation: creatorsAnim 10s infinite ease;
+    -moz-animation: creatorsAnim 10s infinite ease;
+    -o-animation: creatorsAnim 10s infinite ease;
+}
+
+
+@-webkit-keyframes cssAnimation {
+    0% { text-shadow: 0px 0px 1px #fff; }
+    50% { text-shadow: 0px 0px 10px #fff; }
+    100% { text-shadow: 0px 0px 1px #fff; }
+}
+@-moz-keyframes cssAnimation {
+    0% { text-shadow: 0px 0px 1px #fff; }
+    50% { text-shadow: 0px 0px 10px #fff; }
+    100% { text-shadow: 0px 0px 1px #fff; }
+}
+@-o-keyframes cssAnimation {
+    0% { text-shadow: 0px 0px 1px #fff; }
+    50% { text-shadow: 0px 0px 10px #fff; }
+    100% { text-shadow: 0px 0px 1px #fff; }
+}
+
+@-webkit-keyframes creatorsAnim {
+    0% { background-position-y: 0px; }
+    10% { background-position-y: 86px; }
+    20% { background-position-y: 80px; }
+    30% { background-position-y: 68px; }
+    40% { background-position-y: 42px; }
+    50% { background-position-y: 36px; }
+    60% { background-position-y: 36px; }
+    70% { background-position-y: 86px; }
+    80% { background-position-y: 0px; }
+    100% { background-position-y: 0px; }
+}
+@-moz-keyframes creatorsAnim {
+    0% { background-position-y: 0px; }
+    10% { background-position-y: 10px; }
+    20% { background-position-y: 20px; }
+    40% { background-position-y: 40px; }
+    60% { background-position-y: 60px; }
+    80% { background-position-y: 86px; }
+    100% { background-position-y: 0px; }
+}
+@-o-keyframes creatorsAnim {
+    0% { background-position-y: 0px; }
+    10% { background-position-y: 10px; }
+    20% { background-position-y: 20px; }
+    40% { background-position-y: 40px; }
+    60% { background-position-y: 60px; }
+    80% { background-position-y: 86px; }
+    100% { background-position-y: 0px; }
 }

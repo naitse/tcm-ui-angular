@@ -6,6 +6,10 @@
   box-shadow:none !important;
 }
 
+.manager {
+      padding-left: 5px;
+padding-right: 5px;
+}
 .panel-tcm {
 	height: 100%;
 	overflow-y: auto;
@@ -190,6 +194,11 @@ background: transparent;
 font-size: 13px;
 line-height: 1.3077;
 font-family: Arial,FreeSans,Helvetica,sans-serif;
+border: none;
+border-radius: 0px;
+border-bottom: 1px dashed #cccccc;
+padding-top: 20px;
+margin-top: 10px;
 }
 .item-comment {
 padding: 5px;
@@ -222,7 +231,7 @@ display: inline-block;
 display: inline-block;
 border: 2px solid white;
 border-radius: 0px 6px 6px 0px;
-box-shadow: 0px 1px 10px -3px black;
+box-shadow: 3px 3px 10px -6px black;
 font-size: 13px;
 margin-left: -4;
 padding-left: 8;
@@ -230,14 +239,14 @@ position: relative;
 top: 0px;
 z-index: 2;
 border-left: none;
-background: black;
-color: white;
 padding-right: 6px;
 float: left;
 }
 
 .comment-created {
 display: inline-block;
+float: right;
+font-size: 12px;
 }
 
 .tc-container .dropdown-menu:last-of-type {
@@ -247,24 +256,58 @@ display: inline-block;
 }
 
 #release {
-	border-left: 6px solid #004766;
+	/*border-left: 6px solid #004766;*/
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+}
+#release:hover, #iteration:hover,#suite:hover {
+  background-color: #eeeeee;
+  border-color: #eeeeee #eeeeee #dddddd;
 }
 #iteration{
-	border-left: 6px solid #006b99;
+	/*border-left: 6px solid #006b99;*/
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
 }
 
-
-
-
 	#suite.active{
-		font-weight: bold;
-		background-color: #e2f2ff;
+/*		font-weight: bold;
+		background-color: #e2f2ff;*/
+    background-color: black;
+    color:white;
 	}
 	#suite {
-		margin: 0px;
-		border-left: 6px solid #004766;
-		position: relative;
+    cursor: pointer;
+margin: 0px;
+border-bottom: 0px;
+position: relative;
+margin-bottom: 1px;
+border-radius: 3px;
+font-size: 15;
+text-align: center;
 	}
+
+.comments-trigger {
+background: transparent;
+width: 172px;
+position: absolute;
+top: 1;
+right: 0;
+margin-top: 0px !important;
+border: none;
+height: 34;
+}
+.comments-trigger .panel-heading {
+  border-radius: none;
+  background: white;
+}
+
+#accordion .panel-heading {
+  border-radius: none;
+  background: white;
+}
 
 
 

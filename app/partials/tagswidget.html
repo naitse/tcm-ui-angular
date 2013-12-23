@@ -1,6 +1,6 @@
-<div class="btn-group" ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();">
+<!-- <div class="btn-group" ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();">
   <div type="button" class="btn btn-default tags-container">
-      <span ng-repeat="tag in tags" class="label label-default">{{tag.name}}<span ng-click="unassignTag(tag)"class=" tag-remove glyphicon glyphicon-remove"></span></span>
+      <span ng-repeat="tag in tags track by $index" class="label label-default tag">{{tag.name}}<span ng-click="unassignTag(tag)"class=" tag-remove glyphicon glyphicon-remove"></span></span>
       <input class="tag-input" type="text" ng-model="searchTag" ng-enter="handleTagInput(searchTag)" ng-click="$event.stopPropagation()" ng-change="$event.stopPropagation(); openDD();"/>
     </div>
   <div ng-click="$event.stopPropagation(); openDD();" type="button" class="btn btn-default dropdown-toggle " style=" height: 32; padding-top: 13; ">
@@ -10,4 +10,19 @@
 	<li ng-show="loadingTags == true"><a class="loading-small"></a></li>
   	<li ng-repeat="gtag in globalTags | filter:searchTag" ng-click="tagTc(gtag)"><a >{{gtag.name}}</a></li>
   </ul>
-</div>
+</div> -->
+
+<tags-input ng-model="tagstring"
+            custom-class="bootstrap"
+            placeholder="Tag me now!"
+            replace-spaces-with-dashes="false"
+            add-on-comma="true"
+            add-on-space="false"
+            max-length="20"
+            on-tag-added="addedTag($tag)"
+            on-tag-removed="removedTag($tag)">
+  <auto-complete source="getTags($query)"
+                 min-length="1"
+                 max-results-to-show="5000">
+  </auto-complete>
+</tags-input>
