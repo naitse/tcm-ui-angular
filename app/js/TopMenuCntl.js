@@ -9,14 +9,9 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
             active: $location.path().indexOf('manager') >=0 || $location.path().indexOf('suites')>=0 ? 'active':'',
             subMenuList: [
                     {
-                        name: "Iterations",
+                        name: "Home",
                         link: '#/manager/'+$routeParams.projectId,
                         active: $location.path().indexOf('manager') >=0 ? 'active':''
-                    },
-                    {
-                        name: "Suites",
-                        link: '#/suites/'+$routeParams.projectId,
-                        active: $location.path().indexOf('suites') >=0 ? 'active':''
                     }
                 ]
         },
@@ -44,11 +39,11 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
                 { name: 'JIRA Sync',
                   active: $location.path().indexOf('sync') >=0 ? 'active':'',
                     link: '#/jira/'+$routeParams.projectId
-                },
-                { name: 'Import/Export',
-                    active: $location.path().indexOf('import-export') >=0 ? 'active':'',
-                    link: '#/import-export'
                 }
+                // ,{ name: 'Import/Export',
+                //     active: $location.path().indexOf('import-export') >=0 ? 'active':'',
+                //     link: '#/import-export'
+                // }
             ]
         }
     ];
