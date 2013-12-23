@@ -493,6 +493,28 @@ $scope.testSelected = function(tc){
               }
             }
 
+
+           $scope.progress = function (percentDone) {
+               log("progress: " + percentDone + "%");
+           };
+
+           $scope.done = function (files, data) {
+               log("upload complete");
+               log("data: " + JSON.stringify(data));
+               writeFiles(files);
+           };
+
+           $scope.filesToUpload = [];
+           $scope.fileAdded = function (file) {
+               $scope.filesToUpload.push(file);
+               $scope.upload();
+           };
+
+           $scope.error = function (files, type, msg) {
+               console.log("Upload error: " + msg, files);
+               console.log("Error type:" + type);
+           }
+
       }],
 
        link: function (scope, element, attrs) {

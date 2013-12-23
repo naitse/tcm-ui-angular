@@ -30,6 +30,25 @@
 		<div class="panel-footer" style=" position: relative; ">
 			<div class="btn btn-default btn-sm" ng-click="cancelNewTC()">Close</div>
 			<div class="btn btn-info btn-sm" ng-click="saveNewTC()">Save</div>
+            <div><lvl-file-upload
+                    auto-upload='false'
+                    choose-file-button-text='Attach files'
+                    choose-file-button-style='btn btn-primary btn-sm'
+                    max-files='10'
+                    max-file-size-mb='5'
+                    get-additional-data='getData(files)'
+                    on-done='done(files, data)'
+                    on-progress='progress(percentDone)'
+                    on-error='error(files, type, msg)'
+                    on-file-added='fileAdded(file)'
+                    />
+
+            </div>
+            <div>
+                <ul>
+                    <li ng-repeat="file in filesToUpload">{{file.name}}</li>
+                </ul>
+            </div>
 		</div>
 	</div>
 	<div tcm-droppable drop="true" tcmDrop="handleDrop()" tcmDropOver="handleHover()" tcmDropOut="droppable = true" style=" height: 100%; padding-bottom: 61px; overflow: hidden; overflow-y: auto; ">
