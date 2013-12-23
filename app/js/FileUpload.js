@@ -16,8 +16,90 @@ tcmModule.factory('uuid', function() {
     return svc;
 });
 
-tcmModule.factory('fileUploader', ['$rootScope', '$q', function($rootScope, $q) {
+tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) {
     var svc = {
+        files: [],
+        uploadUrl: basePath + 'api/features/:featureId/testcases/:tcId/files',
+        addFile: function(fileList){
+            var found = false;
+            this.files.forEach(function(item){
+                if(item.id == fileList.id){
+                    item.files = fileList.files;
+                    found = true;
+                }
+            });
+
+            if(!found){
+                this.files.push(fileList);
+            }
+
+        },
+        upload: function(uploadTo, onProgress, onDone, onError) {
+            var data = null;
+            var uploadUrl = this.uploadUrl.replace(":featureId", uploadTo.featureId).replace(":tcId", uploadTo.tcId);
+
+
+            if (angular.version.major <= 1 && angular.version.minor < 2 ) {
+                //older versions of angular's q-service don't have a notify callback
+                //pass the onProgress callback into the service
+                this
+                    .post(this.files, data, function(complete) { onProgress({percentDone: complete}); })
+                    .to(uploadUrl)
+                    .then(function(ret) {
+                        onDone({files: ret.files, data: ret.data});
+                    }, function(error) {
+                        onError({files: this.files[0].files, type: 'UPLOAD_ERROR', msg: error});
+                    })
+            } else {
+                this
+                    .post(this.files[0].files, data)
+                    .to(uploadUrl)
+                    .then(function(ret) {
+                        onDone({files: ret.files, data: ret.data});
+                    }, function(error) {
+                        onError({files: error.files, type: 'UPLOAD_ERROR', msg: error});
+                    },  function(progress) {
+                        onProgress({percentDone: progress});
+                    });
+            }
+
+            //this.resetFileInput();
+        },
+
+
+
+        resetFileInput: function() {
+            var parent = fileInput.parent();
+
+            fileInput.remove();
+            var input = document.createElement("input");
+            var attr = document.createAttribute("type");
+            attr.nodeValue = "file";
+            input.setAttributeNode(attr);
+
+            var inputId = uuid.new();
+            attr = document.createAttribute("id");
+            attr.nodeValue = inputId;
+            input.setAttributeNode(attr);
+
+            attr = document.createAttribute("style");
+            attr.nodeValue = "opacity: 0;display:inline;width:0";
+            input.setAttributeNode(attr);
+
+
+
+            if (scope.maxFiles > 1) {
+                attr = document.createAttribute("multiple");
+                attr.nodeValue = "multiple";
+                input.setAttributeNode(attr);
+            }
+
+            fileLabel.after(input);
+            fileLabel.attr("for", inputId);
+
+            fileInput = angular.element(input);
+        },
+
         post: function(files, data, progressCb) {
 
             return {
@@ -30,6 +112,7 @@ tcmModule.factory('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
                     }
 
                     var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
                     xhr.upload.onprogress = function(e) {
                         $rootScope.$apply (function() {
                             var percentCompleted;
@@ -143,7 +226,7 @@ tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', function(uuid, fil
                 el.bind('change', function(e) {
                     if (!e.target.files.length) return;
 
-                    scope.files = [];
+                    //scope.files = [];
                     var tooBig = [];
                     if (e.target.files.length > scope.maxFiles) {
                         raiseError(e.target.files, 'TOO_MANY_FILES', "Cannot upload " + e.target.files.length + " files, maxium allowed is " + scope.maxFiles);
@@ -174,80 +257,18 @@ tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', function(uuid, fil
                             scope.showUploadButton = true;
                         })
                     }
+
+                    console.log(scope.files);
+                    fileUploader.addFile({
+                        id: fileId,
+                        files: scope.files
+                    });
                 });
-
-
-            }
-        },
-        link: function(scope, elm, attrs){
-            scope.upload = function() {
-                var data = null;
-                if (scope.getAdditionalData) {
-                    data = scope.getAdditionalData();
-                }
-
-                if (angular.version.major <= 1 && angular.version.minor < 2 ) {
-                    //older versions of angular's q-service don't have a notify callback
-                    //pass the onProgress callback into the service
-                    fileUploader
-                        .post(scope.files, data, function(complete) { scope.onProgress({percentDone: complete}); })
-                        .to(scope.uploadUrl)
-                        .then(function(ret) {
-                            scope.onDone({files: ret.files, data: ret.data});
-                        }, function(error) {
-                            scope.onError({files: scope.files, type: 'UPLOAD_ERROR', msg: error});
-                        })
-                } else {
-                    fileUploader
-                        .post(scope.files, data)
-                        .to(scope.uploadUrl)
-                        .then(function(ret) {
-                            scope.onDone({files: ret.files, data: ret.data});
-                        }, function(error) {
-                            scope.onError({files: scope.files, type: 'UPLOAD_ERROR', msg: error});
-                        },  function(progress) {
-                            scope.onProgress({percentDone: progress});
-                        });
-                }
-
-                resetFileInput();
             };
 
             function raiseError(files, type, msg) {
                 scope.onError({files: files, type: type, msg: msg});
-                resetFileInput();
-            }
-
-            function resetFileInput() {
-                var parent = fileInput.parent();
-
-                fileInput.remove();
-                var input = document.createElement("input");
-                var attr = document.createAttribute("type");
-                attr.nodeValue = "file";
-                input.setAttributeNode(attr);
-
-                var inputId = uuid.new();
-                attr = document.createAttribute("id");
-                attr.nodeValue = inputId;
-                input.setAttributeNode(attr);
-
-                attr = document.createAttribute("style");
-                attr.nodeValue = "opacity: 0;display:inline;width:0";
-                input.setAttributeNode(attr);
-
-
-
-                if (scope.maxFiles > 1) {
-                    attr = document.createAttribute("multiple");
-                    attr.nodeValue = "multiple";
-                    input.setAttributeNode(attr);
-                }
-
-                fileLabel.after(input);
-                fileLabel.attr("for", inputId);
-
-                fileInput = angular.element(input);
+                //resetFileInput();
             }
         }
     }

@@ -4,7 +4,7 @@ tcmModule.directive('ngTestcases', function(){
       transclude: false,
       scope:{requester:'=', btns:'=', tcminactive:'='},
       templateUrl: 'app/partials/testcases.html',
-       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', function($scope, element, $attrs, $rootScope, tcm_model, DO){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', 'fileUploader', function($scope, element, $attrs, $rootScope, tcm_model, DO, fileUploader){
 
         $scope.showTCdelete = false
         $scope.selectall = false
@@ -260,6 +260,7 @@ tcmModule.directive('ngTestcases', function(){
           temp.$save(function(data){
             $scope.updateTestCasesList(data)
             $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+            $scope.uploadFiles(data.tcId);
           })
         }else if($scope.requester.type == "suite"){
           var temp = new tcm_model.SuiteTests()
@@ -269,13 +270,30 @@ tcmModule.directive('ngTestcases', function(){
             _.each(data.response,function(tc){
               $scope.updateTestCasesList(tc)
               $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: $scope.requester.id});
+              $scope.uploadFiles(data.tcId);
             })
           })
         }
-
-
-
       }
+
+      $scope.uploadFiles = function(id){
+
+          fileUploader.upload(
+              {featureId: $scope.requester.id,
+              tcId: id},
+          function (percentDone) {
+              console.log( percentDone );
+          },
+          function (files, data) {
+              console.log("upload complete");
+              console.log("data: " + JSON.stringify(data));
+
+          },
+          function (files, type, msg) {
+              console.log("Upload error: " + msg, files);
+              console.log("Error type:" + type);
+          });
+      };
 
       $scope.cancelNewTC = function(){
 
@@ -573,26 +591,7 @@ $scope.testSelected = function(tc){
             }
 
 
-           $scope.progress = function (percentDone) {
-               log("progress: " + percentDone + "%");
-           };
 
-           $scope.done = function (files, data) {
-               log("upload complete");
-               log("data: " + JSON.stringify(data));
-               writeFiles(files);
-           };
-
-           $scope.filesToUpload = [];
-           $scope.fileAdded = function (file) {
-               $scope.filesToUpload.push(file);
-               $scope.upload();
-           };
-
-           $scope.error = function (files, type, msg) {
-               console.log("Upload error: " + msg, files);
-               console.log("Error type:" + type);
-           }
 
       }],
 
