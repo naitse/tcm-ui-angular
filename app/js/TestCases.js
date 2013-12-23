@@ -166,7 +166,9 @@ tcmModule.directive('ngTestcases', function(){
               }
 
             }else if(tc.checked == true){
-              tc.$delete(function(){
+              var tcDel = new tcm_model.TestCases(tc)
+              tcDel.featureId = 0
+              tcDel.$delete(function(){
                   $scope.tcDeleted(tc);
               })
             }
