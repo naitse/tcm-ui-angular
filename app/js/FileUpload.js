@@ -19,7 +19,7 @@ tcmModule.factory('uuid', function() {
 tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) {
     var svc = {
         files: [],
-        uploadUrl: basePath + 'api/features/:featureId/testcases/:tcId/files',
+        uploadUrl: basePath + 'api/features/:featureId/testcases/:tcId/attachments',
         addFile: function(fileList){
             var found = false;
             this.files.forEach(function(item){
@@ -37,13 +37,29 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
         upload: function(uploadTo, onProgress, onDone, onError) {
             var data = null;
             var uploadUrl = this.uploadUrl.replace(":featureId", uploadTo.featureId).replace(":tcId", uploadTo.tcId);
+            var filesToUpload = null;
 
+            this.files.forEach(function(item){
+                if(uploadTo.isNewTC){
+                    if(item.tcId == 0){
+                        filesToUpload = item.files;
+                    }
+                }else{
+                    if(item.tcId == uploadTo.tcId){
+                        filesToUpload = item.files;
+                    }
+                }
+
+
+            });
+
+            if(filesToUpload == null) {return;}
 
             if (angular.version.major <= 1 && angular.version.minor < 2 ) {
                 //older versions of angular's q-service don't have a notify callback
                 //pass the onProgress callback into the service
                 this
-                    .post(this.files, data, function(complete) { onProgress({percentDone: complete}); })
+                    .post(filesToUpload, data, function(complete) { onProgress({percentDone: complete}); })
                     .to(uploadUrl)
                     .then(function(ret) {
                         onDone({files: ret.files, data: ret.data});
@@ -52,7 +68,7 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
                     })
             } else {
                 this
-                    .post(this.files[0].files, data)
+                    .post(filesToUpload, data)
                     .to(uploadUrl)
                     .then(function(ret) {
                         onDone({files: ret.files, data: ret.data});
@@ -105,7 +121,8 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
             return {
                 to: function(uploadUrl)
                 {
-                    var deferred = $q.defer()
+                    var deferred = $q.defer();
+
                     if (!files || !files.length) {
                         deferred.reject("No files to upload");
                         return;
@@ -159,6 +176,7 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
                     xhr.open("POST", uploadUrl);
                     xhr.send(formData);
 
+
                     return deferred.promise;
                 }
             };
@@ -171,7 +189,8 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
 tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', function(uuid, fileUploader) {
     return {
         restrict: 'E',
-        replace: true,
+        //replace: true,
+        transclude: true,
         scope: {
             chooseFileButtonText: '@',
             chooseFileButtonStyle: '@',
@@ -258,9 +277,9 @@ tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', function(uuid, fil
                         })
                     }
 
-                    console.log(scope.files);
                     fileUploader.addFile({
                         id: fileId,
+                        tcId: (scope.$parent == null)?0:scope.$parent.tc.tcId ,
                         files: scope.files
                     });
                 });

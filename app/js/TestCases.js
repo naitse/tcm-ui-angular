@@ -258,9 +258,10 @@ tcmModule.directive('ngTestcases', function(){
         if($scope.requester.type == "feature"){
           var temp = new tcm_model.TestCases($scope.newTC)
           temp.$save(function(data){
+            $scope.uploadFiles(data.tcId);
             $scope.updateTestCasesList(data)
             $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
-            $scope.uploadFiles(data.tcId);
+
           })
         }else if($scope.requester.type == "suite"){
           var temp = new tcm_model.SuiteTests()
@@ -268,9 +269,10 @@ tcmModule.directive('ngTestcases', function(){
           temp.testArray = [$scope.newTC]
           temp.$create(function(data){
             _.each(data.response,function(tc){
+              $scope.uploadFiles(data.tcId);
               $scope.updateTestCasesList(tc)
               $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: $scope.requester.id});
-              $scope.uploadFiles(data.tcId);
+
             })
           })
         }
@@ -280,7 +282,8 @@ tcmModule.directive('ngTestcases', function(){
 
           fileUploader.upload(
               {featureId: $scope.requester.id,
-              tcId: id},
+              tcId: id,
+              isNewTC: true},
           function (percentDone) {
               console.log( percentDone );
           },
@@ -300,6 +303,7 @@ tcmModule.directive('ngTestcases', function(){
         $scope.resetNewTestcase()
 
       }
+
 
 
 

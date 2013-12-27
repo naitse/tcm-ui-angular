@@ -50,7 +50,7 @@
 		</span>
         <span ng-switch on="tc.editMode">
 
-            <h5 ng-switch-when="false">Attachments:</h5>
+            <h5 ng-switch-when="false" ng-show="tc.attachments.length>0">Attachments:</h5>
             <span ng-switch-when="true"><lvl-file-upload
                     auto-upload='false'
                     choose-file-button-text='Attach files'
@@ -63,7 +63,11 @@
                     on-file-added='fileAdded(file)'
                     /></span>
             <ul>
-                <li ng-repeat="file in tc.attachments"><a href="{{file.url}}" target="_blank">{{file.name}}</a></li>
+                <li ng-repeat="file in tc.attachments">
+                    <span ng-show="tc.editMode" class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); deleteAttachment(file, $index);"></span>
+                    <a ng-show="file.url!=null" href="{{file.url}}" target="_blank">{{file.name}}</a>
+                    <span ng-show="file.url==null" >{{file.name}}</span>
+                </li>
             </ul>
         </span>
 	</div>

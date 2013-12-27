@@ -46,6 +46,12 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                 }
         }),
 
+        TestCaseAttachment: $resource(basePath + 'api/features/:featureId/testcases/:tcId/attachments/:attId/delete',{featureId:'@featureId', tcId: '@tcId', attId: '@attId'},{
+            deleteAttach: {
+                method: 'POST'
+            }
+        }),
+
         TestCasesUpdateStatus: $resource(basePath + 'api/testcases/:tcId/updateStatus', {tcId: '@tcId', statusId: '@statusId', actualResult:'@actualResult'},{
                 update: {
                     method: 'PUT'

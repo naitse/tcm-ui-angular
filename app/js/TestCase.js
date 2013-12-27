@@ -3,7 +3,7 @@ tcmModule.directive('ngTestcase', function(){
       restrict: 'E',
       transclude: true,
        templateUrl: 'app/partials/testcase.html',
-       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', function($scope, element, $attrs, $rootScope, tcm_model, DO){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', 'fileUploader', function($scope, element, $attrs, $rootScope, tcm_model, DO, fileUploader){
         
         $scope.deleteText = ($scope.tc.linked == 0 )?"Delete?":"Unlink?";
         $scope.draggable = $scope.tc.draggable;
@@ -57,10 +57,16 @@ tcmModule.directive('ngTestcase', function(){
           }
           tc.name = tc.tcTemp.name
           tc.description = tc.tcTemp.description
+
+          tc.attachments =_.reject(tc.attachments, function(item) { return item.id == 0 });
+          $scope.attachmentsToDelete = null;
+
         }
 
         $scope.saveTC = function(tc){
           $scope.tc.editMode = false;
+
+
 
           if($scope.tc.linked == 1){
 
@@ -69,17 +75,65 @@ tcmModule.directive('ngTestcase', function(){
             newTc.name = $scope.tc.name
             newTc.description = $scope.tc.description
             newTc.priority = $scope.tc.priority
-            newTc.$update(function(){})
+            newTc.$update(function(data){
+
+            })
 
             return false;
 
           }
 
+
           $scope.tc.sid = $scope.$parent.requester.id
           $scope.tc.featureId = $scope.$parent.requester.id
           $scope.tc.tid = $scope.$parent.requester.id
-          $scope.tc.$update(function(){});
+          $scope.tc.$update(function(data){
 
+              fileUploader.upload({featureId: $scope.$parent.requester.id,
+                  tcId: $scope.tc.tcId}, function(){
+
+              }, function(){
+
+              }, function(){
+
+              });
+
+              if($scope.attachmentsToDelete != null && $scope.attachmentsToDelete.length ){
+                var aux = $scope.attachmentsToDelete.slice(0);
+
+                $scope.attachmentsToDelete = null;
+
+                aux.forEach(function(attach){
+
+                    var TCattach = new tcm_model.TestCaseAttachment({featureId:$scope.$parent.requester.id,
+                        tcId: $scope.tc.tcId,
+                        attId: attach.id });
+
+
+                    TCattach.key = attach.key
+                    TCattach.$deleteAttach();
+                });
+
+              }
+
+
+          });
+
+        }
+
+        $scope.deleteAttachment = function(file, index){
+            if(file.id != 0){
+                if($scope.attachmentsToDelete == null){
+                    $scope.attachmentsToDelete = [];
+                }
+               $scope.attachmentsToDelete.push(file);
+            }
+
+            $scope.tc.attachments.splice(index, 1);
+        }
+
+        $scope.getTcId = function(){
+          return $scope.tc.tcId;
         }
 
         $scope.deleteTC = function(){
@@ -178,6 +232,13 @@ tcmModule.directive('ngTestcase', function(){
         $scope.handleDragRevert = function(tc){
           $scope.$parent.droppable = true;
           DO.cleanDraggable();
+        }
+
+        $scope.fileAdded = function(file){
+            $scope.tc.attachments.push({
+                id: 0,
+                name: file.name
+            })
         }
 
        }],
