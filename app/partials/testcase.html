@@ -48,5 +48,23 @@
 				<div class="update-parent"><input type="checkbox" ng-model="tc.updateParent">Update Parent</input></div>
 			</div>
 		</span>
+        <span ng-switch on="tc.editMode">
+
+            <h5 ng-switch-when="false">Attachments:</h5>
+            <span ng-switch-when="true"><lvl-file-upload
+                    auto-upload='false'
+                    choose-file-button-text='Attach files'
+                    choose-file-button-style='btn btn-primary btn-sm'
+                    max-files='10'
+                    max-file-size-mb='5'
+                    on-done='done(files, data)'
+                    on-progress='progress(percentDone)'
+                    on-error='error(files, type, msg)'
+                    on-file-added='fileAdded(file)'
+                    /></span>
+            <ul>
+                <li ng-repeat="file in tc.attachments"><a href="{{file.url}}" target="_blank">{{file.name}}</a></li>
+            </ul>
+        </span>
 	</div>
 </div>

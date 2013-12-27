@@ -47,7 +47,6 @@
                     choose-file-button-style='btn btn-primary btn-sm'
                     max-files='10'
                     max-file-size-mb='5'
-                    get-additional-data='getData(files)'
                     on-done='done(files, data)'
                     on-progress='progress(percentDone)'
                     on-error='error(files, type, msg)'
@@ -57,7 +56,7 @@
             </div>
             <div>
                 <ul>
-                    <li ng-repeat="file in filesToUpload">{{file.name}}</li>
+                    <li ng-repeat="file in filesToUpload">{{file}}</li>
                 </ul>
             </div>
 		</div>

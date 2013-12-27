@@ -590,7 +590,11 @@ $scope.testSelected = function(tc){
               }
             }
 
+            $scope.filesToUpload = []
 
+            $scope.fileAdded = function(file){
+                $scope.filesToUpload.push(file)
+            }
 
 
       }],
