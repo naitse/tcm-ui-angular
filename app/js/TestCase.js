@@ -89,15 +89,6 @@ tcmModule.directive('ngTestcase', function(){
           $scope.tc.tid = $scope.$parent.requester.id
           $scope.tc.$update(function(data){
 
-              fileUploader.upload({featureId: $scope.$parent.requester.id,
-                  tcId: $scope.tc.tcId}, function(){
-
-              }, function(){
-
-              }, function(){
-
-              });
-
               if($scope.attachmentsToDelete != null && $scope.attachmentsToDelete.length ){
                 var aux = $scope.attachmentsToDelete.slice(0);
 
@@ -116,6 +107,17 @@ tcmModule.directive('ngTestcase', function(){
 
               }
 
+              fileUploader.upload({featureId: $scope.$parent.requester.id,
+                  tcId: $scope.tc.tcId}, function(){
+
+              }, function(res){
+
+                  var attachments =_.reject($scope.tc.attachments, function(item) { return item.id == 0 });
+                  $scope.tc.attachments = _.union(attachments, res.data);
+
+              }, function(){
+
+              });
 
           });
 

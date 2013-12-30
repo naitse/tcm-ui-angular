@@ -209,7 +209,7 @@ tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', function(uuid, fil
         template: '<div>' +
             '<input type="file" style="opacity:0; height: 0px; width: 0px" />' +
             '<div class="{{ chooseFileButtonStyle }}" ng-click="choose()">{{chooseFileButtonText}}</div>' +
-            '<button class="{{ uploadFileButtonStyle }}" ng-show="showUploadButton" ng-click="upload()">{{uploadFileButtonText}}</button>' +
+            // '<button class="{{ uploadFileButtonStyle }}" ng-show="showUploadButton" ng-click="upload()">{{uploadFileButtonText}}</button>' +
             '</div>',
         compile: function compile(tElement, tAttrs, transclude) {
             var fileInput = angular.element(tElement.children()[0]);
