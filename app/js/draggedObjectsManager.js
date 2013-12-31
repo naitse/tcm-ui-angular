@@ -97,24 +97,7 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
           DO.cleanDraggable();
 
         },
-        // linkTcToFeature:function(featureId){
 
-        //     var dObjects = DO.getObjects()
-          
-        //     var newTc = new tcm_model.TestCasesLink({tcId:object.tcId});
-        //     newTc.featureId = featureId;
-        //     newTc.origin = DO.getOriginType()
-        //     newTc.tcArray = dObjects
-        //     newTc.$create(function(data){
-        //       _.each(data.response,function(tc){
-        //         $rootScope.$broadcast('featureCurrentTCadded', {tc: tc, uuid: dObjects.id});
-        //         $rootScope.$broadcast('tcStatusUpdated', {featureId: featureId});
-        //       })
-        //     })
-
-        //   DO.cleanDraggable();
-
-        // },
         dropTestsOnFeature: function(feature){
               
             var dObjects = DO.getObjects()
@@ -137,6 +120,22 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
               })
 
               DO.cleanDraggable();
+
+        },
+        dropSuiteOnFeatureContainer: function(featureRequester, _scope){
+              
+            var dObjects = DO.getObjects()
+
+            console.log(dObjects,featureRequester)
+
+            tcm_model.instanceSuite(featureRequester.IterId, dObjects[0].id,function(data){
+                  var data = data[0];
+                  _scope.extendSingleFeature(data);
+                  var temp = new tcm_model.Features(data)
+                  _scope.features.push(temp);
+            })
+
+            DO.cleanDraggable();
 
         },
         dropTestOnTagContainer:function(tag, testCases){

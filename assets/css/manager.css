@@ -78,6 +78,11 @@ padding-right: 5px;
     margin-right: 8px;
 }
 
+.suite-drop-zone{
+  height: 90px;
+  width:100%;
+}
+
 .feature-status-btn {
 	background-color: transparent;
 border-color: transparent;

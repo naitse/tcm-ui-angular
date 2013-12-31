@@ -166,8 +166,6 @@ tcmModule.directive('tcmSprintModule', function() {
                 scope.currentRequester.object = {}
             }
 
-
-
 /////////////////////////
 
             scope.showRight = false;

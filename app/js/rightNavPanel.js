@@ -4,7 +4,7 @@ tcmModule.directive('ngRightNavPanel', function() {
         transclude:false,
         scope:true,
         templateUrl: 'app/partials/rightnavpanel.html',
-        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$q', function(scope, element, $attrs, $rootScope, tcm_model, $q){
+        controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$q','draggedObjects', function(scope, element, $attrs, $rootScope, tcm_model, $q, DO){
             
             if(scope.containerType == 'sprint'){
                 scope.$watch('sprintTestInactive', function(newVal, oldVal){
@@ -327,6 +327,33 @@ tcmModule.directive('ngRightNavPanel', function() {
                 // scope.showSuites();
             }
 
+            scope.uuid = Math.floor(Math.random()*10000001);
+
+            scope.draggedSuites = {
+              id: scope.uuid,
+              link: false, 
+              objects:[],
+              sc:scope,
+              type:'suite'
+            }
+
+            DO.draggedObjects.push(scope.draggedSuites)
+
+            scope.handleSuiteDragStart = function(suite){
+                
+                $rootScope.$broadcast('suiteDragStart', {suite: suite});
+
+              _.each(DO.draggedObjects, function(objectArray){
+                if(objectArray.id == scope.uuid){
+                  objectArray.objects = [_.extend(suite, {dragSingle:true})]
+                }
+              })
+              DO.currentDragUUID = scope.uuid
+            }
+
+            scope.handleSuiteDragRevert = function(suite){
+                $rootScope.$broadcast('suiteDragRevert', {suite: suite});
+            }
 
 /////////////////////////
 

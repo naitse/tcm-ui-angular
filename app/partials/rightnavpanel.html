@@ -190,7 +190,7 @@
 
     	<div class="suite-container tab-content" ng-show="suiteActiveClass == 'active'">
 	    		<div id="suites"  class="tab-content-element">
-		    		<div id="suite" class="panel panel-default" ng-hide="suite.hide" ng-repeat="suite in suites" ng-class="(suite.active == true)?'active':'';" ng-click="getSuiteTestcases(suite)">
+		    		<div id="suite" class="panel panel-default" ng-hide="suite.hide" ng-repeat="suite in suites" ng-class="(suite.active == true)?'active':'';" ng-click="getSuiteTestcases(suite)"   tcm-suite-draggable  tcmSuiteDragStart="handleSuiteDragStart(suite)" tcmSuiteDragRevert="handleSuiteDragRevert(suite)">
 					  <div class="panel-body">
 	    				{{suite.name}}
 					  </div>

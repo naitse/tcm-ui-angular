@@ -285,6 +285,106 @@ tcmModule.directive('tcmDroppable', function() {
         }
     }
 });
+
+
+tcmModule.directive('tcmSuiteDraggable', function($rootScope) {
+    return{
+    // transclude:true,
+    controller: function(){
+
+    },
+    link: function(scope, element, attrs) {
+                
+                    $(element).draggable({
+                        revert:function () {
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmSuiteDragRevert) {
+                                  scope.$eval(element.context.attributes.tcmSuiteDragRevert.nodeValue);
+                                }
+                            });
+                            return true;
+                        },
+                        appendTo: 'html',
+                        helper:'clone',
+                        cursorAt: { left: 30 },
+                        cursor: "pointer",
+                        drag: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmSuiteDrag) {
+                                  scope.$eval(element.context.attributes.tcmSuiteDrag.nodeValue);
+                                }
+                            });
+                        },
+                        start: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmSuiteDragStart) {
+                                  scope.$eval(element.context.attributes.tcmSuiteDragStart.nodeValue);
+                                }
+                            });
+                        },
+                        stop: function(evt, ui){
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmSuiteDragStop) {
+                                  scope.$eval(element.context.attributes.tcmSuiteDragStop.nodeValue);
+                                }
+                            });
+                        }
+                    })
+        }
+    }
+});
+
+tcmModule.directive('tcmSuiteDroppable', function() {
+    return{
+    transclude:false,
+    link: function(scope, element, attrs) {
+
+            scope.$watch('suiteDroppable', function(val) {
+                if (val == true) {
+                    makeDroppable();
+                    } else {
+                    try{
+                        $(element).droppable('destroy');
+                    }catch(e){}
+                }
+            });
+
+            function makeDroppable() {
+                    $(element).droppable({
+                        drop: function(evt, ui){
+                            $(this).removeClass('draggable-over')
+                            $(this).addClass('draggable-dropped')
+                            ui.helper.remove();
+                            var that = this;
+                            scope.$apply(function(scope, attrs){
+                                var ble = setTimeout(function(){$(that).removeClass('draggable-dropped')},500)
+                                if ('undefined' !== typeof element.context.attributes.tcmSuiteDrop) {
+                                  scope.$eval(element.context.attributes.tcmSuiteDrop.nodeValue);
+                                }
+                            });
+                        },
+                        over: function(evt, ui){
+                            $(this).addClass('draggable-over')
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmSuiteDropOver) {
+                                  scope.$eval(element.context.attributes.tcmSuiteDropOver.nodeValue);
+                                }
+                            });
+                        },
+                        out: function(evt, ui){
+                            $(this).removeClass('draggable-over')
+                            scope.$apply(function(scope, attrs){
+                                if ('undefined' !== typeof element.context.attributes.tcmSuiteDropOut) {
+                                  scope.$eval(element.context.attributes.tcmSuiteDropOut.nodeValue);
+                                }
+                            });
+                        }
+                    })
+            };
+        }
+    }
+});
+
 tcmModule.directive('ngEnter', function() {
         return function(scope, element, attrs) {
         element.bind("keydown keypress", function(event) {

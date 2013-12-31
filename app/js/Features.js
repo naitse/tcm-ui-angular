@@ -4,12 +4,24 @@ tcmModule.directive('ngFeatures', function(){
       transclude: true,
       scope:{requester:'=', btns:'=', droppable:'@drop', hidenotcurrent:'@hidenotcurrent'},
       templateUrl: 'app/partials/features.html',
-       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$timeout',  function($scope, element, $attrs, $rootScope, tcm_model, $timeout){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$timeout','draggedObjects',  function($scope, element, $attrs, $rootScope, tcm_model, $timeout, DO){
 
        	$scope.btnConfig = (typeof $scope.btns == 'undefined')?{}:$scope.btns;
 
        	$scope.features = [];
 		$scope.featureSelected = false;
+        $scope.suiteDroppable = false;
+        $rootScope.$on('suiteDragStart', function(event, message){
+           $scope.suiteDroppable = true;
+        })
+        $rootScope.$on('suiteDragRevert', function(event, message){
+           $scope.suiteDroppable = false;
+        })
+
+
+        $scope.handleSuiteDrop = function(){
+            DO.dropSuiteOnFeatureContainer($scope.requester, $scope)
+        }
 
    		$scope.clearFtrTests = function(){
 			$scope.features = [];

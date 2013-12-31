@@ -193,6 +193,9 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
         getTCLinkState: function(tcId, callback){
             return $http.get( basePath + 'api/tests/:tcId/linked'.replace(':tcId',tcId) ).success(callback).error();
         },
+        instanceSuite: function(iterId, suiteId, callback){
+            return $http.post( basePath + 'api/suites/:suiteId/instance/:iterId'.replace(':iterId',iterId).replace(':suiteId',suiteId) ).success(callback).error();
+        },
         admin: {
 
             Projects: $resource(basePath + 'api/admin/projects/:id', {id:'@id'}, {
