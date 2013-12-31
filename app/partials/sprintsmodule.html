@@ -131,13 +131,24 @@
 					    <div class="panel-heading">
 					      <h4 class="panel-title">
 					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="isopend = !isopend">
-					        	<span class="pull-left glyphicon" ng-class="(isopend == true)?'glyphicon-chevron-down':'glyphicon-chevron-right'" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
-								<a ng-click="$event.stopPropagation();" href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   {{currentRequester.object.featureName}}     </div>
+					        	<span ng-switch="currentRequester.object.featureType">
+						        	<span class="pull-left glyphicon" ng-class="(isopend == true)?'glyphicon-chevron-down':'glyphicon-chevron-right'" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
+									<a ng-switch-when="1" ng-click="$event.stopPropagation();" href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   
+					        		<span ng-switch-default>
+										{{currentRequester.object.jiraKey}}   
+					        		</span>
+					        	</span>
+				        	 </div>
 					      </h4>
 					    </div>
 					    <div id="collapseOne" class="panel-collapse collapse">
 					      <div class="panel-body" style=" height: auto; overflow-y: auto; max-height: 40%;">
-								 <pre class="item-description">{{currentRequester.object.featureDescription}}</pre>
+								<span ng-switch="currentRequester.object.featureType">
+								 	<pre ng-switch-when="1" class="item-description">{{currentRequester.object.featureDescription}}</pre>
+									<pre ng-switch-default class="item-description">{{currentRequester.object.featureName}}</pre>
+								</span>
+																 
+
 					      </div>
 					    </div>
 					  </div>
