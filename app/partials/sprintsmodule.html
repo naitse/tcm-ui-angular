@@ -96,14 +96,14 @@
 					</div>
 			    	<div class="lsprint-container" >
 			    		<div id="releases">
-				    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases" ng-click="getIterations(rel)">
+				    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases | orderBy:'-id'" ng-click="getIterations(rel)">
 							  <div class="panel-body">
 			    				Release {{rel.releaseName}}
 							  </div>
 				    		</div>
 			    		</div>
 			    		<div id="iterations">
-				    		<div id="iteration" class="panel panel-default" ng-hide="iter.hide" ng-repeat="iter in iterations" ng-click="getFeatures(iter)">
+				    		<div id="iteration" class="panel panel-default" ng-hide="iter.hide" ng-repeat="iter in iterations | orderBy:'-IterId'" ng-click="getFeatures(iter)">
 				    			<div class="panel-body">
 				    				{{iter.iterationName}}
 				    			</div>

@@ -63,6 +63,11 @@ tcmModule.directive('ngTestcase', function(){
 
         }
 
+        $scope.checkTC = function(event){
+          event.stopPropagation();
+          $scope.tc.checked = ($scope.tc.checked == true)?false:true;
+        }
+
         $scope.saveTC = function(tc){
           $scope.tc.editMode = false;
 

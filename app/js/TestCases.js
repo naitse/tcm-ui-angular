@@ -419,7 +419,6 @@ tcmModule.directive('ngTestcases', function(){
 
   $scope.tcDeleted = function(tc){
     $scope.removeTCfromScope(tc)
-   // $scope.updateParentTcArray();
     if($scope.requester.type == 'feature'){
       $rootScope.$emit('tcDeleted', {featureId: tc.featureId});
     }
@@ -429,7 +428,6 @@ tcmModule.directive('ngTestcases', function(){
 
     $scope.tcUntagged = function(tc){
    $scope.testcases = _.without($scope.testcases, _.findWhere($scope.testcases, {tcId: tc.tcId}));
-   // $scope.updateParentTcArray();
     $scope.manageDragState();
     $scope.verifyBulkDisplay();
   };
@@ -439,13 +437,11 @@ tcmModule.directive('ngTestcases', function(){
 
   $scope.tcChecked = function(){
     $scope.manageDragState();
-    // $scope.updateGlobalDraggableArray();
     $scope.verifyBulkDisplay()
  }
 
 $scope.tcUnchecked = function(){
     $scope.manageDragState();
-    // $scope.updateGlobalDraggableArray();
     $scope.verifyBulkDisplay();
  }
 
@@ -456,13 +452,6 @@ $scope.testSelected = function(tc){
     var setCurrent = _.findWhere($scope.testcases, {tcId: tc.tcId});
     setCurrent.current = true; 
 }     
-// $scope.$on('tcSelected', function(event, message){
-//    _.each($scope.testcases, function(obj){
-//       obj.current = false;
-//     })
-//     var setCurrent = _.findWhere($scope.testcases, {tcId: message.tc.tcId});
-//     setCurrent.current = true;  
-//  })
 
 
      
@@ -479,7 +468,6 @@ $scope.testSelected = function(tc){
             tc.checked = ($scope.selectall == true)?false:true;
           });
         }
-
 
         $scope.areTcsChecked = function(){
             var count = 0;
@@ -513,7 +501,6 @@ $scope.testSelected = function(tc){
                     }
                   })
               }
-              // $scope.updateGlobalDraggableArray();
        }
 
        $scope.updateGlobalDraggableArray =  function(){

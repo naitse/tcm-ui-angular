@@ -151,7 +151,7 @@
 				<!-- <div ng-show="tags.length > 0 && hideTags == true" ng-click="backToTags()"class="btn btn-default">Back</div> -->
 				<tags-input ng-model="tagstringToFecthArray"
 				            custom-class="bootstrap"
-				            placeholder="Tag me now!"
+				            placeholder="Get them all!"
 				            replace-spaces-with-dashes="false"
 				            add-on-comma="true"
 				            add-on-space="false"
@@ -167,14 +167,14 @@
 		</div>
     	<div class="sprint-container  tab-content" ng-show="sprintActiveClass == 'active'">
     		<div id="releases">
-	    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases" ng-click="getIterations(rel)" ng-class="(release ==  rel)?'active':'';">
+	    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases  | orderBy:'-id'" ng-click="getIterations(rel)" ng-class="(release ==  rel)?'active':'';">
 				  <div class="panel-body">
     				Release {{rel.releaseName}}
 				  </div>
 	    		</div>
     		</div>
     		<div id="iterations">
-	    		<div id="iteration" class="panel panel-default" ng-hide="iter.hide" ng-repeat="iter in iterations" ng-click="getFeatures(iter)" ng-class="(iteration ==  iter)?'active':'';">
+	    		<div id="iteration" class="panel panel-default" ng-hide="iter.hide" ng-repeat="iter in iterations  | orderBy:'-IterId'" ng-click="getFeatures(iter)" ng-class="(iteration ==  iter)?'active':'';">
 	    			<div class="panel-body">
 	    				{{iter.iterationName}}
 	    			</div>

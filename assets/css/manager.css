@@ -134,8 +134,8 @@ background: transparent;
     margin-left: 10px;
 }
 
-.panel .action-bar {
-
+.panel .action-bar .squaredThree{
+  top:-8px;
 }
 
 .panel #features .action-bar {
@@ -312,183 +312,152 @@ height: 34;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/*radio testtt*/
-
-*,
-*:after,
-*:before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+.roundedOne input[type=checkbox], .squaredThree input[type=checkbox] {
+  visibility: hidden;
 }
 
-.switch {
+#tcm-sprint-module .roundedOne{
+  display: none;
+}
+
+/* SQUARED THREE */
+.squaredThree {
+  width: 16px;
+  height: 16px;
   position: relative;
+  display: inline;
+  float: left;
 }
 
-.switch label {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: block;
-}
-
-.switch input {
-  top: 0; 
-  right: 0; 
-  bottom: 0; 
-  left: 0;
-  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-  -moz-opacity: 0;
-  opacity: 0;
-  z-index: 100;
-  position: absolute;
-  width: 100%;
-  height: 100%;
+.squaredThree label {
   cursor: pointer;
-}
-
-	.switch.demo3 {
-		display: inline-block;
-  width: 40px;
-  height: 15px;
-}
-
-.switch.demo3 label {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: #a5a39d;
-  border-radius: 40px;
-  box-shadow:
-      inset 0 3px 8px 1px rgba(0,0,0,0.2),
-      0 1px 0 rgba(255,255,255,0.5);
-}
-
-.switch.demo3 label:after {
-  content: "";
   position: absolute;
-  z-index: -1;
-  top: -8px; right: -8px; bottom: -8px; left: -8px;
-  border-radius: inherit;
-  background: #ababab;
-  background: -moz-linear-gradient(#f2f2f2, #ababab);
-  background: -ms-linear-gradient(#f2f2f2, #ababab);
-  background: -o-linear-gradient(#f2f2f2, #ababab);
-  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f2f2f2), to(#ababab));
-  background: -webkit-linear-gradient(#f2f2f2, #ababab);
-  background: linear-gradient(#f2f2f2, #ababab);
-  box-shadow: 0 0 10px rgba(0,0,0,0.3),
-        0 1px 1px rgba(0,0,0,0.25);
-}
-
-.switch.demo3 label:before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: -18px; right: -18px; bottom: -18px; left: -18px;
-  border-radius: inherit;
-  background: #eee;
-  background: -moz-linear-gradient(#e5e7e6, #eee);
-  background: -ms-linear-gradient(#e5e7e6, #eee);
-  background: -o-linear-gradient(#e5e7e6, #eee);
-  background: -webkit-gradient(linear, 0 0, 0 100%, from(#e5e7e6), to(#eee));
-  background: -webkit-linear-gradient(#e5e7e6, #eee);
-  background: linear-gradient(#e5e7e6, #eee);
-  box-shadow:
-      0 1px 0 rgba(255,255,255,0.5);
-  -webkit-filter: blur(1px);
-  -moz-filter: blur(1px);
-  -ms-filter: blur(1px);
-  -o-filter: blur(1px);
-  filter: blur(1px);
-}
-
-.switch.demo3 label i {
-  display: block;
-  height: 100%;
-  width: 60%;
-  border-radius: inherit;
-  background: silver;
-  position: absolute;
-  z-index: 2;
-  right: 40%;
+  width: 16px;
+  height: 16px;
   top: 0;
-  background: #b2ac9e;
-  background: -moz-linear-gradient(#f7f2f6, #b2ac9e);
-  background: -ms-linear-gradient(#f7f2f6, #b2ac9e);
-  background: -o-linear-gradient(#f7f2f6, #b2ac9e);
-  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f7f2f6), to(#b2ac9e));
-  background: -webkit-linear-gradient(#f7f2f6, #b2ac9e);
-  background: linear-gradient(#f7f2f6, #b2ac9e);
-  box-shadow:
-      inset 0 1px 0 white,
-      0 0 8px rgba(0,0,0,0.3),
-      0 5px 5px rgba(0,0,0,0.2);
+  left:0;
+  border-radius: 4px;
+  background: #fcfff4;
+  border: 2px solid #aaa;
 }
 
-.switch.demo3 label i:after {
-  content: "";
+.squaredThree label:after {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  opacity: 0;
+  content: '';
   position: absolute;
-  left: 15%;
-  top: 25%;
-  width: 70%;
-  height: 50%;
-  background: #d2cbc3;
-  background: -moz-linear-gradient(#cbc7bc, #d2cbc3);
-  background: -ms-linear-gradient(#cbc7bc, #d2cbc3);
-  background: -o-linear-gradient(#cbc7bc, #d2cbc3);
-  background: -webkit-gradient(linear, 0 0, 0 100%, from(#cbc7bc), to(#d2cbc3));
-  background: -webkit-linear-gradient(#cbc7bc, #d2cbc3);
-  background: linear-gradient(#cbc7bc, #d2cbc3);
-  border-radius: inherit;
+  width: 9px;
+  height: 5px;
+  background: transparent;
+  top: 2px;
+  left: 2px;
+  border: 3px solid #000;
+  border-top: none;
+  border-right: none;
+
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 
-.switch.demo3 label i:before {
-  content: "off";
-  text-transform: uppercase;
-  font-style: normal;
-  font-weight: bold;
-  color: rgba(0,0,0,0.4);
-  text-shadow: 0 1px 0 #bcb8ae, 0 -1px 0 #97958e;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 5px;
+.squaredThree label:hover::after {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+  filter: alpha(opacity=30);
+  opacity: 0.3;
+}
+
+.squaredThree input[type=checkbox]:checked + label:after {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+
+
+.roundedOne {
+  width: 18px;
+  height: 18px;
+  background: #fcfff4;
+
+  background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
+
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+
+  -webkit-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+  -moz-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+  box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.roundedOne label {
+  cursor: pointer;
   position: absolute;
-  top: 50%;
-  margin-top: -3px;
-  right: -50%;
+  width: 14px;
+  height: 14px;
+
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  left: 2px;
+  top: 2px;
+
+  -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+  -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+  box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+
+  background: -webkit-linear-gradient(top, #222 0%, #45484d 100%);
+  background: -moz-linear-gradient(top, #222 0%, #45484d 100%);
+  background: -o-linear-gradient(top, #222 0%, #45484d 100%);
+  background: -ms-linear-gradient(top, #222 0%, #45484d 100%);
+  background: linear-gradient(top, #222 0%, #45484d 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#222', endColorstr='#45484d',GradientType=0 );
 }
 
-.switch.demo3 input:checked ~ label {
-  background: #9abb82;
+.roundedOne label:after {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  opacity: 0;
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #00bf00;
+
+  background: -webkit-linear-gradient(top, #00bf00 0%, #009400 100%);
+  background: -moz-linear-gradient(top, #00bf00 0%, #009400 100%);
+  background: -o-linear-gradient(top, #00bf00 0%, #009400 100%);
+  background: -ms-linear-gradient(top, #00bf00 0%, #009400 100%);
+  background: linear-gradient(top, #00bf00 0%, #009400 100%);
+
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  top: 1px;
+  left: 1px;
+
+  -webkit-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+  -moz-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+  box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
 }
 
-.switch.demo3 input:checked ~ label i {
-  right: -1%;
+.roundedOne label:hover::after {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+  filter: alpha(opacity=30);
+  opacity: 0.3;
 }
 
-.switch.demo3 input:checked ~ label i:before {
-  content: "on";
-  right: 115%;
-  color: #82a06a;
-  text-shadow: 
-    0 1px 0 #afcb9b,
-    0 -1px 0 #6b8659;
+.roundedOne input[type=checkbox]:checked + label:after {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=100);
+  opacity: 1;
 }
+

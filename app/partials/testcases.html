@@ -1,13 +1,17 @@
-
 	<div ng-show="requester.id != ''" class="well action-bar">
-		<input style="float: left; position: relative;top: -9px;" type="checkbox" ng-model="selectall" ng-click="$event.stopPropagation(); selectAll()"/>
-			<span ng-show="requester.type == 'suite'" style=" float: left; position: relative; top: -6px; ">
-				<div class="switch demo3">
-					<input type="checkbox" ng-model="linkTcs" ng-click="linkTcs = !LinkTcs">
-					<label><i></i></label>
+
+			<div class="squaredThree">
+				<input type="checkbox" ng-model="selectall"/>
+				<label  title="Select All" ng-click="selectAll();"></label>
+			</div>
+
+			<span ng-show="requester.type == 'suite'" style=" float: right; position: relative; top: -10px; margin-left: 8px;" >
+				<div class="roundedOne" ng-click="$event.stopPropagation();">
+					<input type="checkbox" ng-model="linkTcs" ng-click="$event.stopPropagation();"/>
+					<label title="Link Test Cases" ng-click="linkTcs = !linkTcs"></label>
 				</div>
-				Link Tcs
 			</span>
+
 		<div class="btn-group btn-group-xs pull-right no-opacity" ng-show="createSuiteBtn == true">
 			<div class="btn btn-default" ng-class="(createSuiteBtnEnabled == true)?'no-opacity':'';" ng-click="createNewSuite()" ng-disabled="createSuiteBtnEnabled == false">Create Suite</div>
 		</div>
