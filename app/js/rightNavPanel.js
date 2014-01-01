@@ -161,7 +161,6 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.getTests = function(feature){
-                scope.loading = true;
                 scope.feature = feature;
                _.each(scope.features, function(feat){
                     if(feat.featureId != feature.featureId){
@@ -213,7 +212,6 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.featBtnConfig.hideBar = true
                 $(element).find('#testcases').stop(true,true).animate({left:0},duration, function(){
                     scope.tcsHidden = false
-                    scope.loading = false;
                 });
             }
             
