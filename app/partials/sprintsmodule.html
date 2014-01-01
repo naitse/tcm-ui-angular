@@ -26,20 +26,24 @@
 
 	#tcm-sprint-module .lsprint-container #releases {
 		left: 0px;
+		width: 100%;
 	}
 
 	#tcm-sprint-module .lsprint-container #iterations {
 		left: 400px;
 		top: 0px;
+		width: 100%;
 	}
 
 	#tcm-sprint-module .lsprint-container #features {
 		left: 400px;
 		top: 0px;
+		width: 100%;
 	}
 	#tcm-sprint-module .lsprint-container #testcases {
 		left: 400px;
 		top: 0px;
+		width: 100%;
 	}
 
 	#tcm-sprint-module .nav.left-panel {
@@ -94,7 +98,7 @@
 							
 				    	</div>
 					</div>
-			    	<div class="lsprint-container" >
+			    	<div class="lsprint-container" style-"position:relative;">
 			    		<div id="releases">
 				    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases | orderBy:'-id'" ng-click="getIterations(rel)">
 							  <div class="panel-body">
@@ -113,6 +117,7 @@
 			    		<div id="features">
 							<ng-features requester="iteration"></ng-features>
 			    		</div>
+			    		<div ng-show="loading == true" class="loading-big"></div>
 			    	</div>
 			    </div>
 			</div> 

@@ -165,7 +165,7 @@
 				</tags-input>
 	    	</div>
 		</div>
-    	<div class="sprint-container  tab-content" ng-show="sprintActiveClass == 'active'">
+    	<div class="sprint-container  tab-content" ng-show="sprintActiveClass == 'active'" style="position:relative;">
     		<div id="releases">
 	    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases  | orderBy:'-id'" ng-click="getIterations(rel)" ng-class="(release ==  rel)?'active':'';">
 				  <div class="panel-body">
@@ -186,6 +186,7 @@
     		<div id="testcases">
 				<ng-testcases requester="currentRequester" btns="btnConfig" tcminactive="tcsHidden"></ng-testcases>
     		</div>
+    		<div ng-show="loading == true" class="loading-big"></div>
     	</div>
 
     	<div class="suite-container tab-content" ng-show="suiteActiveClass == 'active'">

@@ -40,6 +40,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             scope.features = [];
             scope.suites = [];
             scope.tags = [];
+            scope.loading = false;
             scope.featBtnConfig = {hideBar:false, hideFeatureActions:true, hideBtns:true, hideSearch:false}
             scope.currentRequester = {
                 id:'',
@@ -105,6 +106,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.loadSprint = function(){
+                scope.loading = true;
                 scope.tcsHidden = false
                 scope.tagsTcsHidden = true
                 scope.sprintActiveClass = 'active'
@@ -113,12 +115,15 @@ tcmModule.directive('ngRightNavPanel', function() {
                 if(scope.releases.length !== 0){
                     return false;
                 }
-                var releases = tcm_model.Releases.query();
+                var releases = tcm_model.Releases.query(function(){
+                    scope.loading = false;
+                });
                 scope.releases =  _.extend(releases, {hide:false})
 
             }
 
             scope.getIterations = function(release){
+                scope.loading = true;
                 scope.release = release;
                 _.each(scope.releases, function(rel){
                     if(rel.id != release.id){
@@ -131,12 +136,15 @@ tcmModule.directive('ngRightNavPanel', function() {
                     scope.showIterations();
                     scope.back.state = true;
                     scope.back.last = scope.hideIterations;
+                    scope.loading = false;
                 })
             }
 
             scope.getFeatures = function(iteration){
+                scope.loading = true;
                 iteration.callback = function(){
                     scope.showFeatures();
+                    scope.loading = false;
                 }
                 var clone = angular.copy(iteration)
                 try{scope.$apply(scope.iteration.IterId = 'none')}catch(e){}
@@ -153,6 +161,7 @@ tcmModule.directive('ngRightNavPanel', function() {
             }
 
             scope.getTests = function(feature){
+                scope.loading = true;
                 scope.feature = feature;
                _.each(scope.features, function(feat){
                     if(feat.featureId != feature.featureId){
@@ -204,6 +213,7 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.featBtnConfig.hideBar = true
                 $(element).find('#testcases').stop(true,true).animate({left:0},duration, function(){
                     scope.tcsHidden = false
+                    scope.loading = false;
                 });
             }
             

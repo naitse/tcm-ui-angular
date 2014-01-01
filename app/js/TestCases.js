@@ -12,6 +12,7 @@ tcmModule.directive('ngTestcases', function(){
         $scope.uuid = Math.floor(Math.random()*10000001);
         $scope.linkTcs = false;
         $scope.createSuiteBtn = false;
+        $scope.loading = false;
 
         $scope.draggedTests = {
           id: $scope.uuid,
@@ -93,6 +94,7 @@ tcmModule.directive('ngTestcases', function(){
           })
 
           $scope.getTestCases = function(){
+            $scope.loading = true;
             $scope.resetTestcasesObject();
             $scope.resetNewTestcase();
             $scope.selectall = false
@@ -102,6 +104,7 @@ tcmModule.directive('ngTestcases', function(){
                 $scope.testcases = [];
                 $scope.createSuiteBtn = true;
                 $scope.createSuiteBtnEnabled = false;
+                $scope.loading = false;
                 return false;
               }
               var multi = new tcm_model.MultiTagsTcs()
@@ -113,6 +116,7 @@ tcmModule.directive('ngTestcases', function(){
                 $scope.createSuiteBtn = true;
                 $scope.createSuiteBtnEnabled = true;
                 $scope.droppable = false;
+                $scope.loading = false;
               })
             }else if($scope.requester.type == 'tag'){
               tcm_model.TagsTcs.query({tid: $scope.requester.id},function(data){
@@ -134,6 +138,7 @@ tcmModule.directive('ngTestcases', function(){
             $scope.testcases = data;
             $scope.extendTcs();
             $scope.droppable = true;
+            $scope.loading = false;
         }  
 
         $scope.extendTcs = function(data){

@@ -11,6 +11,7 @@ tcmModule.directive('tcmSprintModule', function() {
             scope.features = [];
             scope.btnConfig = {hideBulk:true, hideStatus:true};
             releaseSelected = {};
+            scope.loading = false;
             scope.containerType = 'sprint'
             var duration = 200
 
@@ -62,9 +63,12 @@ tcmModule.directive('tcmSprintModule', function() {
             }
 
             scope.loadSprint = function(){
+                scope.loading = true;
                 scope.sprintActiveClass = 'active'
                 scope.suiteActiveClass = ''
-                var releases = tcm_model.Releases.query();
+                var releases = tcm_model.Releases.query(function(){
+                    scope.loading = false;
+                });
                 scope.releases =  _.extend(releases, {hide:false})
             }
 
@@ -77,8 +81,9 @@ tcmModule.directive('tcmSprintModule', function() {
                 _.each(scope.releases, function(rel){
                         rel.hide = true;
                 })
-
+                scope.loading = true;
                 tcm_model.Iterations.query({releaseId: scope.release.id}).$promise.then(function(data){
+                    scope.loading = false;
                     scope.iterations = _.extend(data, {hide:false});
                     scope.showIterations();
                     scope.back.state = true;
@@ -87,8 +92,10 @@ tcmModule.directive('tcmSprintModule', function() {
             }
 
             scope.getFeatures = function(iteration){
+                scope.loading = true;
                 iteration.callback = function(){
                     scope.showFeatures();
+                    scope.loading = false;
                 }
                 scope.iteration = iteration
                 // scope.$parent.iteration = scope.iteration
