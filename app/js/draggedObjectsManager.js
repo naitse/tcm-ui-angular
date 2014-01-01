@@ -133,6 +133,7 @@ tcmModule.service('draggedObjects', ['tcm_model', '$rootScope', function(tcm_mod
                   _scope.extendSingleFeature(data);
                   var temp = new tcm_model.Features(data)
                   _scope.features.push(temp);
+                  $rootScope.$broadcast('suiteDragRevert');
             })
 
             DO.cleanDraggable();

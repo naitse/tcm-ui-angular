@@ -79,8 +79,8 @@ padding-right: 5px;
 }
 
 .suite-drop-zone{
-  height: 90px;
   width:100%;
+  text-align: center;
 }
 
 .feature-status-btn {

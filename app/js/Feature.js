@@ -17,6 +17,13 @@ tcmModule.directive('ngFeature', function(){
             
             }
 
+            $rootScope.$on('suiteDragStart', function(event, message){
+               $scope.droppable = false;
+            })
+            $rootScope.$on('suiteDragRevert', function(event, message){
+                $scope.droppable = true;
+            })
+
 
             $scope.clone = function(){
               feat = {

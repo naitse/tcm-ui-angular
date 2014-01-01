@@ -24,6 +24,13 @@ tcmModule.directive('ngTestcases', function(){
           $scope.draggedTests.link = linkFlag
         })
 
+        $rootScope.$on('suiteDragStart', function(event, message){
+           $scope.droppable = false;
+        })
+        $rootScope.$on('suiteDragRevert', function(event, message){
+            $scope.droppable = true;
+        })
+
         DO.draggedObjects.push($scope.draggedTests)
 
         if(typeof $scope.btns !== 'undefined'){
