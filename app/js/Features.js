@@ -216,6 +216,7 @@ tcmModule.directive('ngFeatures', function(){
           $scope.features.push(data);
           // $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
           // $scope.cancelNewFeature();
+          $scope.cancelNewFeature();
         })
 
       }
