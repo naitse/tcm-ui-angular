@@ -139,7 +139,7 @@ left: 0px;
 }
 
 .loading-troll-big {
-    background: url('/assets/images/troll.gif') no-repeat;
+    background: url('/assets/images/bugloading.gif') no-repeat;
     height: 100% !important;
     width: 200px !important;
     background-size: 100%;
@@ -147,6 +147,7 @@ left: 0px;
     margin-right: auto;
     margin-top: 100px;
     opacity: 0.4;
+    
 }
 
 .tcm-icon {
