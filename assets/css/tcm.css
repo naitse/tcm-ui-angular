@@ -229,3 +229,14 @@ background-color: #428bca;
     background-color: #e9e9e9;
 }
 
+.reportMailerIframe {
+width: 750px;
+height: 100%;
+background: white;
+overflow: hidden;
+overflow-y: auto; 
+}
+
+.dropdown-menu {
+z-index: 9999999;
+}
