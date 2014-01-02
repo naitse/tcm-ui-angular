@@ -1,5 +1,6 @@
-tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$rootScope', function($resource, $http, $routeParams, Auth, $rootScope) {
+tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootScope', function($resource, $http, $route, Auth, $rootScope) {
 
+    console.log('FACTORY CALLED');
 
     return {
         Profile: $resource(basePath + 'api/profile'),
@@ -7,16 +8,16 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     update: { method: 'PUT'}
 
         }),
-        ProjectConfig: $resource(basePath + 'api/projects/:id/config', {id:$routeParams.projectId}, {
+        ProjectConfig: $resource(basePath + 'api/projects/:id/config', {id:function () { return $route.current.params.projectId; }}, {
             update: { method: 'PUT'}
 
         }),
-        ProjectPlugins: $resource(basePath + 'api/projects/:id/plugins/:pid', {id: $routeParams.projectId},{
+        ProjectPlugins: $resource(basePath + 'api/projects/:id/plugins/:pid', {id: function () { return $route.current.params.projectId; }},{
             update: { method: 'PUT'}
 
         }),
 
-        Releases: $resource(basePath + 'api/projects/:projectId/releases/:id', {projectId: $routeParams.projectId, id:'@id'}, {
+        Releases: $resource(basePath + 'api/projects/:projectId/releases/:id', {projectId: function () { return $route.current.params.projectId; }, id:'@id'}, {
             update: { method: 'PUT'}
         }),
 
@@ -86,34 +87,34 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
         //             responseType:'json'
         //         }
         // }),
-        JiraIterations: $resource(basePath + 'api/projects/:id/jira/iterations', {id: $routeParams.projectId}),
-        JiraIssues: $resource(basePath + 'api/projects/:projectId/jira/iteration/:id/issues', {projectId: $routeParams.projectId, id: '@id'}),
-        JiraIssue: { //$resource(basePath + 'api/projects/:projectId/jira/issue/:key', {projectId: $routeParams.projectId, key: '@key'}),
+        JiraIterations: $resource(basePath + 'api/projects/:id/jira/iterations', {id: function () { return $route.current.params.projectId; }}),
+        JiraIssues: $resource(basePath + 'api/projects/:projectId/jira/iteration/:id/issues', {projectId: function () { return $route.current.params.projectId; }, id: '@id'}),
+        JiraIssue: { //$resource(basePath + 'api/projects/:projectId/jira/issue/:key', {projectId: function () { return $route.current.params.projectId; }, key: '@key'}),
             get: function(params, callback){
                 $.ajax({
-                url: basePath + 'api/projects/:projectId/jira/issue/:key'.replace(':projectId', $routeParams.projectId).replace(':key', params.key),
+                url: basePath + 'api/projects/:projectId/jira/issue/:key'.replace(':projectId', function () { return $route.current.params.projectId; }).replace(':key', params.key),
                  type: "GET",
                  asyn:true,
                  contentType:"application/json"
                 }).done(callback);
-                //return $http.get(basePath + 'api/projects/:projectId/jira/issue/:key'.replace(':projectId', $routeParams.projectId).replace(':key', params.key));
+                //return $http.get(basePath + 'api/projects/:projectId/jira/issue/:key'.replace(':projectId', function () { return $route.current.params.projectId; }).replace(':key', params.key));
 
             }
         },
 
-        JiraIssueTransition: $resource(basePath + 'api/projects/:projectId/jira/issue/:key/transitions/:transitionId/', {projectId: $routeParams.projectId}),
-        ReleasesIterations: $resource(basePath + 'api/projects/:id/releasesiterations', {id: $routeParams.projectId}),
-        Tags: $resource(basePath + 'api/projects/:id/tags/:tid', {id: $routeParams.projectId},{
+        JiraIssueTransition: $resource(basePath + 'api/projects/:projectId/jira/issue/:key/transitions/:transitionId/', {projectId: function () { return $route.current.params.projectId; }}),
+        ReleasesIterations: $resource(basePath + 'api/projects/:id/releasesiterations', {id: function () { return $route.current.params.projectId; }}),
+        Tags: $resource(basePath + 'api/projects/:id/tags/:tid', {id: function () { return $route.current.params.projectId; }},{
                 update: {
                     method: 'PUT'
                 }
         }),
-        TagsTcs: $resource(basePath + 'api/projects/:id/tags/:tid/tcs/:tcId', {id: $routeParams.projectId, tid:'@tid',tcId:'@tcId'},{
+        TagsTcs: $resource(basePath + 'api/projects/:id/tags/:tid/tcs/:tcId', {id: function () { return $route.current.params.projectId; }, tid:'@tid',tcId:'@tcId'},{
                 update: {
                     method: 'PUT'
                 }
         }),
-        MultiTagsTcs: $resource(basePath + 'api/projects/:id/multitags', {id: $routeParams.projectId},{
+        MultiTagsTcs: $resource(basePath + 'api/projects/:id/multitags', {id: function () { return $route.current.params.projectId; }},{
                 fetch: {
                     method: 'POST',
                     transformResponse:function(data, headersGetter){
@@ -122,12 +123,12 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     responseType:'json'
                 }
         }),
-        Suites: $resource(basePath + 'api/projects/:pid/suites/:id', {pid: $routeParams.projectId, id:'@id'},{
+        Suites: $resource(basePath + 'api/projects/:pid/suites/:id', {pid: function () { return $route.current.params.projectId; }, id:'@id'},{
                 update: {
                     method: 'PUT'
                 }
         }),
-        SuiteTests: $resource(basePath + 'api/projects/:id/suites/:sid/tests/:tcId', {id: $routeParams.projectId, sid:'@sid', tcId:'@tcId'},{
+        SuiteTests: $resource(basePath + 'api/projects/:id/suites/:sid/tests/:tcId', {id: function () { return $route.current.params.projectId; }, sid:'@sid', tcId:'@tcId'},{
                 create:{
                     method: 'POST',
                     transformResponse:function(data, headersGetter){
@@ -147,7 +148,7 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     responseType:'json'
                 }
         }),
-        SuiteTestsClone: $resource(basePath + 'api/projects/:id/suites/:sid/tests/:tcId/cloneSuiteTC', {id: $routeParams.projectId, sid:'@sid', tcId:'@tcId'},{
+        SuiteTestsClone: $resource(basePath + 'api/projects/:id/suites/:sid/tests/:tcId/cloneSuiteTC', {id: function () { return $route.current.params.projectId; }, sid:'@sid', tcId:'@tcId'},{
                 clone:{
                     method: 'POST',
                     transformResponse:function(data, headersGetter){
@@ -167,7 +168,7 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
                     responseType:'json'
                 }
         }),
-        SuiteTestsLink: $resource(basePath + 'api/projects/:id/suites/:sid/linkTestCases', {id: $routeParams.projectId, sid:'@sid'},{
+        SuiteTestsLink: $resource(basePath + 'api/projects/:id/suites/:sid/linkTestCases', {id: function () { return $route.current.params.projectId; }, sid:'@sid'},{
                 create:{
                     method: 'POST',
                     transformResponse:function(data, headersGetter){

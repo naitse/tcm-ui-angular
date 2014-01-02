@@ -1,4 +1,4 @@
-function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cookieStore, Auth, tcm_model) {
+function TopMenuCntl($window, $scope, $route, $routeParams, $location, Auth, tcm_model) {
     $scope.$route = $route;
     $scope.$location = $location;
     $scope.$routeParams = $routeParams;
@@ -67,9 +67,13 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
 
 
     $scope.switchProject = function(project){
+        var toUpdate = new tcm_model.Projects;
+        toUpdate.active = 1
 
-        tcm_model.Projects.update(project.id, {active: '1'}, function(){})
-        $location.path('/manager/' + project.id);
+        toUpdate.$update({id: project.id}, function(){
+            $window.location.href = '/#/manager/' + project.id;
+        });
+
     };
 
     $scope.isActiveMenu = function(element){
@@ -95,4 +99,4 @@ function TopMenuCntl($rootScope, $scope, $route, $routeParams, $location, $cooki
 
 }
 
-TopMenuCntl.$inject = ['$rootScope', '$scope', '$route', '$routeParams', '$location', '$cookieStore', 'Auth', 'tcm_model'];
+TopMenuCntl.$inject = ['$window', '$scope', '$route', '$routeParams', '$location', 'Auth', 'tcm_model'];
