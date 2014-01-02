@@ -1,0 +1,11 @@
+
+		<div class="btn-group btn-group-sm no-opacity" ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();">
+			<div ng-click="$event.stopPropagation(); openDD();" class="btn btn-{{buttonSatusClass}} no-opacity status-button">
+			{{stateName}} <span class="caret"></span>
+			</div>
+			<ul class="dropdown-menu dropdown-pull-left" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; dropDownClose = true;">
+				<li><a href="" ng-click="$event.stopPropagation(); updateTeamState(0)">OK</a></li>
+				<li><a href="" ng-click="$event.stopPropagation(); updateTeamState(1)">Warning</a></li>
+				<li><a href="" ng-click="$event.stopPropagation(); updateTeamState(2)">OMG!</a></li>
+			</ul>
+		</div>

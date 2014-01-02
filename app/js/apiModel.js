@@ -1,7 +1,8 @@
-tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$rootScope', function($resource, $http, $routeParams, Auth, $rootScope) {
+tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$rootScope', '$sce', function($resource, $http, $routeParams, Auth, $rootScope, $sce) {
 
 
     return {
+        trustUrl: function(url){return $sce.trustAsResourceUrl(basePath + url)},
         Profile: $resource(basePath + 'api/profile'),
         Projects:  $resource(basePath + 'api/projects/:id', {id:'@id'},{
                     update: { method: 'PUT'}
@@ -195,6 +196,23 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$routeParams', 'Auth', '$
         },
         instanceSuite: function(iterId, suiteId, callback){
             return $http.post( basePath + 'api/suites/:suiteId/instance/:iterId'.replace(':iterId',iterId).replace(':suiteId',suiteId) ).success(callback).error();
+        },
+        mailer:{
+            getTeams: function(rlsId, callback){
+                return $http.get( basePath + 'api/mailer/getTeams?rlsId=:rlsId'.replace(':rlsId',rlsId) ).success(callback).error();
+            },
+            sendMail: function(req, callback){
+                return $http.post( basePath + 'api/mailer/send', req).success(callback).error();
+            },
+            saveData: function(data, callback){
+                return $http.post( basePath + 'api/mailer/saveData', data).success(callback).error();
+            },
+            getEmails: function(callback){
+                return $http.get( basePath + 'api/mailer/getEmails').success(callback).error();
+            },
+            setEmails: function(data, callback){
+                return $http.post( basePath + 'api/mailer/setEmails', data).success(callback).error();
+            }
         },
         admin: {
 
