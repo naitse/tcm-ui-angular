@@ -237,3 +237,6 @@ overflow: hidden;
 overflow-y: auto; 
 }
 
+.dropdown-menu {
+z-index: 9999999;
+}
