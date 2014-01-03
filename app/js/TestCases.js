@@ -255,8 +255,12 @@ tcmModule.directive('ngTestcases', function(){
       $scope.createTC =  function(){
         if($scope.newTC.create == true){
           return false;
+            $scope.filesToUpload = [];
+            fileUploader.cleanFiles(0);
         }
         $scope.newTC.create = true;
+          $scope.filesToUpload = [];
+          fileUploader.cleanFiles(0);
         if($scope.requester.type == "feature"){
           $scope.newTC.featureId = $scope.requester.id;
         }else if($scope.requester.type == "suite"){
