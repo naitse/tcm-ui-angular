@@ -60,7 +60,10 @@
             </div>
             <div>
                 <ul>
-                    <li ng-repeat="file in filesToUpload">{{file.name}}</li>
+                    <li ng-repeat="file in filesToUpload">
+                        <span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); deleteAttachment(file, $index);"></span>
+                        {{file.name}}
+                    </li>
                 </ul>
             </div>
 		</div>

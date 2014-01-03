@@ -34,6 +34,22 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
             }
 
         },
+        removeFile: function(file, tcId){
+            _.each(this.files, function(fileSet){
+                if(fileSet.tcId == tcId){
+                    fileSet.files = _.reject(fileSet.files, function(fileItem){
+                        fileItem.name === file.name;
+                    });
+                }
+            });
+        },
+        cleanFiles: function(tcId){
+            this.files.forEach(function(item){
+                if(item.id == tcId){
+                    item.files = [];
+                }
+            });
+        },
         upload: function(uploadTo, onProgress, onDone, onError) {
             var data = null;
             var uploadUrl = this.uploadUrl.replace(":featureId", uploadTo.featureId).replace(":tcId", uploadTo.tcId);

@@ -71,7 +71,7 @@
             <ul>
                 <li ng-repeat="file in tc.attachments">
                     <span ng-show="tc.editMode" class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); deleteAttachment(file, $index);"></span>
-                    <a ng-show="file.url!=null" href="{{file.url}}" target="_blank">{{file.name}}</a>
+                    <a ng-show="file.url!=null" ng-href="{{file.url}}" target="_blank">{{file.name}}</a>
                     <span ng-show="file.url==null" >{{file.name}}</span>
                 </li>
             </ul>

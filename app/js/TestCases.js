@@ -300,8 +300,8 @@ tcmModule.directive('ngTestcases', function(){
               console.log( percentDone );
           },
           function (files, data) {
-              console.log("upload complete");
-              console.log("data: " + JSON.stringify(data));
+              $scope.filesToUpload = [];
+              fileUploader.cleanFiles(0);
 
           },
           function (files, type, msg) {
@@ -316,7 +316,12 @@ tcmModule.directive('ngTestcases', function(){
 
       }
 
+      $scope.deleteAttachment = function(file, index){
 
+          $scope.filesToUpload.splice(index, 1);
+
+          fileUploader.removeFile(file, 0);
+      }
 
 
 ////////////////////createSuite
@@ -593,7 +598,7 @@ $scope.testSelected = function(tc){
               }
             }
 
-            $scope.filesToUpload = []
+            $scope.filesToUpload = new Array();
 
             $scope.fileAdded = function(file){
                 $scope.filesToUpload.push(file)
