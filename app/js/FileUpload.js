@@ -44,11 +44,10 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
             });
         },
         cleanFiles: function(tcId){
-            this.files.forEach(function(item){
-                if(item.id == tcId){
-                    item.files = [];
-                }
+            _.each(this.files, function(fileSet){
+                if(fileSet.tcId == tcId){fileSet.files = [];}
             });
+
         },
         upload: function(uploadTo, onProgress, onDone, onError) {
             var data = null;
@@ -69,7 +68,8 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
 
             });
 
-            if(filesToUpload == null) {return;}
+            if(filesToUpload == null || filesToUpload.length == 0) {return;}
+
 
             if (angular.version.major <= 1 && angular.version.minor < 2 ) {
                 //older versions of angular's q-service don't have a notify callback
