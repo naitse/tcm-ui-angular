@@ -52,7 +52,7 @@ width: 100%;
 		overflow-y: auto;
 	 }
 
-	.ng-right-nav-panel 	#testcases {
+	.ng-right-nav-panel #testcases {
 		left: 400px;
 		top: 93px;
 		height: 100%;
@@ -60,7 +60,7 @@ width: 100%;
 		position: absolute;
 		width: 100%;
 	}
-	.ng-right-nav-panel 	#tagstestcases {
+	.ng-right-nav-panel #tagstestcases {
 		left: 0px;
 		top: 0px;
 		height: 100%;
@@ -68,6 +68,17 @@ width: 100%;
 		position: absolute;
 		width: 100%;
 	}
+
+
+	.ng-right-nav-panel #tags-manage {
+		left: 0px;
+		top: 0px;
+		height: 100%;
+		padding-bottom: 50px;
+		position: absolute;
+		width: 100%;
+	}
+
 
 	.ng-right-nav-panel 	#suitetestcases {
 		left: 400px;
@@ -99,29 +110,24 @@ width: 100%;
 		border-radius: 25px 6px 6px 25px;
 		height: 30px;
 		position: relative;
+		background: #428bca;
+border: 1px solid #357ebd;
+border-radius: 4px;
+color: #fff;
+text-align: center;
 	}
 
 	#tag .panel-body{
 		padding:5px;
 	}
 
-	.single-tag .cordon{
-		border-radius: 15px;
-		height: 14px;
-		width: 14px;
-		position: relative;
-		border: 1px solid #ddd;
-		float: left;
-		top: 2px;
-		margin-right: 10px;
-	}
 
 .ng-right-nav-panel .testcase .name {
 	width: 240px;
 }
 
 .ng-right-nav-panel .ngTagsInput {
-	width: 320px !important;
+	width: 280px !important;
 	opacity: 1 !important;
 }
 
@@ -132,6 +138,13 @@ width: 100%;
 
 .ng-right-nav-panel .ngTagsInput .autocomplete{
 	opacity: 1 !important;
+}
+
+.ng-right-nav-panel .manage-tags{
+	float: right;
+	position: absolute;
+right: -35;
+top: 7;
 }
 
 </style>
@@ -160,7 +173,10 @@ width: 100%;
 	    	</div>
 	    	<div ng-show="tagActiveClass == 'active'" class="btn-group btn-group-sm pull-left no-opacity" style=" position: absolute; z-index: 99999; ">
 				<!-- <div ng-show="tags.length > 0 && hideTags == true" ng-click="backToTags()"class="btn btn-default">Back</div> -->
-				<tags-input ng-model="tagstringToFecthArray"
+				<div class="input-group" ng-hide="manageTagsActive == false" style=" width: 280px; ">
+				  <input type="text" class="form-control" placeholder="Search" ng-model="manageSearch">
+				</div>
+				<tags-input ng-show="manageTagsActive == false" ng-model="tagstringToFecthArray"
 				            custom-class="bootstrap"
 				            placeholder="Get them all!"
 				            replace-spaces-with-dashes="false"
@@ -174,6 +190,9 @@ width: 100%;
 				                 max-results-to-show="5000">
 				  </auto-complete>
 				</tags-input>
+		    	<button class="btn btn-{{(manageTagsActive == true)?'info':'default'}} manage-tags" ng-click="manageTags()" title="Manage Tags">
+		    		<span class="glyphicon glyphicon-cog"></span>
+		    	</button>
 	    	</div>
 		</div>
     	<div class="sprint-container  tab-content" ng-show="sprintActiveClass == 'active'" style="position:relative;">
@@ -215,18 +234,23 @@ width: 100%;
 
 
     	<div class="tag-container  tab-content" ng-show="tagActiveClass == 'active'">
-<!--     		<div id="tags" class="tab-content-element">
-    			<div ng-repeat="tag in tags" id="tag" ng-hide="tag.hide" class="panel panel-default single-tag" ng-click="loadTagTc(tag)">
-	    			<div class="panel-body">
-	    				<div class="cordon"></div>{{tag.name}}
-	    			</div>
-	    			<div class="btn-group" style=" position: absolute; right: 0; top: 0; ">
-		    			<div class="btn" ng-hide="deleteFlag == true"><span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); deleteFlag = true;"></span></div>
-						<div class="btn btn-danger btn-xs btn-delete" ng-show="deleteFlag == true" ng-click="$event.stopPropagation(); deleteTag(tag, deleteText)" ng-mouseleave="$event.stopPropagation(); deleteFlag = false" style=" margin-top: 3px; margin-right: 3px; border-radius: 4px; ">{{(deleteText) || 'Delete?' }}</div>
-	    			</div>
-    			</div>
-    		</div> -->
     		<div id="tagstestcases">
 				<ng-testcases requester="currentRequesterTags" btns="btnConfig" tcminactive="tagsTcsHidden"></ng-testcases>
     		</div>
+
+				<div id="tags-manage">
+				    		<div id="tags" class="tab-content-element">
+				    			<div ng-repeat="tag in mtags | filter:manageSearch" id="tag" ng-hide="tag.hide" class="panel panel-default single-tag">
+					    			<div class="panel-body">
+					    				{{tag.name}}
+					    			</div>
+					    			<div class="btn-group" style=" position: absolute; right: 0; top: 0; ">
+						    			<div class="btn" ng-hide="deleteFlag == true"><span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); deleteFlag = true;"></span></div>
+										<div class="btn btn-danger btn-xs btn-delete" ng-show="deleteFlag == true" ng-click="$event.stopPropagation(); deleteTag(tag, deleteText)" ng-mouseleave="$event.stopPropagation(); deleteFlag = false" style=" margin-top: 3px; margin-right: 3px; border-radius: 4px; ">{{(deleteText) || 'Delete?' }}</div>
+					    			</div>
+				    			</div>
+				    		</div>
+				</div>
+
+
     	</div>
