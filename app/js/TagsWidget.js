@@ -11,6 +11,8 @@ tcmModule.directive('ngTagsWidget', function(){
 
         $rootScope.$on('tagDeleted', function(event, message){
           $scope.tags = _.without($scope.tags, _.findWhere($scope.tags, {id:message.tagId}))
+          var index = $.inArray(message.tagName, $scope.tagstring);
+          if (index>=0) $scope.tagstring.splice(index, 1);
         })
 
         // $rootScope.$on('tcTagged', function(event, message){

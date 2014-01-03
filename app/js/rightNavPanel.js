@@ -390,15 +390,48 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.showTagTests();
             };
 
+            scope.getTagInputDeferred = null;
+
             scope.getTagInput = function(){
-                var deferred = $q.defer();
-                deferred.resolve(scope.tagInput)
-                return deferred.promise;
+
+                if(scope.getTagInputDeferred){scope.getTagInputDeferred.resolve([])}
+
+                scope.getTagInputDeferred = $q.defer();
+
+                scope.tagInput = [];
+                scope.tags =[];
+
+                tcm_model.Tags.query(function(res){
+                    scope.tags = _.extend(res, {hide:false});
+                    _.each(res, function(tag){
+                        scope.tagInput.push(tag.name)
+                    })
+                   scope.getTagInputDeferred.resolve(scope.tagInput)
+                })
+                return scope.getTagInputDeferred.promise;
+
+                // return scope.tagInput;
             }
 
             scope.addTagToFetch = function(tag){
+                if(!tagExists(tag)){
+                    removeStringFromArray(scope.tagstringToFecthArray, tag)
+                    return false;
+                }
                 scope.tagsToFecthArray.push(_.findWhere(scope.tags, {name:tag}))
                 scope.setMultiTagReq();
+            }
+
+            function tagExists(tagName){
+                if(_.findWhere(scope.tags,{name:tagName}) == null){
+                    return false;
+                }
+                return true
+            }
+
+            function removeStringFromArray(arr, str){
+                    var index = $.inArray(str, arr);
+                    if (index>=0) arr.splice(index, 1);
             }
 
             scope.removeTagToFetch = function(tag){
@@ -434,14 +467,20 @@ tcmModule.directive('ngRightNavPanel', function() {
 
                 deleteText = 'Bye!'
 
-                var tagId = angular.copy(tag.id);
+                var tagCopy = angular.copy(tag);
+
 
                 tag.$delete({tid:tag.id}, function(){
-                    scope.tags = _.without(scope.tags, _.findWhere(scope.tags,{id:tagId}))
-                    $rootScope.$broadcast('tagDeleted', {tagId: tagId});
+                    scope.tags = _.without(scope.tags, _.findWhere(scope.tags,{id:tagCopy.id}))
+                    scope.mtags = _.without(scope.mtags, _.findWhere(scope.mtags,{id:tagCopy.id}))
+                    var index = $.inArray(tagCopy.name, scope.tagInput);
+                    if (index>=0) scope.tagInput.splice(index, 1);
+                    $rootScope.$broadcast('tagDeleted', {tagId: tagCopy.id, tagName:tagCopy.name});
                 })                
 
             }
+
+
 
             scope.loadTagTc = function(tag){
                 scope.currentRequesterTags.id = tag.id
@@ -490,6 +529,47 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.loadTags();
                 scope.showTags();
             }
+
+            scope.mtags = [];
+            scope.manageTagsActive = false
+
+            scope.showManage = function(){
+                scope.tagsTcsHidden = true
+                $(element).find('#tags-manage').stop(true,true).animate({left:0},duration, function(){
+                    scope.hideManage = false
+                });
+            }
+            
+            scope.hideManageTags = function(callback){
+                scope.tagsTcsHidden = false
+                $(element).find('#tags-manage').stop(true,true).animate({left:400},duration, function(){
+                    scope.hideManage = true
+                });
+            }
+
+            scope.manageTags = function(){
+
+                if(scope.manageTagsActive == true){
+                    scope.manageTagsActive = false
+                    scope.hideManageTags()
+                    scope.showTagTests()
+                    return false;
+                }
+
+                scope.manageTagsActive = true
+
+                scope.hideTags = false
+                $(element).find('#tagstestcases').stop(true,true).animate({left:400},duration, function(){
+                    scope.tagsTcsHidden = true
+                });
+
+
+               scope.showManage()
+                tcm_model.Tags.query(function(res){
+                    scope.mtags = _.extend(res, {hide:false});
+                })
+            }
+
 
 
 
