@@ -3,7 +3,7 @@
 
 <span ng-switch on="feature.featureType">
   <a ng-switch-when="1" href="https://www.mulesoft.org/jira/browse/{{feature.jiraKey}}" target="_blank">{{feature.jiraKey}}</a>
-  <input ng-switch-when="2" ng-model="feature.jiraKey" ng-class="feature.editMode==true?'editable':''" ng-disabled="feature.editMode==false?true:''" class="key-field"></input>
+  <input ng-switch-default="2" ng-model="feature.jiraKey" ng-class="feature.editMode==true?'editable':''" ng-disabled="feature.editMode==false?true:''" class="key-field"></input>
 </span>
       <!-- <div class="closed" ng-show="feature.state == 0"><span class="glyphicon " ng-class="(feature.total == feature.pass)?'glyphicon-thumbs-up':'glyphicon-warning-sign'"></span></div> -->
       <div class="closed" ng-show="feature.loading != false"><div class="loading-small"></div></div>
@@ -19,11 +19,11 @@
           </li>
         </ul>
       </div>
-      <div ng-show="feature.featureType == 2" title="Clone Item" class="btn copy-icon"  ng-click="$event.stopPropagation(); clone(feature)"></div>
+      <div ng-show="feature.featureType != 1" title="Clone Item" class="btn copy-icon"  ng-click="$event.stopPropagation(); clone(feature)"></div>
           <div class="btn no-opacity" ng-show="feature.editMode">
             <span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditFeature(feature, element);"></span>
           </div>
-          <div class="btn" ng-hide="feature.editMode == true || feature.featureType != 2" >
+          <div class="btn" ng-hide="feature.editMode == true || feature.featureType == 1" >
             <span class="glyphicon glyphicon-pencil" ng-click="$event.stopPropagation(); editFeature(feature)"></span>
           </div>
           <div class="btn no-opacity" ng-show="feature.editMode">
