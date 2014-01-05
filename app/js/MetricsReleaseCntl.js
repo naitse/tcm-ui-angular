@@ -164,8 +164,9 @@ $scope.compliteChart = function(){
                 },
                 height:200,
                 width:300,
-                colors: ['#46ACCA',  '#CD433D']
+                
             },
+            colors: ['#46ACCA',  '#CD433D'],
             title: {
                 text: 'Carried over features'
             },
