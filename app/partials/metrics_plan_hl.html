@@ -1,4 +1,9 @@
 <link href="assets/css/topmenu.css" rel="stylesheet" media="screen">
+<style>
+    .item-active{
+background: skyblue;
+    }
+</style>
 <div class="navbar navbar-default navbar-tcm" role="navigation">
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <div class="container">
@@ -35,9 +40,9 @@
                     </div>
                     <div class="lista" style=" overflow: hidden; overflow-y: auto; height: 100%; padding-bottom: 200px; ">
                         <div ng-repeat="item in plan">
-                            <div class="row list-group-item" ng-click="item.selected = (item.selected == null)?true:!item.selected">
+                            <div class="row list-group-item" ng-class="(item.selected == true)?'item-active':''" ng-click="item.selected = (item.selected == null)?true:!item.selected">
                                 <div class="col-md-2">
-                                    <span class="caret"></span>
+                                    <span class="glyphicon glyphicon-chevron-{{(item.selected == true)?'down':'right'}}"></span>
                                     {{item.jiraKey}}
                                 </div>
                                 <div class="col-md-8">
@@ -49,7 +54,7 @@
                             </div>
                             <div  class="list-group-item" ng-show="item.selected" style="background-color: floralwhite;">
                                 <div class="row" ng-repeat="tc in item.tests" >
-                                    <div class="col-md-8"><p class="text-primary">{{tc.name}}</p></div>
+                                    <div class="col-md-8"><p class="text-primary" style=" color: black; "> * {{tc.name}}</p></div>
                                 </div>
                             </div>
 
