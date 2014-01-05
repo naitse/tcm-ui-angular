@@ -5,6 +5,11 @@ function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
         release: null
     }
 
+    $scope.trend ={
+        series:[],
+        cats:{}
+    };
+
     $scope.$watch('selection.release', function(val){
         if(val!=null){
             $scope.loadCarriedOver(val);
@@ -69,7 +74,7 @@ function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
             }
 
             _.each(trend, function(value){
-                dataTrend.categories.push(value.name);
+                dataTrend.categories.push(getSerieName(value.name));
                 dataTrend.blocked.push(value.Blocked);
                 dataTrend.failed.push(value.Failed);
                 dataTrend.passed.push(value.Passed);
@@ -77,31 +82,41 @@ function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
                 dataTrend.inprogress.push(value.inprogress);
             });
 
-            $scope.trendChart.options.xAxis= {
+            $scope.trend.cats = {
                 categories: dataTrend.categories
             };
-            $scope.trendChart.series = [{
-                name: 'Blocked',
-                data: dataTrend.blocked
-            }, {
-                name: 'Failed',
-                data: dataTrend.failed
-            }, {
-                name: 'Passed',
-                data: dataTrend.passed
-            }, {
-                name: 'Not Run',
-                data: dataTrend.notrun
-            },
-            {
-                name: 'In Progress',
-                data: dataTrend.inprogress
-            }];
+            $scope.trend.series = [
+                {
+                    name: 'Not Run',
+                    data: dataTrend.notrun
+                },
+                {
+                    name: 'In Progress',
+                    data: dataTrend.inprogress
+                },
+                {
+                    name: 'Blocked',
+                    data: dataTrend.blocked
+                },
+                {
+                    name: 'Failed',
+                    data: dataTrend.failed
+                },
+                {
+                    name: 'Passed',
+                    data: dataTrend.passed
+                }
+            ];
+
+            $scope.trendChart = $scope.compliteChart();
+
 
         });
     }
 
-    $scope.trendChart = {
+
+$scope.compliteChart = function(){
+    return {
         options: {
             chart: {
                 type: 'column',
@@ -112,11 +127,10 @@ function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
                 },
                 height:200,
                 width:300,
-                colors: ['#FAA328','#CD433D','#5DB95D', '#c6c6c6', '#46ACCA' ],
                 subtitle: {
                     text: 'by status'
                 },
-                xAxis:{},
+                xAxis:$scope.trend.cats,
                 yAxis: {
                     min: 0,
                     title: {
@@ -125,17 +139,19 @@ function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
                 },
                 plotOptions: {
                     column: {
-                        pointPadding: 0.2,
+                        pointPadding: 0,
                         borderWidth: 0
                     }
                 }
             },
-            series: [],
+            colors: ['#c6c6c6', '#46ACCA', '#FAA328',  '#CD433D', '#5DB95D'],
+            series: $scope.trend.series,
             title: {
                 text: 'Iterations Test Case Execution Trend'
             }
         }
     }
+}
 
     $scope.carriedOver = {
         options: {
@@ -190,6 +206,31 @@ function MetricsReleaseCntl( $scope, $routeParams, $window, tcm_model) {
                 }
             }
         }
+    }
+
+    function getSerieName(key){
+
+        var name = '';
+        switch(true){
+            case key == 'notrun':
+                name =  'Not Run';
+                break;
+            case key == 'inprogress':
+                name =  'In Progress';
+                break;
+            case key == 'blocked':
+                name =  'Blocked';
+                break;
+            case key == 'failed':
+                name =  'Fail';
+                break;
+            case key == 'pass':
+                name =  'Pass';
+                break;                
+        }
+
+        return name;
+
     }
 
     $scope.selectGraph = function(graph){
