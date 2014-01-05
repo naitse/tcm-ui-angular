@@ -33,26 +33,28 @@
                             <label >TCs Count</label>
                         </div>
                     </div>
-                    <div ng-repeat="item in plan">
-                        <div class="row list-group-item" ng-click="item.selected = (item.selected == null)?true:!item.selected">
-                            <div class="col-md-2">
-                                <span class="caret"></span>
-                                {{item.jiraKey}}
+                    <div class="lista" style=" overflow: hidden; overflow-y: auto; height: 100%; padding-bottom: 200px; ">
+                        <div ng-repeat="item in plan">
+                            <div class="row list-group-item" ng-click="item.selected = (item.selected == null)?true:!item.selected">
+                                <div class="col-md-2">
+                                    <span class="caret"></span>
+                                    {{item.jiraKey}}
+                                </div>
+                                <div class="col-md-8">
+                                    {{item.FtrName}}
+                                </div>
+                                <div class="col-md-2" style="text-align: center">
+                                    <span class="badge">{{item.tests.length}}</span>
+                                </div>
                             </div>
-                            <div class="col-md-8">
-                                {{item.FtrName}}
+                            <div  class="list-group-item" ng-show="item.selected" style="background-color: floralwhite;">
+                                <div class="row" ng-repeat="tc in item.tests" >
+                                    <div class="col-md-8"><p class="text-primary">{{tc.name}}</p></div>
+                                </div>
                             </div>
-                            <div class="col-md-2" style="text-align: center">
-                                <span class="badge">{{item.tests.length}}</span>
-                            </div>
-                        </div>
-                        <div  class="list-group-item" ng-show="item.selected" style="background-color: floralwhite;">
-                            <div class="row" ng-repeat="tc in item.tests" >
-                                <div class="col-md-8"><p class="text-primary">{{tc.name}}</p></div>
-                            </div>
-                        </div>
 
-                    </div>
+                        </div>
+                     </div>   
                 </div>
             </div>
         </div>
