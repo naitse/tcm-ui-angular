@@ -2,8 +2,16 @@
 
 function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
     $scope.selection = {
-        iteration: null
+        iteration: {
+            iterId:null
+        }
     }
+
+    $scope.selectedPieSection = {
+        statusName:''
+    }
+
+    $scope.selectedIterName = '';
 
     $scope.statuses = [
         {id: 0, name: 'Not Run'},
@@ -17,14 +25,14 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
 
     var colors = [];
 
-    $scope.$watch('selection.iteration', function(id){
-        if(id!= null){
+    $scope.$watch('selection.iteration', function(iteration){
+        if(iteration.iterId!= null){
 
-            $scope.loadExecuted(id);
-            $scope.loadDaily(id);
+            $scope.loadExecuted(iteration.iterId);
+            $scope.loadDaily(iteration.iterId);
         }
 
-    });
+    },true);
 
     $scope.loadDaily = function(id){
         tcm_model.metrics.Daily.query({id: id}, function(metricsDaily){
@@ -118,13 +126,13 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
                 // plotBorderWidth: null,
                 // plotShadow: false,
                 margin: [40, 0, 0, 0],
-                animation:true,
+                animation:false,
                 height:200,
                 width:300
             },
             colors: colors,
             title: {
-                text: ""
+                text: "Tests status"
             },
             plotOptions: {
                 pie: {
@@ -152,7 +160,11 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
                                 var seriesName = this.name;
                                 var st = _.findWhere($scope.statuses, {name: seriesName});
 
-                                $scope.detailsByStatus = tcm_model.metrics.TCsByStatus.query({'id': $scope.selection.iteration, 'statusId': st.id})
+                                $scope.selectedPieSection = {
+                                    statusName:st.name
+                                }
+
+                                $scope.detailsByStatus = tcm_model.metrics.TCsByStatus.query({'id': $scope.selection.iteration.iterId, 'statusId': st.id})
 
                             }
                         }
@@ -180,7 +192,7 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
     if($routeParams.iterationId == null){
         $scope.releasesIterations = tcm_model.ReleasesIterations.query();
     }else{
-        $scope.selection.iteration = $routeParams.iterationId;
+        $scope.selection.iteration.iterId = $routeParams.iterationId;
     }
 
     function getColor(key){

@@ -17,7 +17,7 @@
                             <label>Release {{r.releaseName}}</label>
                             <ul class="nav nav-list tree">
                                 <li ng-repeat="i in r.iterations | filter:iterationFilter">
-                                    <a class="list-group-item" ng-class="(selection.iteration===i.iterId)?'active':''" ng-click="selection.iteration=i.iterId">{{i.iterationName}}
+                                    <a class="list-group-item" ng-class="(selection.iteration===i.iterId)?'active':''" ng-click="selection.iteration=i">{{i.iterationName}}
                                        <span class="badge pull-right" ng-show="(selection.iteration===i.iterId)">
                                            <img src="assets/images/icon-permalink.png" ng-click="openHotLink(i.iterId)"/>
                                        </span>
@@ -28,10 +28,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8" ng-show="selection.iteration==null">
+            <div class="col-md-8" ng-show="selection.iteration.iterId==null">
                 <img src="assets/images/Marketing-Performance-Metrics.jpg"/>
             </div>
-            <div class="col-md-8" ng-show="selection.iteration!=null">
+            <div class="col-md-8" ng-show="selection.iteration.iterId!=null">
 
                 <div class="row">
                     <div class="col-md-6">
@@ -61,6 +61,7 @@
                     <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
                 </div>
                 <div class="row" ng-show="details" style="height: 75%; overflow-y: auto; padding-bottom: 10px;">
+                    <div>{{selection.iteration.iterationName}} - Tests {{selectedPieSection.statusName}}</div>
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default" ng-repeat="tc in detailsByStatus">
                             <div class="panel-heading" ng-click="in=(in==='in')?'':'in'">
@@ -81,7 +82,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-show="details" ng-click="details=false">Hide details</button>
-                <button type="button" class="btn btn-default" ng-click="selectedGraph=null" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" ng-click="details=false; selectedGraph=null;" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
