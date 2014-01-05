@@ -54,13 +54,13 @@
     </div>
 </div>
 <div id="modal-showMetric" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div  class="modal-content" style="width: 900;">
+    <div class="modal-dialog" style="width:{{(details == true)?'auto':'900px'}}">
+        <div  class="modal-content" style="width: auto;">
             <div  class="modal-body" style="overflow: visible">
-                <div class="row" ng-hide="details" >
+                <div class="row" style=" display: inline-block; " >
                     <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
                 </div>
-                <div class="row" ng-show="details" style="height: 75%; overflow-y: auto; padding-bottom: 10px;">
+                <div class="row" ng-show="details" style="height: 75%; overflow-y: auto; padding-bottom: 10px;display: inline-block;position: relative;width: 50%;">
                     <div>{{selection.iteration.iterationName}} - Tests {{selectedPieSection.statusName}}</div>
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default" ng-repeat="tc in detailsByStatus">
