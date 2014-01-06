@@ -255,6 +255,7 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootSc
             ReleaseReport: $resource(basePath + 'api/metrics/interop/releases/:releaseId/report'),
             IterationExecuted: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterId/executed'),
             IterationDaily: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterId/daily'),
+            IterationExecutedByItem: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterId/executed_by_item'),
             ReleasesTCsbyStatusByFtr: $resource(basePath + 'api/metrics/interop/releases/:releaseId/:statusId/tcsbyftr'),
             TeamTCsbyStatus: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterationId/:statusId/tcdetails')
         }

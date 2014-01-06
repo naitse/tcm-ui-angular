@@ -48,6 +48,22 @@ function TopMenuCntl($window, $scope, $route, $routeParams, $location, Auth, tcm
         }
     ];
 
+
+    var interOpMenu = {
+        name: 'Inter Operavility',
+        active: $location.path().indexOf('sync') >=0 || $location.path().indexOf('import-export')>=0 ? 'active':'',
+        subMenuList:[
+            { name: 'Report',
+              active: $location.path().indexOf('sync') >=0 ? 'active':'',
+                link: '#/metrics/interop/'+$routeParams.projectId
+            }
+            ,{ name: 'Mailer',
+                active: $location.path().indexOf('import-export') >=0 ? 'active':'',
+                link: '#/interop/mailer/'
+            }
+        ]
+    }
+
     $scope.topmenu = 'app/partials/topmenu.html';
 
     $scope.loadProjects = function(){
@@ -59,6 +75,11 @@ function TopMenuCntl($window, $scope, $route, $routeParams, $location, Auth, tcm
                 if(data[i].id.toString() === $routeParams.projectId){
 
                     $scope.currentProject = data[i].name;
+
+                    if(data[i].projectType.toString() == '1'){
+                        $scope.menuList.push(interOpMenu);
+                    }
+
                 }
             }
         });

@@ -54,12 +54,17 @@ var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 
                                         controller: 'MetricsIterationsCntl',
                                         access: access.anon
                                     }
-                                ).when('/metrics/interop/:projectId/:releaseId',
+                                ).when('/metrics/interop/:projectId',
                                     {templateUrl: '/app/partials/metrics_interop.html',
+                                        controller: 'MetricsInteropCntl',
+                                        access: access.user
+                                    }
+                                ).when('/metrics/interop/:projectId/:releaseId',
+                                    {templateUrl: '/app/partials/metrics_interop_hl.html',
                                         controller: 'MetricsInteropCntl',
                                         access: access.anon
                                     }
-                                ).when('/interop/mailer/:releaseId',
+                                ).when('/interop/mailer',
                                     {templateUrl: '/app/partials/interop_report_mailer.html',
                                         controller: 'InteropReportMailer',
                                         access: access.user

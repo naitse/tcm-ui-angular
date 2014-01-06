@@ -13,12 +13,30 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
         tcs: []
     }
 
+    $scope.teams = [];
+    $scope.display_team_general = true;
+
     $scope.byItemGraphs = [];
     $scope.selection = {
             iteration: {
                 name: '',
-                id: 0 }
+                id: 0 },
+            release:{
+                name:'Select a Release',
+                id:0
+            }    
     };
+
+    $scope.releases = [];
+
+    $scope.getReleases = function(){
+        tcm_model.Releases.query(function(data){
+            $scope.releases = data;
+        })
+    }
+
+
+
 
     $scope.executionGraph = {
         options: {
@@ -55,7 +73,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                             select: function() {
 
 
-                                tcm_model.metrics.ReleasesTCsbyStatusByFtr.query({'releaseId': $routeParams.releaseId, 'statusId': tc_statuses[this.name]}, function(data){
+                                tcm_model.metrics.ReleasesTCsbyStatusByFtr.query({'releaseId': $scope.selection.release.id, 'statusId': tc_statuses[this.name]}, function(data){
                                     $scope.details.title = 'Test Cases for status: ' + this.name;
                                     $scope.details.tcs = data;
                                     $('#modal-showMetric').modal();
@@ -98,7 +116,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     $scope.dailyGraphByTeam = $.extend(true, {}, $scope.dailyGraph );
 
     $scope.refreshReleaseExecutedGraph = function(){
-        tcm_model.metrics.ReleaseExecuted.query({'releaseId': $routeParams.releaseId}, function(metricsExecuted){
+        tcm_model.metrics.ReleaseExecuted.query({'releaseId': $scope.selection.release.id}, function(metricsExecuted){
             var chartData = new Array();
 
             $scope.iterName = metricsExecuted[0].iterName;
@@ -130,7 +148,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }
 
     $scope.refreshReleaseDailyGraph = function(){
-        tcm_model.metrics.ReleaseDaily.query({'releaseId': $routeParams.releaseId}, function(metricsDaily){
+        tcm_model.metrics.ReleaseDaily.query({'releaseId': $scope.selection.release.id}, function(metricsDaily){
 
             if(metricsDaily.length > 0){
 
@@ -162,7 +180,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }
 
     $scope.refreshReleaseDailyGraphByTeam = function(){
-        tcm_model.metrics.IterationDaily.query({'releaseId': $routeParams.releaseId, 'iterId':$scope.selection.iteration.id }, function(metricsDaily){
+        tcm_model.metrics.IterationDaily.query({'releaseId': $scope.selection.release.id, 'iterId':$scope.selection.iteration.id }, function(metricsDaily){
 
             if(metricsDaily.length > 0){
 
@@ -195,7 +213,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
 
     $scope.refreshExecutionByItem = function(){
 
-        tcm_model.metrics.ReleaseExecutedByItem.query({'releaseId': $routeParams.releaseId}, function(data){
+        tcm_model.metrics.ReleaseExecutedByItem.query({'releaseId': $scope.selection.release.id}, function(data){
             $scope.byItemGraphs = [];
 
             _.each(data, function(ftr){
@@ -220,7 +238,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                             width: 400,
                             height: 300
                         },
-                        colors: ['#c6c6c6','#46ACCA', '#5DB95D', '#CD433D', '#FAA328'],
+                        colors: ['#c6c6c6','#46ACCA', '#FAA328', '#CD433D', '#5DB95D' ],
                         plotOptions: {
                             pie: {
                                 allowPointSelect: true,
@@ -237,35 +255,73 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                             },
                             series: {
                                 allowPointSelect: true,
-                                cursor: 'pointer'/*,
-                                 point: {
-                                 events: {
-                                 select: function() {
-                                 $('#InteropMetrics #tc-container').css('visibility','visible');
-                                 // console.log(this)
-                                 $(container).data('series',this.x);
-                                 $(container).data('name',iterName);
-
-                                 chart = $(container);
-
-                                 // console.log(chart)
-
-                                 $('#info-tc-modal-io #tc-container').children().remove();
-
-                                 $('#info-tc-modal-io').find('.feature-title').text($(container).find('.highcharts-title tspan').text() +' - '+ this.name + ' test cases')
-                                 // console.log(this,$(container))
-                                 InteropMetricsView.fetchTCsbyStatus(this.x,chart);
-                                 },
-                                 unselect: function() {
-                                 $('#InteropMetrics #tc-container').children().remove();
-                                 }
-                                 }
-                                 }*/
+                                cursor: 'pointer'
                             }
                         }
                     },
                     title: {
-                        text: ftr.featureDescription
+                        text: ftr.featureName
+                    },
+                    series: [{
+                        type: 'pie',
+                        name: 'Test Cases',
+                        data: chartData
+                    }]
+                });
+            });
+        });
+    }
+
+    $scope.refreshExecutionByTeamByItem = function(){
+
+        tcm_model.metrics.IterationExecutedByItem.query({'releaseId': $scope.selection.release.id, 'iterId':$scope.selection.iteration.id}, function(data){
+            $scope.byTeamByItemGraphs = [];
+
+            _.each(data, function(ftr){
+
+                var chartData = [];
+                _.each(ftr, function(value, key){
+                    if( key === "notrun" ||
+                        key === "inprogress"||
+                        key === "blocked"||
+                        key === "failed"||
+                        key === "pass"){
+                        chartData.push(new Array( key, value));
+                    }
+                });
+
+                $scope.byTeamByItemGraphs.push( {
+                    options: {
+                        chart: {
+                            plotBackgroundColor: null,
+                            margin: [40, 0, 0, 0],
+                            animation:true,
+                            width: 400,
+                            height: 300
+                        },
+                        colors: ['#c6c6c6','#46ACCA', '#FAA328', '#CD433D', '#5DB95D' ],
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    color: '#000000',
+                                    connectorColor: '#000000',
+                                    formatter: function() {
+                                        // return InteropMetricsView.fetchTCsbyStatus(this.x);
+                                        return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';
+                                    }
+                                }
+                            },
+                            series: {
+                                allowPointSelect: true,
+                                cursor: 'pointer'
+                            }
+                        }
+                    },
+                    title: {
+                        text: ftr.featureName
                     },
                     series: [{
                         type: 'pie',
@@ -278,38 +334,62 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }
 
     $scope.refreshReleaseReport = function(){
-        $scope.ReleaseReport = tcm_model.metrics.ReleaseReport.query({'releaseId': $routeParams.releaseId});
+        $scope.ReleaseReport = tcm_model.metrics.ReleaseReport.query({'releaseId': $scope.selection.release.id});
         $scope.ReleaseReportOriginal = $.extend(true,{},$scope.ReleaseReport);
     }
 
-   //teams are iterations, thanks naitse
-    $scope.teams = tcm_model.Iterations.query({'releaseId': $routeParams.releaseId}, function(teams){
+    function getSerieName(key){
 
-        $scope.selection.iteration.name = teams[0].iterationName;
-        $scope.selection.iteration.id = teams[0].IterId;
-        $scope.refreshExecutionByTeam();
-        $scope.refreshReleaseDailyGraphByTeam();
-    });
+        var name = '';
+        switch(true){
+            case key == 'notrun':
+                name =  'Not Run';
+                break;
+            case key == 'inprogress':
+                name =  'In Progress';
+                break;
+            case key == 'blocked':
+                name =  'Blocked';
+                break;
+            case key == 'failed':
+                name =  'Fail';
+                break;
+            case key == 'pass':
+                name =  'Pass';
+                break;                
+        }
+
+        return name;
+
+    }
 
 
     $scope.refreshExecutionByTeam = function(){
 
-        tcm_model.metrics.IterationExecuted.query({'releaseId': $routeParams.releaseId, 'iterId':$scope.selection.iteration.id }, function(metricsExecuted){
+        tcm_model.metrics.IterationExecuted.query({'releaseId': $scope.selection.release.id, 'iterId':$scope.selection.iteration.id }, function(metricsExecuted){
             var chartData = [];
+            var chartDetails = [];
 
             $scope.executionByTeamGraph.title= {
                 text: metricsExecuted[0].iterName
             }
             delete metricsExecuted[0].iterName;
+
+            chartDetails['total'] = metricsExecuted[0].total
+
             delete metricsExecuted[0].total;
 
             _.each(metricsExecuted[0], function(value, key, list){
 
-                chartData.push(new Array( key, value));
+                chartData.push(new Array( getSerieName(key), value));
+
+                var leKey = getSerieName(key)
+
+                chartDetails[getSerieName(key)] = value;
 
             });
 
-            $scope.executionByTeamGraph.chartData = metricsExecuted;
+            $scope.executionByTeamGraph.chartData = chartDetails;
 
             $scope.executionByTeamGraph.series = [{
                 type: 'pie',
@@ -323,6 +403,24 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
 
 
     };
+
+    $scope.$watch('display_team_general', function(val){
+        $scope.refreshIterationOverview();
+    })
+    $scope.$watch('display_general', function(val){
+        $scope.refreshReleaseOverview();
+    })
+
+    $scope.refreshIterationOverview = function(){
+
+        if($scope.display_team_general){
+            $scope.refreshExecutionByTeam();
+            $scope.refreshReleaseDailyGraphByTeam();
+        }else{
+            $scope.refreshExecutionByTeamByItem();
+        }
+    }
+
 
     $scope.setPreviewGraph = function(graph){
         $scope.previewGraph = $.extend(true, {}, graph);
@@ -357,9 +455,12 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }
 
     $scope.refreshReleaseOverview = function(){
-        $scope.refreshReleaseExecutedGraph();
-        $scope.refreshReleaseDailyGraph();
-        $scope.refreshExecutionByItem();
+        if($scope.display_general){
+            $scope.refreshReleaseExecutedGraph();
+            $scope.refreshReleaseDailyGraph();
+        }else{
+            $scope.refreshExecutionByItem();
+        }
     }
 
     $scope.switchByTeamGraph = function(){
@@ -370,8 +471,34 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
         $scope.setActiveGraphByTeam(toSelected);
     }
 
-    $scope.refreshReleaseOverview();
-    $scope.refreshReleaseReport();
+    $scope.getReleaseData = function(){
+        $scope.byItemGraphs = [];
+        $scope.display_general = true;
+        $scope.refreshReleaseOverview();
+        $scope.refreshReleaseReport();
+           //teams are iterations, thanks naitse
+        $scope.teams = tcm_model.Iterations.query({'releaseId': $scope.selection.release.id}, function(teams){
+
+            $scope.selection.iteration.name = teams[0].iterationName;
+            $scope.selection.iteration.id = teams[0].IterId;
+            $scope.refreshExecutionByTeam();
+            $scope.refreshReleaseDailyGraphByTeam();
+        });
+    }
+
+    $scope.getTeamData = function(){
+        $scope.display_team_general = true;
+            $scope.byTeamByItemGraphs = [];
+            $scope.refreshExecutionByTeam();
+            $scope.refreshReleaseDailyGraphByTeam();
+    }
+
+    if($routeParams.releaseId != null){
+        $scope.selection.release.id = $routeParams.releaseId;
+        $scope.getReleaseData();
+    }else{
+        $scope.getReleases();
+    }
 
 }
 

@@ -1,7 +1,7 @@
-<div ng-controller="TopMenuCntl">
-    <ng-include src="topmenu"></ng-include>
-</div>
 <style>
+body{
+    background: white;
+}
     .btn-pill div:hover {
         text-decoration: none;
         background-color: #f5f5f5;
@@ -35,21 +35,13 @@
         margin-left: -5px;
     }
 
-    #refresh-graph {
-        border-top: 1px solid #ccc;
-        padding-top: 5px;
-        position: relative;
-        left: -4px;
-        padding-left: 5px;
-        width: 24px;
-        margin-right: -3px;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 23px;
+    #InteropMetrics #refresh-graph {
+        display: none;
+        padding: 7px 0px 7px 5px;
+        border-top: 1px solid #ddd;
+        margin-left: -5px;
+        border-bottom: 1px solid #ddd;
         cursor: pointer;
-    }
-
-    #refresh-graph:hover{
-        background: #ddd;
     }
     .icon-refresh {
         width: 20px;
@@ -134,42 +126,28 @@
         border-radius: 6px;
         text-align: center;
     }
-    .ioteams {
-        width: 250px;
-        margin-top: 10px;
-        float: left;
-        margin-left: 10px;
-        }
 </style>
 <div>
     <div>
-        <ul class="nav nav-tabs" id="interopTabs" style=" margin-bottom: 0px; " ng-init="panel='rlscontrol'">
+        <ul class="nav nav-tabs" id="interopTabs" style=" margin-bottom: 0px; padding-top: 53px;" ng-init="panel='rlscontrol'">
             <li ng-class="panel==='rlscontrol'?'active':''">
                 <a data-toggle="#rlscontrol" ng-click="panel='rlscontrol'">Release Overview</a>
             </li>
-            <li ng-show="selection.release.id !=0" ng-class="panel==='xteams'?'active':''">
+            <li ng-class="panel==='xteams'?'active':''">
                 <a data-toggle="#xteams" style="visibility: visible;" ng-click="panel='xteams'">Teams Overview</a>
             </li>
-            <li ng-show="selection.release.id !=0" ng-class="panel==='report'?'active':''">
+            <li ng-class="panel==='report'?'active':''">
                 <a data-toggle="#report" id="rep" style="visibility: visible;" ng-click="panel='report'">Report</a>
             </li>
         </ul>
         <div class="tab-content" style="height: 100%">
             <div class="tab-pane" ng-class="panel==='rlscontrol'?'active':''" ng-show="panel==='rlscontrol'" id="rlscontrol">
-                <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; ">
-                    <li class="dropdown ioteams active">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown">{{selection.release.name}}<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li  ng-repeat="rls in releases" ng-class="(selection.release.id===rls.id)?'active':''"><a data-toggle="tab" ng-click="selection.release.name=rls.releaseName;selection.release.id=rls.id; getReleaseData();">{{rls.releaseName}}</a></li>
-                        </ul>
-                    </li>
-                </ul>
                 <span ng-show="selection.release.id != 0">
                 <div id="metrics-controls" ng-init="display_general=true">
                     <div style="margin-top: 35px;"></div>
                     <div class="btn-pill" style="visibility: visible; width: 185px;">
                         <div id="global" ng-class="(display_general==true)?'active':''" ng-click="display_general=true">General</div>
-                        <span id="refresh-graph" class="icon-refresh glyphicon glyphicon-refresh" ng-click="refreshReleaseOverview();"></span>
+                        <span class="icon-refresh glyphicon glyphicon-refresh" ng-click="refreshReleaseOverview();"></span>
                         <div id="byitem" ng-class="(display_general==true)?'':'active'" ng-click="display_general=false">By Item</div>
                     </div>
                 </div>
@@ -220,7 +198,7 @@
                     </div>
                 </div>
 
-                <div ng-hide="display_general" style=" overflow: hidden; overflow-y: auto; padding-bottom: 200px; height: 100%; ">
+                <div ng-hide="display_general" >
                     <div class="graph-feature rlscontrol" style="width: 450px; height: 350px; display: inline-block" ng-repeat="item in byItemGraphs" >
                         <highchart id="item.id" series="item.series" title="item.title" options="item.options"></highchart>
                     </div>
@@ -228,53 +206,54 @@
             </span>
             </div>
             <div id="xteams" ng-class="panel==='xteams'?'active':''" ng-show="panel==='xteams'" >
-                <div id="metrics-controls2" ng-init="display_team_general=true">
-                    <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; " style=" visibility: {{(display_team_general == false)?'hidden':'visible'}}; " >
+                <div id="metrics-controls2" ng-init="display_general=true">
+                    <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; ">
                         <li class="dropdown ioteams active">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">{{selection.iteration.name}}<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li  ng-repeat="team in teams" ng-class="(selection.iteration.id===team.IterId)?'active':''"><a data-toggle="tab" ng-click="selection.iteration.name=team.iterationName;selection.iteration.id=team.IterId;getTeamData();">{{team.iterationName}}</a></li>
+                                <li  ng-repeat="team in teams" ng-class="(selection.iteration.id===team.IterId)?'active':''"><a data-toggle="tab" ng-click="selection.iteration.name=team.iterationName;selection.iteration.id=team.IterId;refreshExecutionByTeam();refreshReleaseDailyGraphByTeam();">{{team.iterationName}}</a></li>
                             </ul>
                         </li>
                     </ul>
                     <div class="btn-pill" style="visibility: visible; width: 185px;">
-                        <div id="global " ng-class="(display_team_general==true)?'active':''" ng-click="display_team_general=true;">General</div>
-                        <span id="refresh-graph" class="icon-refresh glyphicon glyphicon-refresh" ng-click="refreshIterationOverview();"></span>
-                        <div id="byitem" ng-class="(display_team_general==true)?'':'active'" ng-click="display_team_general=false;">By Item</div>
+                        <div id="global " ng-class="(display_general==true)?'active':''" ng-click="display_general=true">General</div>
+                        <span class="icon-refresh glyphicon glyphicon-refresh" ng-click="refreshReleaseOverview();"></span>
+                        <div id="byitem" ng-class="(display_general==true)?'':'active'" ng-click="display_general=false">By Item</div>
                     </div>
                 </div>
 
-                <div class="graph-container" style="padding-left: 100px;padding-right: 100px;" ng-hide="display_team_general == false">
+                <div class="graph-container" style="padding-left: 100px;padding-right: 100px;">
                     <div class="main-container" style="vertical-align: top; display: table-cell">
                         <div id="container">
                             <highchart id="byTeamPreviewGraph" series="byTeamPreviewGraph.series" title="byTeamPreviewGraph.title" options="byTeamPreviewGraph.options"></highchart>
                             <span class="glyphicon glyphicon-new-window" ng-click="switchByTeamGraph();" ></span>
                         </div>
                         <div class="graph-previews round-corner-all" style="margin-top: 40px;">
+
                             <div id="overal" style="width: 300px; height: 200px; border: 1px solid rgb(212, 212, 212); margin-bottom: 20px;" class="graph round-corner-all">
                                 <div class="rls-total">
                                     <span>Total</span>
-                                    <span class="value label label-inverse">{{executionByTeamGraph.chartData.total}}</span>
+                                    <span class="value label label-inverse">{{executionByTeamGraph.chartData[0].total}}</span>
                                 </div>
                                 <div class="rls-passed">
                                     <span>Passed</span>
-                                    <span class="value label label-success">{{executionByTeamGraph.chartData.Pass}}</span>
+                                    <span class="value label label-success">{{executionByTeamGraph.chartData[0].Passed}}</span>
                                 </div>
                                 <div class="rls-failed">
                                     <span>Failed</span>
-                                    <span class="value label label-important">{{executionByTeamGraph.chartData.Fail}}</span>
+                                    <span class="value label label-important">{{executionByTeamGraph.chartData[0].Failed}}</span>
                                 </div>
                                 <div class="rls-blocked">
                                     <span>Blocked</span>
-                                    <span class="value label label-warning">{{executionByTeamGraph.chartData.Blocked}}</span>
+                                    <span class="value label label-warning">{{executionByTeamGraph.chartData[0].Blocked}}</span>
                                 </div>
                                 <div class="rls-inp">
                                     <span>In Progress</span>
-                                    <span class="value label label-info">{{executionByTeamGraph.chartData['In Progress']}}</span>
+                                    <span class="value label label-info">{{executionByTeamGraph.chartData[0]['In Progress']}}</span>
                                 </div>
                                 <div class="rls-nrun">
                                     <span>Not Run</span>
-                                    <span class="value label" style="background-color: #999;">{{executionByTeamGraph.chartData['Not Run']}}</span>
+                                    <span class="value label" style="background-color: #999;">{{executionByTeamGraph.chartData[0]['Not Run']}}</span>
                                 </div>
                             </div>
                         </div>
@@ -283,11 +262,6 @@
                         <div id="container2x">
                             <highchart id="byTeamSelectedGraph" series="byTeamSelectedGraph.series" title="byTeamSelectedGraph.title" options="byTeamSelectedGraph.options"></highchart>
                         </div>
-                    </div>
-                </div>
-                <div ng-hide="display_general" ng-hide="display_team_general == true" style=" overflow: hidden; overflow-y: auto; padding-bottom: 200px; height: 100%; ">
-                    <div class="graph-feature rlscontrol" style="width: 450px; height: 350px; display: inline-block" ng-repeat="item in byTeamByItemGraphs" >
-                        <highchart id="item.id" series="item.series" title="item.title" options="item.options"></highchart>
                     </div>
                 </div>
             </div>
