@@ -144,6 +144,8 @@
             display: inline;
             float: right;
             font-size: 14px;
+            position: absolute;
+            right: 15px;
         }
     .report-test{
         padding: 4px 5px 4px 5px;
@@ -348,12 +350,12 @@
                 <div class="col-md-9" role="main" style="overflow: auto; height: 100%" data-spy="scroll" data-target=".navbar-report">
                     <div class="bs-docs-section" ng-repeat="team in ReleaseReport | filter:teamFilter">
                         <div class="page-header">
-                            <h1 id="affix">{{team.name}}</h1>
+                            <h1 id="affix" style=" text-align: center; ">{{team.name}}</h1>
                         </div>
 
-                        <div ng-repeat="feature in team.features " id="affix-ftr-{{team.name}}-{{$index}}">
-                            <h2 id="affix-usage">{{feature.name}}</h2>
-                            <div class="progress">
+                        <div ng-repeat="feature in team.features " id="affix-ftr-{{team.name}}-{{$index}}" style=" margin-bottom: 60px; ">
+                            <h3 id="affix-usage" style=" height: 45px; font-weight: 400; padding-left: 50px;">{{feature.name}} Tests Set</h3>
+                            <div class="progress" style=" width: 300; float: right; position: relative; top: -47px; ">
                                 <div class="progress-bar progress-bar-success" style="width: {{(feature.pass*100)/feature.total}}%">
                                     <span class="sr-only">{{(feature.pass*100)/feature.total}}% Complete (success)</span>
                                 </div>
@@ -367,11 +369,11 @@
                                     <span class="sr-only">{{(feature.inprogress*100)/feature.total}}% In Progress</span>
                                 </div>
                             </div>
-                            <h3>Test Cases</h3>
+                            <!-- <h3>Test Cases</h3> -->
                                 <div ng-repeat="test in feature.tests  | filter:{statusId: filterStatusId} | filter:{priority: filterPriority}" ng-switch on="test.statusId">
                                     <div class="panel panel-default" style=" margin-bottom: 1px; ">
-                                        <div class="panel-body">
-                                          <div style="display: inline" class="report-tc-priority">P{{test.priority}}</div>
+                                        <div class="panel-body" style=" position: relative; ">
+                                          <!-- <div style="display: inline" class="report-tc-priority">P{{test.priority}}</div> -->
                                             <div style="display: inline">{{test.name}}</div>
                                             <div style="display: inline" ng-switch-when="0" class="label label-inverse status-label">Not Run</div>
                                             <div style="display: inline" ng-switch-when="1" class="label label-info status-label">In Progress</div>
