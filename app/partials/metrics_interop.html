@@ -303,57 +303,39 @@
                 </div>
             </div>
             <div id="report" ng-class="panel==='report'?'active':''" ng-show="panel==='report'" >
-                <div class="col-md-3" style="overflow: auto; height: 100%">
-                    <div style="width: 100%; padding-top: 20px;">
-                        <div style="width: 100%">
-                            <input style="width: 100%" type="input"  placeholder="Filter ..." ng-model="teamFilter">
-                        </div>
                         <div style="width: 100%; margin-top: 5px;">
-                            <ul class="nav nav-pills" style="display: inline-block">
-                                <li class="dropdown repstates open">
-                                    <a href="" class="dropdown-toggle" data-toggle="dropdown">State <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li class=""><a ng-click="filterStatusId=''">All States</a></li>
-                                        <li class=""><a ng-click="filterStatusId=0">Not Run</a></li>
-                                        <li class=""><a ng-click="filterStatusId=1">In Progress</a></li>
-                                        <li class=""><a ng-click="filterStatusId=2">Blocked</a></li>
-                                        <li class=""><a ng-click="filterStatusId=3">Failed</a></li>
-                                        <li class=""><a ng-click="filterStatusId=4">Passed</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-pills" style="display: inline-block">
-                                <li class="dropdown reppriority">
-                                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Priority <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li class="addedp"><a ng-click="filterPriority=''">All priorities</a></li>
-                                        <li class="addedp"><a ng-click="filterPriority=1">P1</a></li></ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="bs-sidebar hidden-print" role="complementary" style="width: 100% ; overflow: auto; height: 100%">
-                        <ul class="nav bs-sidenav" class="navbar-report">
-                            <li class="active" ng-repeat="team in ReleaseReport | filter:teamFilter">
-                                <a class="active">{{team.name}}</a>
 
-                                <ul class="nav">
-                                    <li class="active" ng-repeat="ftr in team.features" style="margin-left: 20px;">
-                                        <a href="#affix-ftr-{{team.name}}-{{$index}}">{{ftr.name}}</a>
-                                    </li>
-                                </ul>
+                    <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; float: left;" style=" visibility: {{(display_team_general == false)?'hidden':'visible'}}; " >
+                        <li class="dropdown ioteams active">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">{{filterTeamByName}}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a ng-click="$event.preventDefault(); filterTeamByName=''">ALL Teams</a></li>
+                                <li ng-repeat="team in ReleaseReport"><a ng-click="$event.preventDefault(); filterTeamByName = team.name">{{team.name}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
 
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="nav nav-pills" style="float: right;margin-right: 94;">
+                        <li class="dropdown repstates open">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">{{statusText}}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li class=""><a ng-click="filterStatusId=''; statusText='All Test Status'">All Test Status</a></li>
+                                <li class=""><a ng-click="filterStatusId=0; statusText='Not Run'">Not Run</a></li>
+                                <li class=""><a ng-click="filterStatusId=1; statusText='In Progress'">In Progress</a></li>
+                                <li class=""><a ng-click="filterStatusId=2; statusText='Blocked'">Blocked</a></li>
+                                <li class=""><a ng-click="filterStatusId=3; statusText='Failed'">Failed</a></li>
+                                <li class=""><a ng-click="filterStatusId=4; statusText='Passed'">Passed</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
                 <div class="col-md-9" role="main" style="overflow: auto; height: 100%" data-spy="scroll" data-target=".navbar-report">
-                    <div class="bs-docs-section" ng-repeat="team in ReleaseReport | filter:teamFilter">
+                    <div class="bs-docs-section" ng-repeat="team in ReleaseReport" ng-hide="filteredTestsLength(team, filterStatusId, filterPriority) == 0">
                         <div class="page-header">
                             <h1 id="affix" style=" text-align: center; ">{{team.name}}</h1>
                         </div>
 
-                        <div ng-repeat="feature in team.features " id="affix-ftr-{{team.name}}-{{$index}}" style=" margin-bottom: 60px; ">
+                        <div ng-repeat="feature in team.features " id="affix-ftr-{{team.name}}-{{$index}}" style=" margin-bottom: 60px; " ng-hide="filteredTestsLengthByFeature(feature, filterStatusId, filterPriority) == 0">
                             <h3 id="affix-usage" style=" height: 45px; font-weight: 400; padding-left: 50px;">{{feature.name}} Tests Set</h3>
                             <div class="progress" style=" width: 300; float: right; position: relative; top: -47px; ">
                                 <div class="progress-bar progress-bar-success" style="width: {{(feature.pass*100)/feature.total}}%">

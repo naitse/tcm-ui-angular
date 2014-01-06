@@ -13,6 +13,9 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
         tcs: []
     }
 
+    $scope.filterTeamByName = 'All Teams';
+    $scope.statusText='All Test Status';
+
     $scope.teams = [];
     $scope.display_team_general = true;
 
@@ -499,6 +502,39 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }else{
         $scope.getReleases();
     }
+
+    $scope.filteredTestsLength = function(team, filterStatusId, filterPriority){
+        var testAmount = 0;
+        
+        if(filterStatusId === "" || typeof filterStatusId == 'undefined'){
+            return 1;
+        }
+
+        _.each(team.features, function(feature){
+            _.each(feature.tests, function(test){
+                if(test.statusId == filterStatusId || test.priority == filterPriority){
+                    testAmount++
+                }
+            })
+        })
+        return testAmount;
+    }
+
+    $scope.filteredTestsLengthByFeature = function(feature, filterStatusId, filterPriority){
+        var testAmount = 0;
+        
+        if(filterStatusId === "" || typeof filterStatusId == 'undefined'){
+            return 1;
+        }
+
+        _.each(feature.tests, function(test){
+            if(test.statusId == filterStatusId || test.priority == filterPriority){
+                testAmount++
+            }
+        })
+        return testAmount;
+    }
+
 
 }
 
