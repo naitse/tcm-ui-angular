@@ -140,6 +140,15 @@
         float: left;
         margin-left: 10px;
         }
+        .status-label{
+            display: inline;
+            float: right;
+            font-size: 14px;
+        }
+    .report-test{
+        padding: 4px 5px 4px 5px;
+        border: 1px solid #ccc;
+    }
 </style>
 <div>
     <div>
@@ -293,7 +302,7 @@
             </div>
             <div id="report" ng-class="panel==='report'?'active':''" ng-show="panel==='report'" >
                 <div class="col-md-3" style="overflow: auto; height: 100%">
-                    <div style="width: 100%; padding-top: 20px; overflow: auto;">
+                    <div style="width: 100%; padding-top: 20px;">
                         <div style="width: 100%">
                             <input style="width: 100%" type="input"  placeholder="Filter ..." ng-model="teamFilter">
                         </div>
@@ -359,17 +368,20 @@
                                 </div>
                             </div>
                             <h3>Test Cases</h3>
-                            <ol>
-                                <li ng-repeat="test in feature.tests  | filter:{statusId: filterStatusId} | filter:{priority: filterPriority}" ng-switch on="test.statusId">
-                                    <div style="display: inline" class="report-tc-priority">P{{test.priority}}</div>
-                                    <div style="display: inline" ng-switch-when="0" class="label label-inverse">Not Run</div>
-                                    <div style="display: inline" ng-switch-when="1" class="label label-info">In Progress</div>
-                                    <div style="display: inline" ng-switch-when="2" class="label label-warning">Blocked</div>
-                                    <div style="display: inline" ng-switch-when="3" class="label label-important">Failed</div>
-                                    <div style="display: inline" ng-switch-when="4" class="label label-success">Pass</div>
-                                    <div style="display: inline">{{test.name}}</div>
-                                </li>
-                            </ol>
+                                <div ng-repeat="test in feature.tests  | filter:{statusId: filterStatusId} | filter:{priority: filterPriority}" ng-switch on="test.statusId">
+                                    <div class="panel panel-default" style=" margin-bottom: 1px; ">
+                                        <div class="panel-body">
+                                          <div style="display: inline" class="report-tc-priority">P{{test.priority}}</div>
+                                            <div style="display: inline">{{test.name}}</div>
+                                            <div style="display: inline" ng-switch-when="0" class="label label-inverse status-label">Not Run</div>
+                                            <div style="display: inline" ng-switch-when="1" class="label label-info status-label">In Progress</div>
+                                            <div style="display: inline" ng-switch-when="2" class="label label-warning status-label">Blocked</div>
+                                            <div style="display: inline" ng-switch-when="3" class="label label-important status-label">Failed</div>
+                                            <div style="display: inline" ng-switch-when="4" class="label label-success status-label">Pass</div>
+                                        </div>
+                                      </div>
+
+                                </div>
                         </div>
                     </div>
                 </div>
