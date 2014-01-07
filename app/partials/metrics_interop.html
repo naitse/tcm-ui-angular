@@ -135,11 +135,14 @@
         text-align: center;
     }
     .ioteams {
-        width: 250px;
+        width: 170px;
         margin-top: 10px;
         float: left;
         margin-left: 10px;
         }
+        .ioteams a{
+    height: 40px;
+}
         .status-label{
             display: inline;
             float: right;
@@ -162,7 +165,7 @@
                 <a data-toggle="#xteams" style="visibility: visible;" ng-click="panel='xteams'">Teams Overview</a>
             </li>
             <li ng-show="selection.release.id !=0" ng-class="panel==='report'?'active':''">
-                <a data-toggle="#report" id="rep" style="visibility: visible;" ng-click="panel='report'">Report</a>
+                <a data-toggle="#report" id="rep" style="visibility: visible;" ng-click="panel='report'">Tests Status</a>
             </li>
         </ul>
         <div class="tab-content" style="height: 100%">
@@ -309,8 +312,8 @@
                         <li class="dropdown ioteams active">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">{{filterTeamByName}}<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a ng-click="$event.preventDefault(); filterTeamByName=''">ALL Teams</a></li>
-                                <li ng-repeat="team in ReleaseReport"><a ng-click="$event.preventDefault(); filterTeamByName = team.name">{{team.name}}</a></li>
+                                <li><a ng-click="$event.preventDefault(); setTeamNameFilter({name:'All Teams'})">All Teams</a></li>
+                                <li ng-repeat="team in ReleaseReport" ng-click="setTeamNameFilter(team)"><a >{{team.name}}</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -330,7 +333,7 @@
                     </ul>
                 </div>
                 <div class="col-md-9" role="main" style="overflow: auto; height: 100%" data-spy="scroll" data-target=".navbar-report">
-                    <div class="bs-docs-section" ng-repeat="team in ReleaseReport" ng-hide="filteredTestsLength(team, filterStatusId, filterPriority) == 0">
+                    <div class="bs-docs-section" ng-repeat="team in ReleaseReport" ng-hide="(filteredTestsLength(team, filterStatusId, filterPriority) == 0 || filterTeamName(team))">
                         <div class="page-header">
                             <h1 id="affix" style=" text-align: center; ">{{team.name}}</h1>
                         </div>

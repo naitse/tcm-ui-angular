@@ -3,13 +3,24 @@ function InteropReportMailer( $scope, $routeParams, tcm_model) {
     $scope.loading = false;
     $scope.emails = '';
 
-    var rlsId = $routeParams.releaseId;
+    $scope.selection = {
+        release:{
+            id:0,
+            name:'Select a Release'
+        }
+    }
+
+    $scope.getReleases = function(){
+        tcm_model.Releases.query(function(data){
+            $scope.releases = data;
+        })
+    }
 
     $scope.getPreview = function(){
         $scope.loading = true;
-        $scope.preview = tcm_model.trustUrl('api/mailer/build?rlsId=' + $routeParams.releaseId + '&_='+Math.floor(Math.random()*10000001))
+        $scope.preview = tcm_model.trustUrl('api/mailer/build?rlsId=' + $scope.selection.release.id + '&_='+Math.floor(Math.random()*10000001))
         
-        tcm_model.mailer.getTeams(rlsId, function(data){
+        tcm_model.mailer.getTeams($scope.selection.release.id, function(data){
             $scope.teams = data;
             $scope.loading = false;
         })
@@ -72,7 +83,13 @@ function InteropReportMailer( $scope, $routeParams, tcm_model) {
         })
     }
 
-    $scope.init();
+    if($routeParams.releaseId == null){
+        $scope.getReleases();
+    }else{
+        $scope.selection.release.id = $routeParams.releaseId;
+        $scope.init()
+    }
+
 
 }
 

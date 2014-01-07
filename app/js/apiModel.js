@@ -1,6 +1,4 @@
-tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootScope', function($resource, $http, $route, Auth, $rootScope) {
-
-    console.log('FACTORY CALLED');
+tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootScope', '$sce', function($resource, $http, $route, Auth, $rootScope, $sce) {
 
     return {
         trustUrl: function(url){return $sce.trustAsResourceUrl(basePath + url)},

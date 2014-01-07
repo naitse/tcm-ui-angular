@@ -59,7 +59,7 @@ function TopMenuCntl($window, $scope, $route, $routeParams, $location, Auth, tcm
             }
             ,{ name: 'Mailer',
                 active: $location.path().indexOf('import-export') >=0 ? 'active':'',
-                link: '#/interop/mailer/'
+                link: '#/interop/'+$routeParams.projectId+'/mailer/'
             }
         ]
     }

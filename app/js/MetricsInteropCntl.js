@@ -14,6 +14,20 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
     }
 
     $scope.filterTeamByName = 'All Teams';
+
+    $scope.setTeamNameFilter = function(team){
+        $scope.filterTeamByName = team.name;
+    }
+
+    $scope.filterTeamName = function(team){
+        if($scope.filterTeamByName == 'All Teams'){
+            return false;
+        }
+        if($scope.filterTeamByName != team.name){
+            return true;
+        }
+    }
+
     $scope.statusText='All Test Status';
 
     $scope.teams = [];

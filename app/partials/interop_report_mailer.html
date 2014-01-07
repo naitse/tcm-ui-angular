@@ -45,9 +45,22 @@ height: 100%;
 body {
     background: white
 }
+    .ioteams {
+        width: 250px;
+        margin-top: 10px;
+        float: left;
+        margin-left: 10px;
+        }
 </style>
 <div>
-    
+    <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; ">
+        <li class="dropdown ioteams active">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown">{{selection.release.name}}<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li  ng-repeat="rls in releases" ng-class="(selection.release.id===rls.id)?'active':''"><a data-toggle="tab" ng-click="selection.release.name=rls.releaseName;selection.release.id=rls.id; init();">{{rls.releaseName}}</a></li>
+            </ul>
+        </li>
+    </ul>
     <div class="teams">
 
         <div class="team" ng-repeat=" team in teams">
