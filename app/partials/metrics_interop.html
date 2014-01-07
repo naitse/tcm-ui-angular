@@ -158,6 +158,7 @@
 <div>
     <div>
         <ul class="nav nav-tabs" id="interopTabs" style=" margin-bottom: 0px; " ng-init="panel='rlscontrol'">
+            
             <li ng-class="panel==='rlscontrol'?'active':''">
                 <a data-toggle="#rlscontrol" ng-click="panel='rlscontrol'">Release Overview</a>
             </li>
@@ -167,7 +168,13 @@
             <li ng-show="selection.release.id !=0" ng-class="panel==='report'?'active':''">
                 <a data-toggle="#report" id="rep" style="visibility: visible;" ng-click="panel='report'">Tests Status</a>
             </li>
+<!--             <li ng-show="selection.release.id !=0" ng-class="panel==='full-report'?'active':''">
+                <a data-toggle="#full-report" id="rep" style="visibility: visible;" ng-click="panel='full-report'">Summary Report</a>
+            </li> -->
         </ul>
+
+<!--                           RELEASE                                -->
+
         <div class="tab-content" style="height: 100%">
             <div class="tab-pane" ng-class="panel==='rlscontrol'?'active':''" ng-show="panel==='rlscontrol'" id="rlscontrol">
                 <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; ">
@@ -241,13 +248,17 @@
                 </div>
             </span>
             </div>
+
+<!--                           TEAMS                                -->
+
+
             <div id="xteams" ng-class="panel==='xteams'?'active':''" ng-show="panel==='xteams'" >
                 <div id="metrics-controls2" ng-init="display_team_general=true">
                     <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; " style=" visibility: {{(display_team_general == false)?'hidden':'visible'}}; " >
                         <li class="dropdown ioteams active">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">{{selection.iteration.name}}<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li  ng-repeat="team in teams" ng-class="(selection.iteration.id===team.IterId)?'active':''"><a data-toggle="tab" ng-click="selection.iteration.name=team.iterationName;selection.iteration.id=team.IterId;getTeamData();">{{team.iterationName}}</a></li>
+                                <li  ng-repeat="team in teams" ng-class="(selection.iteration.id===team.IterId)?'active':''"><a ng-click="selection.iteration.name=team.iterationName;selection.iteration.id=team.IterId;getTeamData();">{{team.iterationName}}</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -299,16 +310,20 @@
                         </div>
                     </div>
                 </div>
-                <div ng-hide="display_general" ng-hide="display_team_general == true" style=" overflow: hidden; overflow-y: auto; padding-bottom: 200px; height: 100%; ">
+                <div ng-hide="display_team_general == true" style=" overflow: hidden; overflow-y: auto; padding-bottom: 200px; height: 100%; ">
                     <div class="graph-feature rlscontrol" style="width: 450px; height: 350px; display: inline-block" ng-repeat="item in byTeamByItemGraphs" >
                         <highchart id="item.id" series="item.series" title="item.title" options="item.options"></highchart>
                     </div>
                 </div>
             </div>
+
+<!--                           REPORT                                -->
+
+
             <div id="report" ng-class="panel==='report'?'active':''" ng-show="panel==='report'" >
                         <div style="width: 100%; margin-top: 5px;">
 
-                    <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; float: left;" style=" visibility: {{(display_team_general == false)?'hidden':'visible'}}; " >
+                    <ul class="nav nav-pills" id="interopTabs" style=" margin-bottom: 0px; float: left;">
                         <li class="dropdown ioteams active">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">{{filterTeamByName}}<b class="caret"></b></a>
                             <ul class="dropdown-menu">
@@ -377,13 +392,13 @@
     </div>
 </div>
 <div id="modal-showMetric" class="modal fade"  tabindex="-1" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style=" height: 85%; ">
         <div  class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">{{details.title}}</h4>
             </div>
-            <div  class="modal-body" style="overflow: visible">
+            <div  class="modal-body" style="overflow: hidden;height: 90%;overflow-y: auto;">
                 <div class="row" style=" overflow-y: auto; padding-bottom: 10px;">
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default" ng-repeat="tc in details.tcs">
@@ -404,7 +419,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="selectedGraph=null" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

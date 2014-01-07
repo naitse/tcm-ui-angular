@@ -89,9 +89,9 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                         events: {
                             select: function() {
 
-
+                                var that = this
                                 tcm_model.metrics.ReleasesTCsbyStatusByFtr.query({'releaseId': $scope.selection.release.id, 'statusId': tc_statuses[this.name]}, function(data){
-                                    $scope.details.title = 'Test Cases for status: ' + this.name;
+                                    $scope.details.title = 'Test Cases for status: ' + that.name;
                                     $scope.details.tcs = data;
                                     $('#modal-showMetric').modal();
                                 })
@@ -547,6 +547,17 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
             }
         })
         return testAmount;
+    }
+
+    $scope.getPreview = function(){
+        $scope.loading = true;
+        $scope.preview = tcm_model.trustUrl('api/mailer/build?rlsId=' + $scope.selection.release.id + '&_='+Math.floor(Math.random()*10000001))
+        
+        tcm_model.mailer.getTeams($scope.selection.release.id, function(data){
+            $scope.summaryteams = data;
+            $scope.loading = false;
+        })
+
     }
 
 
