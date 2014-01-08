@@ -62,7 +62,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                 height:200,
                 width:300,
                 margin: [40, 0, 0, 0],
-                animation:true
+                animation:false
 
             },
             //'[{"Not Run":6,"In Progress":0,"Blocked":0,"Passed":10,"Failed":0}]'
@@ -70,7 +70,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
 
             plotOptions: {
                 pie: {
-                    allowPointSelect: true,
+                    allowPointSelect: false,
                     cursor: 'pointer',
                     dataLabels: {
                         enabled: true,
@@ -84,6 +84,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                 },
                 series: {
                     allowPointSelect: true,
+                    animation:false,
                     cursor: 'pointer',
                     point: {
                         events: {
@@ -251,7 +252,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                         chart: {
                             plotBackgroundColor: null,
                             margin: [40, 0, 0, 0],
-                            animation:true,
+                            animation:false,
                             width: 400,
                             height: 300
                         },
@@ -271,8 +272,8 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                                 }
                             },
                             series: {
-                                allowPointSelect: true,
-                                cursor: 'pointer'
+                                allowPointSelect: false,
+                                cursor: 'default'
                             }
                         }
                     },
@@ -312,7 +313,7 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                         chart: {
                             plotBackgroundColor: null,
                             margin: [40, 0, 0, 0],
-                            animation:true,
+                            animation:false,
                             width: 400,
                             height: 300
                         },
@@ -332,8 +333,8 @@ function MetricsInteropCntl( $scope, $routeParams, tcm_model) {
                                 }
                             },
                             series: {
-                                allowPointSelect: true,
-                                cursor: 'pointer'
+                                allowPointSelect: false,
+                                cursor: 'default'
                             }
                         }
                     },

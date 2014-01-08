@@ -46,6 +46,7 @@
 			<div class="btn btn-default btn-sm" ng-click="cancelNewTC()">Close</div>
 			<div class="btn btn-info btn-sm" ng-click="saveNewTC()">Save</div>
             <div><lvl-file-upload
+            		panelid='{{newTcPanelId}}'
                     auto-upload='false'
                     choose-file-button-text='Attach files'
                     choose-file-button-style='btn btn-primary btn-sm'
@@ -58,13 +59,13 @@
                     />
 
             </div>
-            <div>
-                <ul>
-                    <li ng-repeat="file in filesToUpload">
-                        <span class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); deleteAttachment(file, $index);"></span>
-                        {{file.name}}
-                    </li>
-                </ul>
+            <div style="display:table">
+                <div ng-repeat="file in filesToUpload" style="display: inline-block;margin: 5px 5px 5px 15px;">
+            		<div style="{{imageSelector(file)}} overflow:hidden;" class="attach-image" title="{{file.name}}" ng-click="$event.stopPropagation(); openAttach(file);">
+            			<span ng-show="file.isImage != true" class="fileExt">{{getFileExt(file)}}</span>
+						<span ng-show="tc.editMode" class="glyphicon glyphicon-trash delete-attach" ng-click="$event.stopPropagation(); deleteAttachment(file, $index);"></span>
+            		</div>
+                </div>
             </div>
 		</div>
 	</div>

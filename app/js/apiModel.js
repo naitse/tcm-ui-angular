@@ -51,7 +51,9 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootSc
                 method: 'POST'
             }
         }),
-
+        getTestCaseAttachments: function(tcId, callback){
+            return $http.get( basePath + 'api/testcases/:tcId/attachments'.replace(':tcId',tcId) ).success(callback).error();
+        },
         TestCasesUpdateStatus: $resource(basePath + 'api/testcases/:tcId/updateStatus', {tcId: '@tcId', statusId: '@statusId', actualResult:'@actualResult'},{
                 update: {
                     method: 'PUT'
@@ -63,29 +65,6 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootSc
                     method: 'PUT'
                 }
         }),
-        // TestCasesLink: $resource(basePath + 'api/testcases/:tcId/linkTest', {tcId: '@tcId'},{
-        //         create:{
-        //             method: 'POST',
-        //             transformResponse:function(data, headersGetter){
-        //                 return {response:data}
-        //             },
-        //             responseType:'json'
-        //         },
-        //         unlink: {
-        //             method: 'PUT',
-        //             responseType:'json',
-        //             transformResponse:function(data, headersGetter){
-        //                 return {response:data}
-        //             }
-        //         },
-        //         delete: {
-        //             method: 'DELETE',
-        //             transformResponse:function(data, headersGetter){
-        //                 return {response:data}
-        //             },
-        //             responseType:'json'
-        //         }
-        // }),
         JiraIterations: $resource(basePath + 'api/projects/:id/jira/iterations', {id: function () { return $route.current.params.projectId; }}),
         JiraIssues: $resource(basePath + 'api/projects/:projectId/jira/iteration/:id/issues', {projectId: function () { return $route.current.params.projectId; }, id: '@id'}),
         JiraIssue: { //$resource(basePath + 'api/projects/:projectId/jira/issue/:key', {projectId: function () { return $route.current.params.projectId; }, key: '@key'}),

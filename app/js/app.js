@@ -1,6 +1,6 @@
 'use strict';
 
-var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 'ngCookies', 'ui.bootstrap', 'ngResource', 'ngTagsInput']).
+var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 'ngCookies', 'ui.bootstrap', 'ngResource', 'ngTagsInput','pasvaz.bindonce']).
     config(['$routeProvider', '$locationProvider', '$httpProvider',
         function($routeProvider, $locationProvider, $httpProvider ) {
             var access = routingConfig.accessLevels;

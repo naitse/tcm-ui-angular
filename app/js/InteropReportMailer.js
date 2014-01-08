@@ -70,7 +70,7 @@ function InteropReportMailer( $scope, $routeParams, tcm_model) {
 
             var req = {
                 send: true,
-                rlsId: rlsId,
+                rlsId: $scope.selection.release.id,
                 emails: emailsArray
             }
             $scope.loading = true;

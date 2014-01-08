@@ -4,7 +4,7 @@ tcmModule.directive('ngTestcases', function(){
       transclude: false,
       scope:{requester:'=', btns:'=', tcminactive:'='},
       templateUrl: 'app/partials/testcases.html',
-       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', 'fileUploader', function($scope, element, $attrs, $rootScope, tcm_model, DO, fileUploader){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', 'draggedObjects', 'fileUploader', '$q', 'uuid', function($scope, element, $attrs, $rootScope, tcm_model, DO, fileUploader, $q, uuid){
 
         $scope.showTCdelete = false
         $scope.selectall = false
@@ -269,14 +269,27 @@ tcmModule.directive('ngTestcases', function(){
         
       }
 
+      $scope.newTcPanelId = uuid.new();
       $scope.saveNewTC = function(){
 
         if($scope.requester.type == "feature"){
           var temp = new tcm_model.TestCases($scope.newTC)
+          var deferred = $q.defer();
+
           temp.$save(function(data){
-            $scope.uploadFiles(data.tcId);
-            $scope.updateTestCasesList(data)
-            $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+
+            if($scope.filesToUpload.length > 0){
+
+              $scope.uploadFiles(data.tcId,function(files){
+                  console.log(files)
+                  data.attachments = files
+                  $scope.updateTestCasesList(data)
+                  $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+              });
+            }else{
+              $scope.updateTestCasesList(data)
+              $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
+            }
 
           })
         }else if($scope.requester.type == "suite"){
@@ -294,19 +307,20 @@ tcmModule.directive('ngTestcases', function(){
         }
       }
 
-      $scope.uploadFiles = function(id){
+      $scope.uploadFiles = function(id, callback){
 
           fileUploader.upload(
               {featureId: $scope.requester.id,
               tcId: id,
-              isNewTC: true},
+              newTcPanelId: $scope.newTcPanelId},
           function (percentDone) {
-              console.log( percentDone );
           },
           function (files, data) {
               $scope.filesToUpload = [];
-              fileUploader.cleanFiles(0);
-
+              fileUploader.cleanFiles($scope.newTcPanelId);
+              if(typeof callback != 'undefined'){
+                callback(files.data)
+              }
           },
           function (files, type, msg) {
               console.log("Upload error: " + msg, files);
@@ -607,6 +621,52 @@ $scope.testSelected = function(tc){
             $scope.fileAdded = function(file){
                 $scope.filesToUpload.push(file)
             }
+
+          $scope.imageSelector = function(file){
+
+          if(typeof file.imgSelector != 'undefined'){
+            return file.imgSelector;
+          }
+
+          var aName =  file.name
+
+          if(/[^\s]+(.*)+(\.(jpg|png|gif|bmp))$/i.test(aName)){
+            if(file.url == null){
+              file.imgSelector = "background: url('assets/images/files.png') no-repeat -119px -1px;"
+            }else{
+              file.isImage = true;
+              file.imgSelector = "background: url('" + file.url + "') no-repeat; background-size: 100% 100% !important;"
+            }
+          }else if(/[^\s]+(.*)+(\.(zip|rar|7zip|tar|gz))$/i.test(aName)){
+            file.imgSelector =  "background: url('assets/images/files.png') no-repeat -119px -74px;"
+          }else if(/[^\s]+(.*)+(\.(txt|log))$/i.test(aName)){
+            file.imgSelector =  "background: url('assets/images/files.png') no-repeat -59px -74px;"
+          }else if(/[^\s]+(.*)+(\.(csv|xls|xlsx))$/i.test(aName)){
+            file.imgSelector =  "background: url('assets/images/files.png') no-repeat 0px -74px;"
+          }else if(/[^\s]+(.*)+(\.(doc|docx))$/i.test(aName)){
+            file.imgSelector =  "background: url('assets/images/files.png') no-repeat 0px -1px;"
+          }else if(/[^\s]+(.*)+(\.(ppt))$/i.test(aName)){
+            file.imgSelector =  "background: url('assets/images/files.png') no-repeat -59px -1px;"
+          }else if(/[^\s]+(.*)+(\.(pdf))$/i.test(aName)){
+            file.imgSelector =  "background: url('assets/images/files.png') no-repeat -179px -1px;"
+          }else{
+            file.imgSelector =  "background: url('assets/images/files.png')  no-repeat -179px -74px;"
+          }
+
+          return file.imgSelector
+
+        }
+
+        $scope.getFileExt = function(file){
+          if(typeof file.fileExt != 'undefined'){return file.fileExt;}
+            file.fileExt = file.name.match(/(\.)[\w]*$/)[0].replace('.', '');
+          return file.fileExt
+        }
+
+        $scope.openAttach = function(file){
+          if(file.url == null){return false;}
+          window.open(file.url, '_blank')
+        }
 
 
       }],

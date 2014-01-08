@@ -68,13 +68,14 @@
                     on-error='error(files, type, msg)'
                     on-file-added='fileAdded(file)'
                     /></span>
-            <ul>
-                <li ng-repeat="file in tc.attachments">
-                    <span ng-show="tc.editMode" class="glyphicon glyphicon-trash" ng-click="$event.stopPropagation(); deleteAttachment(file, $index);"></span>
-                    <a ng-show="file.url!=null" ng-href="{{file.url}}" target="_blank">{{file.name}}</a>
-                    <span ng-show="file.url==null" >{{file.name}}</span>
-                </li>
-            </ul>
+            <div style="display:table">
+                <div ng-repeat="file in tc.attachments" style="display: inline-block;margin: 5px 5px 5px 15px;">
+            		<div style="{{imageSelector(file)}} overflow:hidden;" class="attach-image" title="{{file.name}}" ng-click="$event.stopPropagation(); openAttach(file);">
+            			<span ng-show="file.isImage != true" class="fileExt">{{getFileExt(file)}}</span>
+						<span ng-show="tc.editMode" class="glyphicon glyphicon-trash delete-attach" ng-click="$event.stopPropagation(); deleteAttachment(file, $index);"></span>
+            		</div>
+                </div>
+            </div>
         </span>
 	</div>
 </div>

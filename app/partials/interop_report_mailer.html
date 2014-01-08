@@ -76,6 +76,8 @@ body {
             </div>
         </div>
     </div>
+    <span ng-hide="selection.release.id == 0">
+        
     <div class="emails-panel">
             <input type="text" ng-model="emails" style=" width: 600; ">
             <div class="btn btn-danger btn-xs" ng-click="sendMail()">Send</div>
@@ -84,5 +86,6 @@ body {
         <div ng-show="loading == true" class="loading-troll-big"></div>
         <iframe ng-hide="loading == true" class="reportMailerIframe" ng-src="{{preview}}" frameborder="0"></iframe>
     </div>
+    </span>
 
 </div>
