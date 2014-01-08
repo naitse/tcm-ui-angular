@@ -297,10 +297,21 @@ tcmModule.directive('ngTestcases', function(){
           temp.sid = $scope.requester.id;
           temp.testArray = [$scope.newTC]
           temp.$create(function(data){
+
             _.each(data.response,function(tc){
-              $scope.uploadFiles(data.tcId);
+
+            if($scope.filesToUpload.length > 0){
+
+              $scope.uploadFiles(tc.tcId,function(files){
+                  console.log(files)
+                  tc.attachments = files
+                  $scope.updateTestCasesList(tc)
+                  $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: $scope.requester.id});
+              });
+            }else{
               $scope.updateTestCasesList(tc)
               $rootScope.$broadcast('suiteTcStatusUpdated', {suiteId: $scope.requester.id});
+            }
 
             })
           })
