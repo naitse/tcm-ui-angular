@@ -21,33 +21,27 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
         files: [],
         globalScopeFiles: [],
         uploadUrl: basePath + 'api/features/:featureId/testcases/:tcId/attachments',
-        addFile: function(fileList){
-            var found = false;
-            this.files.forEach(function(item){
-                if(item.id == fileList.id){
-                    item.files = fileList.files;
-                    found = true;
-                }
-            });
-
-            if(!found){
-                this.files.push(fileList);
-            }
+        addFile: function(tcId, file){
+            
+            this.globalScopeFiles[tcId].push(file);
 
         },
         removeFile: function(file, tcId){
-            _.each(this.files, function(fileSet){
-                if(fileSet.tcId == tcId){
-                    fileSet.files = _.reject(fileSet.files, function(fileItem){
-                        fileItem.name === file.name;
-                    });
-                }
-            });
+
+            this.globalScopeFiles[tcId] = _.widthout(this.globalScopeFiles[tcId], _.findWhere(this.globalScopeFiles[tcId],{name: file.name}))
+
+            // _.each(this.files, function(fileSet){
+            //     if(fileSet.tcId == tcId){
+            //         fileSet.files = _.reject(fileSet.files, function(fileItem){
+            //             fileItem.name === file.name;
+            //         });
+            //     }
+            // });
         },
         cleanFiles: function(tcId){
-            this.globalScopeFiles = [];
-            if(typeof _.findWhere(this.files, {tcId: tcId}) != 'undefined')
-                _.findWhere(this.files, {tcId: tcId}).files = [];
+            this.globalScopeFiles[tcId] = [];
+            // if(typeof _.findWhere(this.files, {tcId: tcId}) != 'undefined')
+            //     _.findWhere(this.files, {tcId: tcId}).files = [];
             // _.each(this.files, function(fileSet){
             //     if(fileSet.tcId == tcId){fileSet.files = [];}
             // });
@@ -57,20 +51,23 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
             var data = null;
             var uploadUrl = this.uploadUrl.replace(":featureId", uploadTo.featureId).replace(":tcId", uploadTo.tcId);
             var filesToUpload = null;
+            var containerId = (typeof uploadTo.newTcPanelId != 'undefined')?uploadTo.newTcPanelId:uploadTo.tcId;
+            
+            filesToUpload = this.globalScopeFiles[containerId]; 
 
-            this.files.forEach(function(item){
-                if(typeof uploadTo.newTcPanelId != 'undefined'){
-                    if(item.tcId == uploadTo.newTcPanelId){
-                        filesToUpload = item.files;
-                    }
-                }else{
-                    if(item.tcId == uploadTo.tcId){
-                        filesToUpload = item.files;
-                    }
-                }
+            // this.files.forEach(function(item){
+            //     if(typeof uploadTo.newTcPanelId != 'undefined'){
+            //         if(item.tcId == uploadTo.newTcPanelId){
+            //             filesToUpload = item.files;
+            //         }
+            //     }else{
+            //         if(item.tcId == uploadTo.tcId){
+            //             filesToUpload = item.files;
+            //         }
+            //     }
 
 
-            });
+            // });
 
             if(filesToUpload == null || filesToUpload.length == 0) {return;}
 
@@ -261,7 +258,9 @@ tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', '$timeout', functi
 
 
             return function postLink(scope, el, attrs, ctl, $timeout) {
-                fileUploader.globalScopeFiles = [];
+
+                fileUploader.globalScopeFiles[scope.panelid] = []
+
                 scope.showUploadButton = false;
 
                 el.bind('change', function(e) {
@@ -277,7 +276,7 @@ tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', '$timeout', functi
                         if (i >= e.target.files.length) break;
 
                         var file = e.target.files[i];
-                        fileUploader.globalScopeFiles.push(file);
+                        fileUploader.addFile( scope.panelid, file);
                         scope.onFileAdded({file:file});
 
                         if (file.size > scope.maxFileSizeMb * 1048576) {
@@ -298,11 +297,6 @@ tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', '$timeout', functi
                         })
                     }
 
-                    fileUploader.addFile({
-                        id: fileId,
-                        tcId: scope.panelid,
-                        files: fileUploader.globalScopeFiles
-                    });
                 });
 
             };
