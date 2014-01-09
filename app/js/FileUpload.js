@@ -30,21 +30,10 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
 
             this.globalScopeFiles[tcId] = _.without(this.globalScopeFiles[tcId], _.findWhere(this.globalScopeFiles[tcId],{name: file.name}))
 
-            // _.each(this.files, function(fileSet){
-            //     if(fileSet.tcId == tcId){
-            //         fileSet.files = _.reject(fileSet.files, function(fileItem){
-            //             fileItem.name === file.name;
-            //         });
-            //     }
-            // });
         },
         cleanFiles: function(tcId){
+            
             this.globalScopeFiles[tcId] = [];
-            // if(typeof _.findWhere(this.files, {tcId: tcId}) != 'undefined')
-            //     _.findWhere(this.files, {tcId: tcId}).files = [];
-            // _.each(this.files, function(fileSet){
-            //     if(fileSet.tcId == tcId){fileSet.files = [];}
-            // });
 
         },
         upload: function(uploadTo, onProgress, onDone, onError) {
@@ -54,20 +43,6 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
             var containerId = (typeof uploadTo.newTcPanelId != 'undefined')?uploadTo.newTcPanelId:uploadTo.tcId;
 
             filesToUpload = this.globalScopeFiles[containerId]; 
-
-            // this.files.forEach(function(item){
-            //     if(typeof uploadTo.newTcPanelId != 'undefined'){
-            //         if(item.tcId == uploadTo.newTcPanelId){
-            //             filesToUpload = item.files;
-            //         }
-            //     }else{
-            //         if(item.tcId == uploadTo.tcId){
-            //             filesToUpload = item.files;
-            //         }
-            //     }
-
-
-            // });
 
             if(filesToUpload == null || filesToUpload.length == 0) {return;}
 

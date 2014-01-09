@@ -63,7 +63,7 @@
                 <div ng-repeat="file in filesToUpload" style="display: inline-block;margin: 5px 5px 5px 15px;">
             		<div style="{{imageSelector(file)}} overflow:hidden;" class="attach-image" title="{{file.name}}" ng-click="$event.stopPropagation(); openAttach(file);">
             			<span ng-show="file.isImage != true" class="fileExt">{{getFileExt(file)}}</span>
-						<span ng-show="tc.editMode" class="glyphicon glyphicon-trash delete-attach" ng-click="$event.stopPropagation(); deleteAttachmentNewTc(file, $index);"></span>
+						<span class="glyphicon glyphicon-trash delete-attach" ng-click="$event.stopPropagation(); deleteAttachmentNewTc(file, $index);"></span>
             		</div>
                 </div>
             </div>
