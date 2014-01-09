@@ -58,6 +58,7 @@
 
             <h5 ng-switch-when="false" ng-show="tc.attachments.length>0">Attachments:</h5>
             <span ng-switch-when="true"><lvl-file-upload
+            		panelid='{{tc.tcId}}'
                     auto-upload='false'
                     choose-file-button-text='Attach files'
                     choose-file-button-style='btn btn-primary btn-sm'

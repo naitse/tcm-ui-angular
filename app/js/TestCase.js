@@ -242,6 +242,11 @@ tcmModule.directive('ngTestcase', function(){
         }
 
         $scope.fileAdded = function(file){
+
+            if(typeof $scope.tc.attachments == 'undefined'){
+                $scope.tc.attachments = [];              
+            }
+
             $scope.tc.attachments.push({
                 id: 0,
                 name: file.name

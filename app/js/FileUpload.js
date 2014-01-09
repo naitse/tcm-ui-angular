@@ -300,7 +300,7 @@ tcmModule.directive('lvlFileUpload', ['uuid', 'fileUploader', '$timeout', functi
 
                     fileUploader.addFile({
                         id: fileId,
-                        tcId: (scope.$parent == null)? scope.panelid :scope.$parent.tc.tcId ,
+                        tcId: scope.panelid,
                         files: fileUploader.globalScopeFiles
                     });
                 });

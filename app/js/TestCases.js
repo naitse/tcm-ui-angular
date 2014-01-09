@@ -345,7 +345,7 @@ tcmModule.directive('ngTestcases', function(){
 
       }
 
-      $scope.deleteAttachment = function(file, index){
+      $scope.deleteAttachmentNewTc = function(file, index){
 
           $scope.filesToUpload.splice(index, 1);
 
