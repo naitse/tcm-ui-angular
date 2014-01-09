@@ -136,6 +136,7 @@ tcmModule.directive('ngTestcase', function(){
                $scope.attachmentsToDelete.push(file);
             }
 
+            fileUploader.removeFile(file, $scope.tc.tcId);
             $scope.tc.attachments.splice(index, 1);
         }
 

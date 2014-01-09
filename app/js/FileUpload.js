@@ -28,7 +28,7 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
         },
         removeFile: function(file, tcId){
 
-            this.globalScopeFiles[tcId] = _.widthout(this.globalScopeFiles[tcId], _.findWhere(this.globalScopeFiles[tcId],{name: file.name}))
+            this.globalScopeFiles[tcId] = _.without(this.globalScopeFiles[tcId], _.findWhere(this.globalScopeFiles[tcId],{name: file.name}))
 
             // _.each(this.files, function(fileSet){
             //     if(fileSet.tcId == tcId){
@@ -52,7 +52,7 @@ tcmModule.service('fileUploader', ['$rootScope', '$q', function($rootScope, $q) 
             var uploadUrl = this.uploadUrl.replace(":featureId", uploadTo.featureId).replace(":tcId", uploadTo.tcId);
             var filesToUpload = null;
             var containerId = (typeof uploadTo.newTcPanelId != 'undefined')?uploadTo.newTcPanelId:uploadTo.tcId;
-            
+
             filesToUpload = this.globalScopeFiles[containerId]; 
 
             // this.files.forEach(function(item){
