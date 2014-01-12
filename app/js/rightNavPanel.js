@@ -113,6 +113,7 @@ tcmModule.directive('ngRightNavPanel', function() {
                 scope.suiteActiveClass = ''
                 scope.tagActiveClass = ''
                 if(scope.releases.length !== 0){
+                    scope.loading = false;
                     return false;
                 }
                 var releases = tcm_model.Releases.query(function(){
@@ -277,8 +278,10 @@ tcmModule.directive('ngRightNavPanel', function() {
                 if(scope.suites.length !== 0){
                     return false;
                 }
-                var suite = tcm_model.Suites.query();
-                scope.suites =  _.extend(suite, {hide:false})
+                var suite = tcm_model.Suites.query(function(){
+                    scope.loading = false;
+                    scope.suites =  _.extend(suite, {hide:false})
+                });
             }
 
             scope.getSuiteTestcases = function(suite){
