@@ -112,7 +112,6 @@ function TopMenuCntl($window, $scope, $route, $routeParams, $location, Auth, tcm
 
     }
 
-
     $scope.getProfile();
     $scope.loadProjects();
 

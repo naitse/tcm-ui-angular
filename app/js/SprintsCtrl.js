@@ -93,9 +93,14 @@ tcmModule.directive('tcmSprintModule', function() {
 
             scope.getFeatures = function(iteration){
                 scope.loading = true;
+
+                if(typeof iteration.callback != 'undefined'){
+                   scope.loading = false;     
+                }
+
                 iteration.callback = function(){
-                    scope.showFeatures();
                     scope.loading = false;
+                    scope.showFeatures();
                 }
                 scope.iteration = iteration
                 // scope.$parent.iteration = scope.iteration
