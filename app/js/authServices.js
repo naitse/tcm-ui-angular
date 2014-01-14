@@ -1,4 +1,5 @@
-var  basePath =  "http://ec2-54-197-79-64.compute-1.amazonaws.com:7777/";
+var basePath = "http://tcm.test-lab.ch:7777/";
+//var  basePath =  "http://ec2-54-197-79-64.compute-1.amazonaws.com:7777/";
 //var  basePath =  "http://localhost:9000/";
 
 tcmModule.service('Auth', ['$http', '$cookieStore' , function($http, $cookieStore){

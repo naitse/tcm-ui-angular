@@ -3,7 +3,7 @@ tcmModule.controller('LoginCtrl',
         $scope.loginErrorMessage = "";
 
         $scope.loginBackGround = 'transparent;';
-
+        $scope.baseUrl = basePath;
         $scope.login = function() {
             Auth.login({
                     username: $scope.username,

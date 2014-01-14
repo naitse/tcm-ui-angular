@@ -74,6 +74,7 @@
 .testcase .textarea-tcm {
 	margin-top: 22px;
 	max-height: 300px;
+min-height: 100px;
 }
 
 .testcase .panel-body .panel-body {

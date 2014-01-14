@@ -2,7 +2,8 @@ function TopMenuCntl($window, $scope, $route, $routeParams, $location, Auth, tcm
     $scope.$route = $route;
     $scope.$location = $location;
     $scope.$routeParams = $routeParams;
-
+    $scope.baseUrl = basePath;
+    
     $scope.menuList = [
         {
             name: 'TCM',
