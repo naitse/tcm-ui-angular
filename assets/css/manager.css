@@ -124,6 +124,12 @@ background: transparent;
 	max-height: 118px;
 }
 
+.feature .testlink {
+  position: relative;
+  top: -1;
+  opacity: 0.5;
+}
+
 .features-actions {
 	position: absolute;
 	top: 9px  !important;

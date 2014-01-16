@@ -79,7 +79,21 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootSc
 
             }
         },
-
+        JiraCommentTestList: function(req,callback){
+            return $http.post( basePath + 'api/projects/:projectId/feature/:featureId/jira/:jiraKey/comment/'
+                                .replace(':projectId', $route.current.params.projectId)
+                                .replace(':featureId', req.featureId)
+                                .replace(':jiraKey', req.jiraKey)
+                            ).success(callback).error();
+        },
+        JiraRemoveTestList: function(req,callback){
+            return $http.delete( basePath + 'api/projects/:projectId/feature/:featureId/jira/:jiraKey/comment/:commentId'
+                                .replace(':projectId', $route.current.params.projectId)
+                                .replace(':featureId', req.featureId)
+                                .replace(':jiraKey', req.jiraKey)
+                                .replace(':commentId', req.exposed)
+                            ).success(callback).error();
+        },
         JiraIssueTransition: $resource(basePath + 'api/projects/:projectId/jira/issue/:key/transitions/:transitionId/', {projectId: function () { return $route.current.params.projectId; }}),
         ReleasesIterations: $resource(basePath + 'api/projects/:id/releasesiterations', {id: function () { return $route.current.params.projectId; }}),
         Tags: $resource(basePath + 'api/projects/:id/tags/:tid', {id: function () { return $route.current.params.projectId; }},{

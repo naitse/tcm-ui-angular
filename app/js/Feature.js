@@ -37,6 +37,22 @@ tcmModule.directive('ngFeature', function(){
               $scope.$parent.cloneFeature(feat)
             }
 
+            $scope.exposeTests = function(feature){
+              tcm_model.JiraCommentTestList(feature, function(data){
+                console.log(data.id)
+                feature.exposed = data.id;
+              })
+            }
+
+            $scope.unExposeTests = function(feature){
+              tcm_model.JiraRemoveTestList(feature, function(data){
+                feature.exposed = 0;
+                feature.remex = null;
+              })
+            }
+
+            
+
             $scope.editFeature = function(feature){
                 feature.editMode = true; 
                 var temp = angular.copy(feature);
