@@ -39,7 +39,6 @@ tcmModule.directive('ngFeature', function(){
 
             $scope.exposeTests = function(feature){
               tcm_model.JiraCommentTestList(feature, function(data){
-                console.log(data.id)
                 feature.exposed = data.id;
               })
             }

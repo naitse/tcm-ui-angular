@@ -159,7 +159,7 @@
 					      <h4 class="panel-title">
 					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" ng-click="isopen = !isopen">
 					        	<span class="pull-left glyphicon" ng-class="(isopen == true)?'glyphicon-chevron-down':'glyphicon-chevron-right'" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
-					Comments:    <span class="badge">{{currentRequester.object.remote.fields.comment.comments.length}}</span>    </div>
+					Comments</div>
 					      </h4>
 					    </div>
 					    <div id="collapseTwo" class="panel-collapse collapse">
@@ -167,7 +167,7 @@
 						    <div class="cont">
 						        <div class="jira-comments-container">
 						                <div class="comments">
-						                        <div ng-repeat="comment in currentRequester.object.remote.fields.comment.comments" class="item-comment">
+						                        <div ng-repeat="comment in currentRequester.object.remote.fields.comment.comments | filter:filterFeatureComments" class="item-comment">
 						                                <div class="comment-author-avatar" style="background: url('{{comment.author.avatarUrls.48x48}}') 0px -1px;"></div> 
 						                                <div class="comment-author-name">{{comment.author.displayName}}</div>
 						                                <div class="comment-created">{{comment.created | date:'medium'}}</div>

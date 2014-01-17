@@ -91,6 +91,13 @@ tcmModule.directive('tcmSprintModule', function() {
                 })
             }
 
+            scope.filterFeatureComments = function(text){
+                if (text.body.indexOf('{html}') !== -1) {
+                    return false;
+                }
+                return true;
+            }
+
             scope.getFeatures = function(iteration){
                 scope.loading = true;
 
