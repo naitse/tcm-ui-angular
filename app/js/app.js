@@ -68,6 +68,11 @@ var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 
                                     {templateUrl: '/app/partials/interop_report_mailer.html',
                                         controller: 'InteropReportMailer',
                                         access: access.user
+                                    }//GeneratorCtrl
+                                ).when('/automation/:projectId',
+                                    {templateUrl: '/app/partials/automation.html',
+                                        controller: 'GeneratorCtrl',
+                                        access: access.user
                                     }
                                 ).when('/login',
                                 {
