@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-8" ng-show="selection.iteration.iterId!=null">
 
-                <div class="row">
+                <div class="row" >
                     <div class="col-md-6">
                         <a class="thumbnail" data-toggle="modal" data-target="#modal-showMetric" >
                             <highchart id="executed" series="executed.series" title="executed.title" options="executed.options"></highchart>
@@ -57,7 +57,7 @@
     <div class="modal-dialog" style="width:{{(details == true)?'auto':'900px'}}">
         <div  class="modal-content" style="width: auto;">
             <div  class="modal-body" style="overflow: visible">
-                <div class="row" style=" display: inline-block; " >
+                <div class="row" style=" display: inline-block; vertical-align: top;">
                     <highchart id="selectedGraph" series="selectedGraph.series" title="selectedGraph.title" options="selectedGraph.options"></highchart>
                 </div>
                 <div class="row" ng-show="details" style="height: 75%; overflow-y: auto; padding-bottom: 10px;display: inline-block;position: relative;width: 50%;">
