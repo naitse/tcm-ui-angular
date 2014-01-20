@@ -155,11 +155,13 @@ tcmModule.directive('ngFeatures', function(){
 			tran.$save({key: feature.jiraKey, transitionId: transition.id}, function(){
 				feature.loading = true;
 					tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
-						feature.featureDescription = jira.fields.description;
-						feature.loading = false;
-						feature.remote = jira;
-						$scope.refreshStatuses();
-						$scope.filterFeatures();
+            $scope.$apply(function(){
+  						feature.featureDescription = jira.fields.description;
+  						feature.loading = false;
+  						feature.remote = jira;
+  						$scope.refreshStatuses();
+  						$scope.filterFeatures();
+            })
 					})
 			})
 		}
