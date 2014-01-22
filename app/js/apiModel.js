@@ -73,6 +73,7 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootSc
                 url: basePath + 'api/projects/:projectId/jira/issue/:key'.replace(':projectId', function () { return $route.current.params.projectId; }).replace(':key', params.key),
                  type: "GET",
                  asyn:true,
+                 timeout:20000,
                  contentType:"application/json"
                 }).done(callback);
                 //return $http.get(basePath + 'api/projects/:projectId/jira/issue/:key'.replace(':projectId', function () { return $route.current.params.projectId; }).replace(':key', params.key));
