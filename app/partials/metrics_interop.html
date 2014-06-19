@@ -353,7 +353,7 @@
                             <h1 id="affix" style=" text-align: center; ">{{team.name}}</h1>
                         </div>
 
-                        <div ng-repeat="feature in team.features " id="affix-ftr-{{team.name}}-{{$index}}" style=" margin-bottom: 60px; " ng-hide="filteredTestsLengthByFeature(feature, filterStatusId, filterPriority) == 0">
+                        <div ng-init="showTests = false" ng-click="showTests = !showTests" ng-repeat="feature in team.features " id="affix-ftr-{{team.name}}-{{$index}}" style=" margin-bottom: 60px; cursor:pointer;" ng-hide="filteredTestsLengthByFeature(feature, filterStatusId, filterPriority) == 0">
                             <h3 id="affix-usage" style=" height: 45px; font-weight: 400; padding-left: 50px;">{{feature.name}} Tests Set</h3>
                             <div class="progress" style=" width: 300; float: right; position: relative; top: -47px; ">
                                 <div class="progress-bar progress-bar-success" style="width: {{(feature.pass*100)/feature.total}}%">
@@ -370,7 +370,7 @@
                                 </div>
                             </div>
                             <!-- <h3>Test Cases</h3> -->
-                                <div ng-repeat="test in feature.tests  | filter:{statusId: filterStatusId} | filter:{priority: filterPriority}" ng-switch on="test.statusId">
+                                <div ng-show="showTests" ng-repeat="test in feature.tests  | filter:{statusId: filterStatusId} | filter:{priority: filterPriority}" ng-switch on="test.statusId">
                                     <div class="panel panel-default" style=" margin-bottom: 1px; ">
                                         <div class="panel-body" style=" position: relative; ">
                                           <!-- <div style="display: inline" class="report-tc-priority">P{{test.priority}}</div> -->
