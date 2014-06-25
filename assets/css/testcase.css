@@ -169,6 +169,13 @@ position: relative;
 	background: red;
 }
 
+.test-automated-1{
+    color: #43A4A4;
+    font-weight: bold;
+    border: 2px solid #43A4A4;
+    border-radius: 5px !important;
+    opacity: 0.8 !important;
+}
 .up-button {margin-left: 16px; margin-top: 21; margin-bottom: 16; }
 
 .fileExt{ color: white; margin-left: 9; font-size: 16; float: left; }

@@ -11,6 +11,8 @@
 		<!-- <input class="priority" ng-class="tc.editMode==true?'editable':''" ng-model="tc.priority" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>		 -->
 		<input class="name" ng-class="tc.editMode==true?'editable':''" title="{{tc.name}}" ng-model="tc.name" ng-disabled="tc.editMode==false?true:''" ng-click="(tc.editMode == true)?$event.stopPropagation():'';"/>
 		<div ng-hide="btns.hideStatus == true" class="btn-group btn-group-xs pull-right">
+
+            <div title="Automated" class="btn test-automated-{{tc.automated}}"  ng-click="$event.stopPropagation(); setAutomation(tc);">A</div>
             <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-remove-circle" ng-click="$event.stopPropagation(); cancelEditTC(tc, element);"></span></div>
 			<div class="btn" ng-hide="tc.editMode"><span class="glyphicon glyphicon-pencil" ng-click="$event.stopPropagation(); editTC(tc)"></span></div>
             <div class="btn no-opacity" ng-show="tc.editMode"><span class="glyphicon glyphicon-ok-circle" ng-click="$event.stopPropagation(); saveTC(tc)"></span></div>

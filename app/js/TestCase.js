@@ -128,6 +128,13 @@ tcmModule.directive('ngTestcase', function(){
 
         }
 
+        $scope.setAutomation = function(tc){
+
+            tc.automated = (tc.automated != 0)?0:1;
+            $scope.tc.$update(function(data){});
+
+        }
+
         $scope.deleteAttachment = function(file, index){
             if(file.id != 0){
                 if($scope.attachmentsToDelete == null){
