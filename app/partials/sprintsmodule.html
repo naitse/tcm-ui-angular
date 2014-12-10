@@ -57,7 +57,7 @@
 		margin-bottom: 0px !important;
 	}
 	#tcm-sprint-module .lsprint-container .panel {
-		margin-bottom: 0px !important;	
+		margin-bottom: 0px !important;
 	}
 
 	#tcm-sprint-module #features{
@@ -95,7 +95,7 @@
 							<div ng-show="iteration.iterationName != '' " ng-click="backToFeatures(); "class="btn btn-default">{{iteration.iterationName}}</div>
 				    	</div>
 				    	<div class="btn-group btn-group-sm pull-left" ng-show="suiteActiveClass == 'active'">
-							
+
 				    	</div>
 					</div>
 			    	<div class="lsprint-container" style-"position:relative;">
@@ -120,7 +120,7 @@
 			    		<div ng-show="loading == true" class="loading-big"></div>
 			    	</div>
 			    </div>
-			</div> 
+			</div>
 
 		<div class="panel panel-default panel-tcm middle-panel" ng-style="middleWidth" style="overflow: hidden;">
 
@@ -135,9 +135,9 @@
 					        <div data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="isopend = !isopend">
 					        	<span ng-switch="currentRequester.object.featureType">
 						        	<span class="pull-left glyphicon" ng-class="(isopend == true)?'glyphicon-chevron-down':'glyphicon-chevron-right'" style=" font-size: 11px; padding-right: 20px; padding-top: 1px; "></span>
-									<a ng-switch-when="1" ng-click="$event.stopPropagation();" href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>   
+									<a ng-switch-when="1" ng-click="$event.stopPropagation();" href="https://www.mulesoft.org/jira/browse/{{currentRequester.object.jiraKey}}" target="_blank">{{currentRequester.object.jiraKey}}</a>
 					        		<span ng-switch-default>
-										{{currentRequester.object.jiraKey}}   
+										{{currentRequester.object.jiraKey}}
 					        		</span>
 					        	</span>
 				        	 </div>
@@ -149,7 +149,7 @@
 								 	<pre ng-switch-when="1" class="item-description">{{currentRequester.object.featureDescription}}</pre>
 									<pre ng-switch-default class="item-description">{{currentRequester.object.featureName}}</pre>
 								</span>
-																 
+
 
 					      </div>
 					    </div>
@@ -168,7 +168,7 @@
 						        <div class="jira-comments-container">
 						                <div class="comments">
 						                        <div ng-repeat="comment in currentRequester.object.remote.fields.comment.comments | filter:filterFeatureComments" class="item-comment">
-						                                <div class="comment-author-avatar" style="background: url('{{comment.author.avatarUrls.48x48}}') 0px -1px;"></div> 
+						                                <div class="comment-author-avatar" style="background: url('{{comment.author.avatarUrls.48x48}}') 0px -1px;"></div>
 						                                <div class="comment-author-name">{{comment.author.displayName}}</div>
 						                                <div class="comment-created">{{comment.created | date:'medium'}}</div>
 						                                <pre>{{comment.body}}</pre>
@@ -195,7 +195,3 @@
 	<div class="panel-expander" ng-click="togglePanel()" style="right:{{panelExpanderRight}}">
 		<span class="glyphicon glyphicon-list"></span>
 	</div>
-
-
-
-   

@@ -3,9 +3,9 @@
 
 <span ng-switch on="feature.featureType">
   <a ng-switch-when="1" href="https://www.mulesoft.org/jira/browse/{{feature.jiraKey}}" target="_blank">{{feature.jiraKey}}</a>
-  
 
-    
+
+
   <div ng-switch-when="1" class="btn btn-default btn-xs testlink" ng-click="$event.stopPropagation(); exposeTests(feature);" ng-hide="feature.exposed != 0">
     <span class="glyphicon glyphicon-share"></span>
   </div>
@@ -15,8 +15,8 @@
   <div ng-switch-when="1" class="btn btn-default btn-xs" ng-click="$event.stopPropagation(); unExposeTests(feature);" ng-show="feature.remex == true">
     <span class="glyphicon">unlink?</span>
   </div>
-    
- 
+
+
 
 
   <input ng-switch-default="2" ng-model="feature.jiraKey" ng-class="feature.editMode==true?'editable':''" ng-disabled="feature.editMode==false?true:''" class="key-field"></input>
@@ -26,11 +26,11 @@
     <div ng-hide="btns.hideFeatureActions == true" class="btn-group btn-group-xs pull-right">
       <div class="btn-group"  ng-class="(dropDownClose == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; cursor=pointer;" ng-show="feature.featureType == 1">
         <div ng-click="$event.stopPropagation(); openDD();" title="{{feature.remote.fields.status.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
-            <div class="tcm-icon no-opacity" ng-attr-style="background: url('{{feature.remote.fields.status.iconUrl}}') 0px -1px;"></div>
+            <div class="tcm-icon no-opacity" ng-attr-style="background: url('{{feature.remote.fields.status.iconUrl}}') -1px -1px;"></div>
         </div>
         <ul class="dropdown-menu pull-right" role="menu" ng-class="(hovered == true)? 'hovered':''" role="menu" ng-mouseover="hovered = true" ng-mouseleave="hovered = false; dropDownClose = true;">
           <li ng-click="$event.stopPropagation(); updateIssueState(feature, transition)" ng-repeat="transition in feature.remote.transitions">
-            <a><span class="tcm-icon no-opacity" style="background: url('{{transition.to.iconUrl}}') 0px -1px;" ></span>{{transition.name}}
+            <a><span class="tcm-icon no-opacity" style="background: url('{{transition.to.iconUrl}}') -1px -1px;" ></span>{{transition.name}}
             </a>
           </li>
         </ul>

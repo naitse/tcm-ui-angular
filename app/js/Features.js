@@ -38,7 +38,7 @@ tcmModule.directive('ngFeatures', function(){
             iterationId: $scope.requester.IterId
           }
         }
-		
+
 		$scope.resetNewFeature();
 
    		$scope.placeholders = {
@@ -84,7 +84,7 @@ tcmModule.directive('ngFeatures', function(){
 							tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
                 $scope.$apply(function(){
                   feature.featureDescription = jira.fields.description;
-                  _.extend(jira.fields.status, {style:"0px -1px;"})
+                  _.extend(jira.fields.status, {style:"-1px -1px;"})
                   feature.loading = false;
                   feature.remote = jira
                   if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
@@ -135,7 +135,7 @@ tcmModule.directive('ngFeatures', function(){
 			}
 
 			$scope.$parent.setCurrentRequester(feature);
-			
+
 		}
 
 		$scope.featureUpdateTCsatus = function(featureId){
@@ -186,7 +186,7 @@ tcmModule.directive('ngFeatures', function(){
 			//$scope.testcases = [];
 		});
 
-	
+
 		$scope.parseCommentBody= function(comment){
 			var comment = comment.split('{code}')
 			var parsed = comment[0];
@@ -336,7 +336,7 @@ tcmModule.directive('ngFeatures', function(){
       }],
 
        link: function (scope, element, attrs) {
-              
+
        }
    }
 });
