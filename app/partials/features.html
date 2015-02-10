@@ -5,15 +5,24 @@
 		height: 100%;
     padding-bottom: 248px;
 	}
+
+  .feature-search {
+    width:130px !important;
+  }
+  .feature-search.focus{
+  width: 100% !important;
+  z-index: 9;
+  }
 </style>
 <div ng-hide="btns.hideBar == true" class="well action-bar">
 
-<div class="input-group" ng-hide="btns.hideSearch == true">
-  <input type="text" class="form-control" placeholder="Search" ng-model="searchText">
+<div class="input-group feature-search" ng-class="{'focus':focus==true}" ng-hide="btns.hideSearch == true">
+  <input type="text" class="form-control" placeholder="Search" ng-model="searchText" ng-focus="focus=true" ng-blur="focus=false" >
 </div>
 
 	<div ng-hide="btns.hideBtns == true" class="btn-group btn-group-xs features-actions">
 		<div class="btn btn-default" ng-click="createFeature()">Add Item</div>
+    <div class="btn btn-primary" style="margin-bottom: 5;" data-toggle="modal" data-target="#modal-sync">Jira Import</div>
       <div class="btn-group"  ng-show="statuses.length > 0" ng-class="(statusDDClosed == false)?'open':''" ng-mouseleave="tryCloseDD();" style=" width: 29px; top:0px;cursor=pointer;">
         <div ng-click="$event.stopPropagation(); openDD();" title="{{statusFilter.name}}" class="btn btn-default btn-xs no-opacity feature-status-btn">
             <div class="tcm-icon no-opacity" style="background: url('{{statusFilter.iconUrl}}') {{statusFilter.style}}"></div>
@@ -34,6 +43,10 @@
     <div ng-show="newFeature.create" class="panel panel-default current testcase" ng-class="">
     <div class="panel-heading" >
       <input class="name editable" ng-model="newFeature.jiraKey"/>
+          <div class="squaredThree" ng-click="$event.stopPropagation();">
+            <input type="checkbox" ng-model="linkToJira" ng-click="$event.stopPropagation();"/>
+            <label ng-click="checkLinkToJira()"></label>
+          </div>
     </div>
     <div class="panel-body" ng-click="$event.stopPropagation()" style=" padding-top: 0; padding-left: 0; ">
       <div class="panel panel-default">
@@ -60,3 +73,128 @@
 <div class="features-container">
 	<ng-feature ng-repeat="feature in features | filter:searchText" ng-hide="feature.hide"></ng-feature>
 </div>
+
+  <div id="modal-sync" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" style="
+    width: 90%;
+    max-width: 1000px;
+">
+
+          <div class="modal-content">
+              <div class="modal-header">
+                <div class="dropdown" style="
+    display: inline-block;
+">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    Sprints
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="
+                        max-height: 500px;
+                        overflow-y: auto;
+                    ">
+                    <li ng-click="selection.jiraIteration=sprint.id" 
+                        ng-repeat="sprint in iterations.sprints | filter:iterationFilter | orderBy:'-id'" >
+                      <a>{{sprint.name}}</a>
+                    </li>
+                  </ul>
+                </div>
+                <div style="
+    display: inline-block;
+    right: 18px;
+    position: absolute;
+">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeSync()">Close</button>
+                  <button type="button" class="btn btn-primary" ng-click="syncronize()">Syncronize</button>
+                </div>
+                
+              </div>
+        <div >
+            <div >
+                <div ng-hide="(issues != null)" style="text-align: center; margin-top: 100px;">
+                    <img src="assets/images/jirasync.png" style="width: 400px;">
+                </div>
+                <div ng-show="(issues != null && issues.contents == null)" style="text-align: center; margin-top: 100px;">
+                    <img src="assets/images/loading1.gif">
+                </div>
+                <div ng-show="(issues.contents != null)">
+                    <div ></div>
+                    <div class="accordion-container">
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default" ng-init="incompletedCollapsed = true">
+                                <div class="panel-heading" ng-click="incompletedCollapsed = !incompletedCollapsed">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion">
+                                            <span><input type="checkbox" ng-model="incompletedSelecteAll" ng-click="$event.stopPropagation();"></span>
+                                            Incompleted Issues
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="incompletedItems" class="panel-collapse collapse" ng-class="(incompletedCollapsed)?'in':''" style="overflow-y: scroll; overflow-x: hidden;">
+                                    <div class="panel-body">
+                                        <div class="table-responsive" style="overflow-y: scroll; overflow-x: hidden;">
+                                            <table class="table table-condensed">
+                                                <tr ng-repeat="cissues in issues.contents.incompletedIssues" popover-popup-delay="5" popover-animation="true" popover-title="{{cissues.key}}" popover="{{cissues.summary}}" popover-trigger="mouseenter">
+                                                    <td>
+                                                        <label>
+                                                            <input type="checkbox" ng-model="cissues.selected">
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <img src="{{cissues.typeUrl}}"/>
+                                                    </td>
+                                                    <td>{{cissues.key}}
+                                                    </td>
+                                                    <td>{{cissues.summary.substring(0, 60)}}{{(cissues.summary.length > 60)?'...':''}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default" ng-init="completedCollapsed = false">
+                                <div class="panel-heading" ng-click="completedCollapsed = !completedCollapsed">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion">
+                                            <span><input type="checkbox" ng-model="completedSelecteAll" ng-click="$event.stopPropagation();"></span>
+                                            Completed Issues
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="completedItems" class="panel-collapse collapse" ng-class="(completedCollapsed)?'in':''" style="overflow-y: scroll; overflow-x: hidden;">
+                                    <div class="panel-body">
+                                        <div class="table-responsive" style="overflow-y: scroll; overflow-x: hidden;">
+                                            <table class="table table-condensed">
+                                                <tr ng-repeat="cissues in issues.contents.completedIssues" >
+                                                    <td>
+                                                        <label>
+                                                            <input type="checkbox" ng-model="cissues.selected">
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <img src="{{cissues.typeUrl}}"/>
+                                                    </td>
+                                                    <td>{{cissues.key}}
+                                                    </td>
+                                                    <td>{{cissues.summary.substring(0, 60)}}{{(cissues.summary.length > 60)?'...':''}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+          </div>
+      </div>
+  </div>

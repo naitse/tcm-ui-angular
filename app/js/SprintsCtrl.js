@@ -185,6 +185,69 @@ tcmModule.directive('tcmSprintModule', function() {
                 scope.currentRequester.object = {}
             }
 
+            ////////////////////////////// ADD RELEASES
+
+            scope.resetNewRelIter = function(){
+              scope.newRelIter = {
+                create:false,
+                name:''
+              }
+            }
+            scope.resetNewRelIter();
+
+            scope.addNew = function(){
+                if(scope.release.id == ''){
+                    scope.addNewRelease();
+                }else{
+                    scope.addNewIteration();
+                }
+            };
+
+            scope.addNewRelease = function(){
+              var newRel = new tcm_model.Releases();
+              newRel.releaseName = scope.newRelIter.name;
+              newRel.$save(function(){
+                  scope.resetNewRelIter();
+                  scope.resetRelease();
+                  scope.loadSprint();
+              });
+            };
+
+            scope.cancelNew = function(){
+                scope.resetNewRelIter();
+            }
+
+            scope.deleteRelease = function(release){
+
+                release.$delete(function(){
+                   scope.resetRelease();
+                   scope.loadSprint();
+               });
+
+            };
+
+            scope.addNewIteration = function(){
+
+                var newIter = new tcm_model.Iterations({releaseId:scope.release.id});
+
+                newIter.iterationName = scope.newRelIter.name
+
+                newIter.$save(function(){
+                    scope.backToIterations();
+                });
+
+            };
+
+            scope.deleteIteration = function(iter){
+
+                iter.$delete(function(data){
+                    scope.backToIterations();
+                });
+
+            };
+
+
+
 /////////////////////////
 
             scope.showRight = false;

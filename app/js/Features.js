@@ -4,7 +4,7 @@ tcmModule.directive('ngFeatures', function(){
       transclude: true,
       scope:{requester:'=', btns:'=', droppable:'@drop', hidenotcurrent:'@hidenotcurrent'},
       templateUrl: 'app/partials/features.html',
-       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$timeout','draggedObjects',  function($scope, element, $attrs, $rootScope, tcm_model, $timeout, DO){
+       controller: ["$scope", "$element", "$attrs", "$rootScope", 'tcm_model', '$timeout','draggedObjects', '$routeParams',  function($scope, element, $attrs, $rootScope, tcm_model, $timeout, DO, $routeParams){
 
        	$scope.btnConfig = (typeof $scope.btns == 'undefined')?{}:$scope.btns;
 
@@ -29,13 +29,15 @@ tcmModule.directive('ngFeatures', function(){
 		}
 
         $scope.resetNewFeature = function(){
+          $scope.linkToJira = false
           $scope.newFeature = {
             create:false,
             featureName:'',
             jiraKey:'',
             featureDescription:'',
             featureType:2,
-            iterationId: $scope.requester.IterId
+            iterationId: $scope.requester.IterId,
+            projectId:$routeParams.projectId
           }
         }
 
@@ -78,23 +80,7 @@ tcmModule.directive('ngFeatures', function(){
 				$scope.features = data;
 				if($scope.btnConfig.hideFeatureActions != true){
 					_.each($scope.features,function(feature){
-						if(feature.featureType == 1){
-							feature.loading = true;
-
-							tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
-                $scope.$apply(function(){
-                  feature.featureDescription = jira.fields.description;
-                  _.extend(jira.fields.status, {style:"-1px -1px;"})
-                  feature.loading = false;
-                  feature.remote = jira
-                  if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
-                      $scope.statuses.push(jira.fields.status)
-                  }
-                })
-              })
-
-						}
-
+              fetchJiraData(feature);
 					})
 				}
 				$scope.extendFeatures();
@@ -103,6 +89,24 @@ tcmModule.directive('ngFeatures', function(){
 				}
 			})
 		}
+
+    function fetchJiraData(feature){
+      if(feature.featureType == 1){
+      feature.loading = true;
+
+      tcm_model.JiraIssue.get({key:feature.jiraKey}, function(jira){
+        $scope.$apply(function(){
+          feature.featureDescription = jira.fields.description;
+          _.extend(jira.fields.status, {style:"-1px -1px;"})
+          feature.loading = false;
+          feature.remote = jira
+          if(typeof _.findWhere($scope.statuses, {name:jira.fields.status.name}) == 'undefined'){
+              $scope.statuses.push(jira.fields.status)
+          }
+        })
+      })
+      }
+    }
 
 		$scope.extendFeatures = function(){
 			_.each($scope.features, function(obj){
@@ -211,13 +215,23 @@ tcmModule.directive('ngFeatures', function(){
         $scope.newFeature.create = true;
       }
 
+      $scope.checkLinkToJira = function(){
+        $scope.linkToJira = !$scope.linkToJira
+      }
+
       $scope.saveNewFeature = function(){
+        
+        if($scope.linkToJira){
+          $scope.newFeature.featureType = 1
+        }
+
         var temp = new tcm_model.Features($scope.newFeature)
 
         temp.$save(function(data){
         	$scope.extendSingleFeature(data);
-
+          
           $scope.features.push(data);
+          fetchJiraData(data);
           // $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
           // $scope.cancelNewFeature();
           $scope.cancelNewFeature();
@@ -331,6 +345,90 @@ tcmModule.directive('ngFeatures', function(){
                 }
 
               }
+
+
+
+
+//////////////////////////////////////////////////Sync
+
+    $scope.iterations = tcm_model.JiraIterations.get();
+    $scope.selection = {
+        jiraIteration: null,
+        iteration: null
+    }
+
+    $scope.alerts = [
+
+    ];
+
+    $scope.$watch("selection.jiraIteration", function(value){
+        if(value != null){
+            $scope.issues = tcm_model.JiraIssues.get({id: value});
+        }
+
+    });
+
+    $scope.$watch('completedSelecteAll', function(val){
+        if($scope.issues== null){return;}
+        $scope.issues.contents.completedIssues.forEach(function(element){
+            element.selected = val;
+        })
+    })
+
+    $scope.$watch('incompletedSelecteAll', function(val){
+
+        if($scope.issues== null){return;}
+        $scope.issues.contents.incompletedIssues.forEach(function(element){
+            element.selected = val;
+        })
+    })
+
+    $scope.syncronize = function(){
+        var issuesToSync = new Array();
+
+        $scope.getIssuesToSync($scope.issues.contents.completedIssues, issuesToSync)
+        $scope.getIssuesToSync($scope.issues.contents.incompletedIssues, issuesToSync)
+
+        var newFeatureBulk = new tcm_model.FeaturesBulk({id: $scope.requester.IterId});
+
+        newFeatureBulk.issues = issuesToSync;
+        newFeatureBulk.$save(function(){
+            $('#modal-sync').modal('hide');
+            $scope.selection = {
+                jiraIteration: null,
+                iteration: null
+            }
+            $scope.issues = null;
+            $scope.getFeatures();
+        });
+
+    }
+
+    $scope.closeSync = function(){
+                  $scope.selection = {
+                jiraIteration: null,
+                iteration: null
+            }
+            $scope.issues = null;
+    }
+
+    $scope.getIssuesToSync = function(issues, issuestoSync){
+        issues.forEach(function(feature){
+            if(feature.selected != null && feature.selected){
+                issuestoSync.push({
+                    key : feature.key,
+                    name : feature.summary,
+                    type : 1
+                });
+            }
+        })
+    }
+
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
+
+    $scope.releasesIterations = tcm_model.ReleasesIterations.query();              
 
 
       }],

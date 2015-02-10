@@ -94,23 +94,47 @@
 							<div ng-show="release.releaseName != ''" ng-click="backToIterations();"class="btn btn-default">Release {{release.releaseName}}</div>
 							<div ng-show="iteration.iterationName != '' " ng-click="backToFeatures(); "class="btn btn-default">{{iteration.iterationName}}</div>
 				    	</div>
+					
+  						<div class="btn btn-xs btn-default pull-right" ng-hide="iteration.iterationName != '' " ng-click="newRelIter.create=true;">Add</div>
+					
 				    	<div class="btn-group btn-group-sm pull-left" ng-show="suiteActiveClass == 'active'">
 
 				    	</div>
 					</div>
+					    <div ng-show="newRelIter.create" class="panel panel-default" ng-class="">
+						    <div class="panel-heading" >
+						      <input class="name editable" ng-model="newRelIter.name"/>
+						    </div>
+						    <div class="panel-footer">
+						      <div class="btn btn-default btn-sm" ng-click="cancelNew()">Close</div>
+						      <div class="btn btn-info btn-sm" ng-click="addNew();">Save</div>
+						    </div>
+						  </div>
 			    	<div class="lsprint-container" style-"position:relative;">
 			    		<div id="releases">
-				    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases | orderBy:'-id'" ng-click="getIterations(rel)">
+				    		<div id="release" class="panel panel-default" ng-hide="rel.hide" ng-repeat="rel in releases | orderBy:'-id'" ng-click="getIterations(rel)" style="position:relative;">
 							  <div class="panel-body">
 			    				Release {{rel.releaseName}}
 							  </div>
+								<div style="position: absolute;top: 3px;right: 5px;">
+								  	<div class="btn" ng-hide="rel.delete">
+								       <span class="glyphicon glyphicon-trash" style="opacity:0.7" ng-click="$event.stopPropagation(); rel.delete = true"></span>
+								  	</div>
+								  	<div class="btn btn-xs btn-danger btn-delete" ng-show="rel.delete" ng-click="$event.stopPropagation(); deleteRelease(rel)" ng-mouseleave="$event.stopPropagation(); rel.delete = false" style="top: 5px;position: relative;">Sure?</div>
+								</div> 
 				    		</div>
 			    		</div>
 			    		<div id="iterations">
-				    		<div id="iteration" class="panel panel-default" ng-hide="iter.hide" ng-repeat="iter in iterations | orderBy:'-IterId'" ng-click="getFeatures(iter)">
+				    		<div id="iteration" class="panel panel-default" ng-hide="iter.hide" ng-repeat="iter in iterations | orderBy:'-IterId'" ng-click="getFeatures(iter)" style="position:relative;">
 				    			<div class="panel-body">
 				    				{{iter.iterationName}}
 				    			</div>
+								<div style="position: absolute;top: 3px;right: 5px;">
+								  	<div class="btn" ng-hide="iter.delete">
+								       <span class="glyphicon glyphicon-trash" style="opacity:0.7" ng-click="$event.stopPropagation(); iter.delete = true"></span>
+								  	</div>
+								  	<div class="btn btn-xs btn-danger btn-delete" ng-show="iter.delete" ng-click="$event.stopPropagation(); deleteIteration(iter)" ng-mouseleave="$event.stopPropagation(); iter.delete = false" style="top: 5px;position: relative;">Sure?</div>
+								</div>
 				    		</div>
 			    		</div>
 			    		<div ng-show="loading" class="loading-big"></div>
