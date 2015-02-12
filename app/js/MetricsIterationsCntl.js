@@ -179,7 +179,7 @@ function MetricsIterationsCntl( $scope, $routeParams, $window, tcm_model) {
     $scope.executed = $scope.compliteChart();
 
     $scope.openHotLink = function(id){
-        $window.open('#/metrics/iterations/' + $routeParams.projectId + '/' + id);
+        $window.open('#/reports/' + $routeParams.projectId + '/sprint/' + id);
     }
 
     $scope.selectGraph = function(graph){
