@@ -1,0 +1,1 @@
+<script>function reqListener () {document.getElementById("tcm-remote-info").innerHTML = JSON.parse(this.responseText).html}var oReq = new XMLHttpRequest();oReq.onload = reqListener;oReq.open("get", "http://localhost:7777/api/jira/remote?fid=1614", true);oReq.send();</script><div id="tcm-remote-info">Loading tests...</div>

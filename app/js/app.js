@@ -59,6 +59,11 @@ var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 
                                         controller: 'SprintReportCtrl',
                                         access: access.anon
                                     }
+                                ).when('/reports/:projectId/sprint/:sprintId',
+                                    {templateUrl: '/app/partials/reports/metrics_sprint.html',
+                                        controller: 'ReportsSprintCtrl',
+                                        access: access.anon
+                                    }
                                 ).when('/metrics/interop/:projectId',
                                     {templateUrl: '/app/partials/metrics_interop.html',
                                         controller: 'MetricsInteropCntl',
