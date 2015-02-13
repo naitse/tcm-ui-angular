@@ -40,7 +40,7 @@ function JiraPluginCntl( $scope, $routeParams, $http, $location, tcm_model) {
         $scope.getIssuesToSync($scope.issues.contents.completedIssues, issuesToSync)
         $scope.getIssuesToSync($scope.issues.contents.incompletedIssues, issuesToSync)
 
-        var newFeatureBulk = new tcm_model.FeaturesBulk({id: $scope.selection.iteration});
+        var newFeatureBulk = new tcm_model.FeaturesBulk({id: $scope.selection.iteration, projectId:$routeParams.projectId});
 
         newFeatureBulk.issues = issuesToSync;
         newFeatureBulk.$save(function(){

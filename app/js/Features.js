@@ -389,7 +389,7 @@ tcmModule.directive('ngFeatures', function(){
         $scope.getIssuesToSync($scope.issues.contents.completedIssues, issuesToSync)
         $scope.getIssuesToSync($scope.issues.contents.incompletedIssues, issuesToSync)
 
-        var newFeatureBulk = new tcm_model.FeaturesBulk({id: $scope.requester.IterId});
+        var newFeatureBulk = new tcm_model.FeaturesBulk({id: $scope.requester.IterId, projectId:$routeParams.projectId});
 
         newFeatureBulk.issues = issuesToSync;
         newFeatureBulk.$save(function(){
@@ -399,7 +399,10 @@ tcmModule.directive('ngFeatures', function(){
                 iteration: null
             }
             $scope.issues = null;
-            $scope.getFeatures();
+            setTimeout(function(){
+              $scope.getFeatures();  
+            },2000);
+            
         });
 
     }
