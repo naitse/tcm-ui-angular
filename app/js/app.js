@@ -77,7 +77,7 @@ var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 
                                 ).when('/interop/:projectId/mailer',
                                     {templateUrl: '/app/partials/interop_report_mailer.html',
                                         controller: 'InteropReportMailer',
-                                        access: access.user
+                                        access: access.mailer
                                     }//GeneratorCtrl
                                 ).when('/automation/:projectId',
                                     {templateUrl: '/app/partials/automation.html',
@@ -124,6 +124,12 @@ var tcmModule = angular.module('tcm', ["highcharts-ng", 'ngAnimate', 'ngRoute', 
             return input;
         }
     });
+
+tcmModule.filter('trustAsResourceUrl', ['$sce', function($sce) {
+    return function(val) {
+        return $sce.trustAsResourceUrl(val);
+    };
+}]);
 
 tcmModule.directive('chosen',function(){
     var linker = function(scope,element,attrs) {
@@ -486,3 +492,7 @@ tcmModule.directive('textarea', function() {
         }
     }
 });
+
+
+
+

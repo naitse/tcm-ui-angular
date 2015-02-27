@@ -30,9 +30,7 @@ tcmModule.service('Auth', ['$http', '$cookieStore' , function($http, $cookieStor
 
             $http.post(basePath + 'api/login').success(function(data){
 
-                if(data.admin === 1){
-                    user.role = userRoles.admin;
-                }
+                user.role = userRoles[data.role];
                 changeUser(user);
                 success(user);
 

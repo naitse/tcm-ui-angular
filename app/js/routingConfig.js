@@ -9,6 +9,7 @@
         roles :[
             'public',
             'user',
+            'mailer',
             'admin'],
 
         /*
@@ -19,6 +20,7 @@
             'public' : "*",
             'anon': ['public'],
             'user' : ['user'],
+            'mailer' : ['mailer'],
             'admin': ['admin']
         }
 
