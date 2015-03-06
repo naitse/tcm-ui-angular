@@ -6,15 +6,15 @@
 	<div class="manager">
 		<div id="tabs">
 			<ul class="nav nav-tabs left-panel">
-			  <li ng-click="$event.preventDefault(); selectSprint()" ng-class="(views.sprint.active == true)?'active':'';"><a href="">Sprint</a></li>
-			  <li ng-click="$event.preventDefault(); selectSuites()" ng-class="(views.suites.active == true)?'active':'';"><a href="">Suites</a></li>
-                <li ng-click="$event.preventDefault(); selectAutomation()" ng-class="(views.automation.active == true)?'active':'';"><a href="">Automation</a></li>
+			  <li ng-click="$event.preventDefault(); selectSprint()" ng-class="(views.sprint.active == true)?'active':'';"><a href="">Test Runner</a></li>
+			  <li ng-click="$event.preventDefault(); selectSuites()" ng-class="(views.suites.active == true)?'active':'';"><a href="">Test Designer</a></li>
+<!--                 <li ng-click="$event.preventDefault(); selectAutomation()" ng-class="(views.automation.active == true)?'active':'';"><a href="">Automation</a></li> -->
 			</ul>
 		</div>
 
 		<tcm-sprint-module id="tcm-sprint-module" ng-hide="views.sprint.active == false"></tcm-sprint-module>
 		<tcm-suites-module id="tcm-suites-module" ng-hide="views.suites.active == false"></tcm-suites-module>
-        <tcm-automation-module id="tcm-automation-module" ng-hide="views.automation.active == false"></tcm-automation-module>
+        <!-- <tcm-automation-module id="tcm-automation-module" ng-hide="views.automation.active == false"></tcm-automation-module> -->
 		
 	</div>
 </div>
