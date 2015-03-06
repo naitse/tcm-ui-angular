@@ -1,0 +1,22 @@
+doctype
+html(ng-app="tcm" )
+  head
+    title Prototype
+    link(rel="stylesheet", href="styles/main.css")
+
+    block scripts
+        script(src="scripts/livereload-support.js")
+        script(src="scripts/libs/angular/angular.min.js")
+        script(src="scripts/libs/angular-route/angular-route.min.js")
+        script(src="scripts/libs/angular-ui-router/release/angular-ui-router.min.js")
+        script(src="scripts/libs/angular-cookies/angular-cookies.min.js")
+        script(src="scripts/libs/angular-resource/angular-resource.min.js")
+        script(src="scripts/libs/angular-sanitize/angular-sanitize.min.js")
+        script(src="scripts/libs/angular-animate/angular-animate.min.js")
+        script(src="scripts/core/app.js")
+
+        script(src="views/manager/managerCtrl.js")
+
+  body(ng-view)
+
+

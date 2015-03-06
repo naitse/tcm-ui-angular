@@ -1,2 +1,6 @@
 
 .idea/*
+.generated/*
+node_modules/*
+lib/*
+bower_components/*
