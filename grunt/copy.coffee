@@ -8,7 +8,7 @@ module.exports = (grunt) ->
           '**/*.*'
           '**'
           '!scripts/livereload-support.js'
-          '!styles/**/*.less', '!**/*.jade'
+          '!styles/**/*.less', '!views/**/*.less', '!**/*.jade'
         ]
         cwd: '<%=config.srcDir%>'
       }, {
