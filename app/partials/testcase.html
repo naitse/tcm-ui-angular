@@ -32,9 +32,9 @@
 	</div>
 
 	<div class="panel-body" ng-show="tc.current" ng-click="$event.stopPropagation()">
-		<span ng-hide="btns.hideDropdown">
+		<!-- <span ng-hide="btns.hideDropdown"> -->
 			<ng-tags-widget test="tc" ></ng-tags-widget>
-		</span>
+		<!-- </span> -->
 		<div ng-show="(isEmpty(tc.description) == false || tc.editMode == true)" class="panel panel-default">
 			<div class="panel-body">
 				<div class="description-label field-label">Description</div>
