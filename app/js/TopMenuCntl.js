@@ -108,7 +108,7 @@ function TopMenuCntl($window, $scope, $route, $routeParams, $location, Auth, tcm
             $scope.userName = data.displayName;
             $scope.avatar = data.avatar;
             Auth.user = data;
-            $scope.isAdmin = data.admin === 1;
+            $scope.isAdmin = data.role === 'admin';
         })
 
     }
