@@ -1,3 +1,3 @@
-tcmModule.controller('managerCtrl',function($scope){
-    $scope.gay = 'vos';
+tcmControllers.controller('managerCtrl',function($scope, $stateParams){
+    console.log($stateParams.pid)
 });

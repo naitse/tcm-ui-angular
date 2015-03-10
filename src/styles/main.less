@@ -1,17 +1,30 @@
 @import '../../bower_components/bootstrap/less/bootstrap';
 //@import 'debug-grid';
 @import '../views/manager/manager';
+@import '../views/designer/designer';
+@import '../views/containersNavigation/containersNavigation';
+@import '../views/navigationPanel/navigationPanel';
+
+html {
+  height: 100%;
+}
 
 body {
   background-color: #ecf0f1;
   color: #2c3e50;
+  height: 100%;
 }
 
 .container {
   // fixed size for demo purposes, actually Bootstrap
   // does it in a responsive way
-  width: 960px;
+  width: 1200px;
   padding: 0 10px;
+  border: 1px solid #333;
+}
+
+.full-height {
+  height:100%;
 }
 
 .page-header {
@@ -48,6 +61,14 @@ body {
 
 .two-columns {
   .flex-row;
+
+  .column-auto {
+    .flex-auto;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+    margin-right: 10px;
+  }
 
   .column:nth-child(1) {
     .flex-auto;
