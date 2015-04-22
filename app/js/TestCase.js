@@ -131,6 +131,7 @@ tcmModule.directive('ngTestcase', function(){
         $scope.setAutomation = function(tc){
 
             tc.automated = (tc.automated != 0)?0:1;
+            tc.sid = tc.suiteId;
             $scope.tc.$update(function(data){});
 
         }
