@@ -1,4 +1,4 @@
-	<div ng-show="requester.id != ''" class="well action-bar">
+	<div ng-show="requester.id != ''" class="well action-bar" style="margin-bottom:0px;">
 
 			<div class="squaredThree">
 				<input type="checkbox" ng-model="selectall"/>
@@ -42,10 +42,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="panel-footer" style=" position: relative; ">
-			<div class="btn btn-default btn-sm" ng-click="cancelNewTC()">Close</div>
-			<div class="btn btn-info btn-sm" ng-click="saveNewTC()">Save</div>
-            <div><lvl-file-upload
+		<div class="panel-footer" style=" position: relative; height:90px">
+			<div style="float:left;">
+			<div style="display: inline-block; top: -2px; position: relative; margin-right: 10px;">
+            	<lvl-file-upload
             		panelid='{{newTcPanelId}}'
                     auto-upload='false'
                     choose-file-button-text='Attach files'
@@ -59,7 +59,10 @@
                     />
 
             </div>
-            <div style="display:table">
+            <div class="btn btn-default btn-sm" ng-click="cancelNewTC()">Close</div>
+			<div class="btn btn-info btn-sm" ng-click="saveNewTC()">Save</div>	
+			</div>
+            <div style="display:inline-block; float:left;">
                 <div ng-repeat="file in filesToUpload" style="display: inline-block;margin: 5px 5px 5px 15px;">
             		<div style="{{imageSelector(file)}} overflow:hidden;" class="attach-image" title="{{file.name}}" ng-click="$event.stopPropagation(); openAttach(file);">
             			<span ng-show="file.isImage != true" class="fileExt">{{getFileExt(file)}}</span>
@@ -69,7 +72,7 @@
             </div>
 		</div>
 	</div>
-	<div tcm-droppable drop="true" tcmDrop="handleDrop()" tcmDropOver="handleHover()" tcmDropOut="droppable = true" style=" height: 100%; padding-bottom: 261px; overflow: hidden; overflow-y: auto; position:relative; ">
+	<div tcm-droppable drop="true" tcmDrop="handleDrop()" tcmDropOver="handleHover()" tcmDropOut="droppable = true" style=" height: 100%; padding-bottom: 380px; overflow: hidden; overflow-y: auto; position:relative; width:100%">
 			<ng-testcase ng-repeat="tc in testcases"></ng-testcase>
 			<div ng-show="loading == true" class="loading-troll-big"></div>
     		<div ng-show="(loading == false && testcases.length == 0 && requester.id != '')" class="no-tests">No Tests</div>

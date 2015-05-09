@@ -32,6 +32,12 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootSc
                 }
         }),
 
+        AutomationFeatures: $resource(basePath + 'api/iterations/:iterationId/automation/features/:featureId', {iterationId: '@iterationId', featureId:'@featureId'},{
+                update: {
+                    method: 'PUT'
+                }
+        }),
+
         FeaturesBulk: $resource(basePath + 'api/iterations/:id/features_bulk', {id: '@id'}),
 
         FeatureExecutedTC: $resource(basePath + 'api/getFeatureExecutedTestCases/:featureId', {featureId:'@featureId'},{

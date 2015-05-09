@@ -43,16 +43,52 @@
     <div ng-show="newFeature.create" class="panel panel-default current testcase" ng-class="">
     <div class="panel-heading" >
       <input class="name editable" ng-model="newFeature.jiraKey"/>
-          <div class="squaredThree" ng-click="$event.stopPropagation();">
+
+      <div id="fooz"style="float: right;position: relative;top: -29px;left: 71px;margin-right: 70px;">
+          <ul style="list-style-type: none;">
+            <li>
+          <div class="squaredThree" ng-hide="isAutomation" ng-click="$event.stopPropagation();"style="position: relative;top: 3px;width: 80px;">
             <input type="checkbox" ng-model="linkToJira" ng-click="$event.stopPropagation();"/>
             <label ng-click="checkLinkToJira()"></label>
+             Link Jira
           </div>
+            </li>
+            <li>
+          <div ng-hide="linkToJira" class="squaredThree" ng-click="$event.stopPropagation();"style="position: relative;top: 3px;width: 80px;">
+            <input type="checkbox" ng-model="isAutomation" ng-click="$event.stopPropagation();"/>
+            <label ng-click="checkIsAutomation()"></label>
+             Automation
+          </div>
+            </li>
+          </ul>
+      </div>
+
     </div>
     <div class="panel-body" ng-click="$event.stopPropagation()" style=" padding-top: 0; padding-left: 0; ">
       <div class="panel panel-default">
           <div class="panel-body">
-          <div class="description-label field-label">Description</div>
-          <textarea class="panel-body textarea-tcm editable" ng-model="newFeature.featureName"></textarea>
+            <div ng-hide="isAutomation || linkToJira">
+              <div class="description-label">Description</div>
+              <textarea class="panel-body textarea-tcm editable" ng-model="newFeature.featureName"></textarea>
+            </div>
+
+<div ng-if="isAutomation">
+            <!-- <input type="radio" name="group2" ng-model="newFeature.automanual" value="1"> manual 
+            <input type="radio" name="group2" ng-model="newFeature.automanual" value="0"> auto -->
+            <div >
+              Total <input class="name editable" ng-model="newFeature.total" /> <br>
+              Pass <input class="name editable" ng-model="newFeature.pass" /><br>
+              Fail <input class="name editable" ng-model="newFeature.failed" />
+            </div>
+<!--             <div ng-if="newFeature.automanual == 0">
+              <div class="description-label">Report Full URL</div>
+              <input class="name editable" ng-model="newFeature.reportUrl" />
+              <div class="description-label">Report Type</div>
+              <input type="radio" name="group1" ng-model="newFeature.reportType" value="0" /> TestNg 
+              <input type="radio" name="group1" ng-model="newFeature.reportType" value="1" /> SureFire 
+            </div>  -->
+</div>
+
         </div>
       </div>
     </div>

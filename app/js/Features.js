@@ -30,14 +30,21 @@ tcmModule.directive('ngFeatures', function(){
 
         $scope.resetNewFeature = function(){
           $scope.linkToJira = false
+          $scope.isAutomation = false
           $scope.newFeature = {
+            automanual:1,
             create:false,
             featureName:'',
             jiraKey:'',
             featureDescription:'',
             featureType:2,
             iterationId: $scope.requester.IterId,
-            projectId:$routeParams.projectId
+            projectId:$routeParams.projectId,
+            reportUrl:'',
+            reportType:0,
+            total:0,
+            pass:0,
+            failed:0
           }
         }
 
@@ -81,6 +88,7 @@ tcmModule.directive('ngFeatures', function(){
 				if($scope.btnConfig.hideFeatureActions != true){
 					_.each($scope.features,function(feature){
               fetchJiraData(feature);
+              //fetchAutomationData(feature);
 					})
 				}
 				$scope.extendFeatures();
@@ -107,6 +115,21 @@ tcmModule.directive('ngFeatures', function(){
       })
       }
     }
+
+    // function fetchAutomationData(feature){
+    //   if(feature.featureType == 4){
+    //   feature.loading = true;
+
+    //   tcm_model.AutomationFeatures.get({iterationId:$scope.requester.IterId, featureId: feature.featureId}, function(aurecord){
+    //     //$scope.$apply(function(){
+    //       feature.total = aurecord.total;
+    //       feature.pass = aurecord.pass;
+    //       feature.failed = aurecord.failed;
+    //       feature.remote = aurecord
+    //     //})
+    //   })
+    //   }
+    // }
 
 		$scope.extendFeatures = function(){
 			_.each($scope.features, function(obj){
@@ -219,10 +242,18 @@ tcmModule.directive('ngFeatures', function(){
         $scope.linkToJira = !$scope.linkToJira
       }
 
+      $scope.checkIsAutomation = function(){
+        $scope.isAutomation = !$scope.isAutomation
+      }
+
       $scope.saveNewFeature = function(){
         
         if($scope.linkToJira){
           $scope.newFeature.featureType = 1
+        }
+
+        if($scope.isAutomation){
+          $scope.newFeature.featureType = 4
         }
 
         var temp = new tcm_model.Features($scope.newFeature)
@@ -230,7 +261,11 @@ tcmModule.directive('ngFeatures', function(){
         temp.$save(function(data){
         	$scope.extendSingleFeature(data);
           
-          $scope.features.push(data);
+          if(temp.featureType == 4){
+            $scope.features.push($scope.newFeature);    
+          }else{
+            $scope.features.push(data);
+          }
           fetchJiraData(data);
           // $rootScope.$broadcast('tcStatusUpdated', {featureId: $scope.requester.id});
           // $scope.cancelNewFeature();

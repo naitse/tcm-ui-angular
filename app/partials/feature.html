@@ -58,5 +58,22 @@
     <div class="progress-bar progress-bar-info" role="progressbar" style="width: {{(feature.inprogress * 100) / feature.total}}%"/>
     <div class="progress-bar progress-bar-notrun" role="progressbar" style="width: {{(feature.notrun * 100) / feature.total}}%"/>
   </div>
-  <textarea class="panel-body textarea-tcm" ng-class="feature.editMode==true?'editable':''" ng-click="(feature.editMode == true)?$event.stopPropagation():'feature.current == true'" ng-model="feature.featureName" ng-disabled="feature.editMode==false?true:''"></textarea>
+  <textarea ng-if="feature.featureType != 4" class="panel-body textarea-tcm" ng-class="feature.editMode==true?'editable':''" ng-click="(feature.editMode == true)?$event.stopPropagation():'feature.current == true'" ng-model="feature.featureName" ng-disabled="feature.editMode==false?true:''"></textarea>
+    <div ng-if="feature.featureType == 4">
+<!--       <input type="radio" name="group2" ng-model="feature.automanual" value="false" ng-disabled="feature.editMode==false?true:''"> manual 
+      <input type="radio" name="group2" ng-model="feature.automanual" value="true" ng-disabled="feature.editMode==false?true:''"> auto -->
+      <div >
+        Total <input class="name editable" ng-model="feature.total" ng-disabled="feature.editMode==false?true:''"/> <br>
+        Pass <input class="name editable" ng-model="feature.pass" ng-disabled="feature.editMode==false?true:''"/><br>
+        Failed <input class="name editable" ng-model="feature.failed" ng-disabled="feature.editMode==false?true:''"/>
+      </div>
+<!--       <div ng-if="feature.automanual == true">
+        <div class="description-label">Report Full URL</div>
+        <input class="name editable" ng-model="feature.reportUrl" ng-disabled="feature.editMode==false?true:''"/>
+        <div class="description-label">Report Type</div>
+        <input type="radio" name="group1" ng-model="feature.reportType" value="0" ng-disabled="feature.editMode==false?true:''"> TestNg 
+        <input type="radio" name="group1" ng-model="feature.reportType" value="1" ng-disabled="feature.editMode==false?true:''"> SureFire 
+      </div>  -->
+
+    </div>
 </div>
