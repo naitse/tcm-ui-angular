@@ -255,7 +255,12 @@ tcmModule.factory('tcm_model', ['$resource', '$http', '$route', 'Auth', '$rootSc
             IterationDaily: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterId/daily'),
             IterationExecutedByItem: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterId/executed_by_item'),
             ReleasesTCsbyStatusByFtr: $resource(basePath + 'api/metrics/interop/releases/:releaseId/:statusId/tcsbyftr'),
-            TeamTCsbyStatus: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterationId/:statusId/tcdetails')
+            TeamTCsbyStatus: $resource(basePath + 'api/metrics/interop/releases/:releaseId/iterations/:iterationId/:statusId/tcdetails'),
+            AutomationRunSummaryLatest: $resource(basePath + 'api/automation/:projectId/summary'),
+            AutomationRunLatest: $resource(basePath + 'api/automation/:projectId'),
+            AutomationRunSummaryLatestbyIterationId: $resource(basePath + 'api/automation/:iterId/itersummary'),
+            AutomationRunLatestbyIterationId: $resource(basePath + 'api/automation/:iterId/iter'),
+            ManualAutomation: $resource(basePath + 'api/metrics/automationmanual/:iterId')
         }
     };
 }]);

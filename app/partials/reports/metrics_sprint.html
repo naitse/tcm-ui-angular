@@ -198,7 +198,8 @@ border-radius: 3px 0px 0px 3px;
             <highchart id="fullSprint" series="exFullChart[0].series" title="exFullChart[0].title" options="exFullChart[0].options"></highchart>
         </div>
         <div class="issues-column">
-            <div ng-repeat="feature in features" class="feature" ng-click="feature.expand = !feature.expand">
+            <h4 ng-show="HOLA"> Automation Suites</h4>
+            <div ng-repeat="feature in features | filter: { featureType: 4 }" class="feature" ng-click="feature.expand = !feature.expand">
                 <i ng-if="feature.tests.length > 0" class="expand-feature fa fa-caret-{{(!feature.expand)?'right':'down';}}" style="font-size: 16px;top: 12px;"></i>
                 <div class="flex-container">
                     <div class="feature-name flex-center">{{feature.jiraKey}}</div>
@@ -220,8 +221,6 @@ border-radius: 3px 0px 0px 3px;
                         </div>
                         <div ng-if="feature.total == 0" class="no-test">No test found</div>
                     </div>  
-                    <!-- <highchart ng-if="feature.total > 0" id="feature.jiraKey" series="feature.exChart[0].series" title="feature.exChart[0].title" options="feature.exChart[0].options"></highchart> -->
-                    <!-- <highchart id="feature.jiraKey" series="feature.auChart[0].series" title="feature.auChart[0].title" options="feature.auChart[0].options"></highchart> -->
                 </div>
                 <div ng-show="feature.expand" class="panel-group" id="accordion">
                             <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'statusName'" style="position:relative;">
@@ -251,44 +250,58 @@ border-radius: 3px 0px 0px 3px;
                             </div>
                         </div>
             </div>
-        </div>
-    </div>
-    <div id="modal-showMetrics" class="modal fade"  tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div  class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">{{modalData.jiraKey}}</h4>
+            <br>
+            <h4> Manual verification</h4>
+            <div ng-repeat="feature in features | filter: { featureType: '!4' }" class="feature" ng-click="feature.expand = !feature.expand">
+                <i ng-if="feature.tests.length > 0" class="expand-feature fa fa-caret-{{(!feature.expand)?'right':'down';}}" style="font-size: 16px;top: 12px;"></i>
+                <div class="flex-container">
+                    <div class="feature-name flex-center">{{feature.jiraKey}}</div>
+                    <div class="flex-center">{{feature.featureName}}</div>
                 </div>
-                <div  class="modal-body" style="overflow-y: auto;max-height: 70%;">
-                    <div class="row" style=" overflow-y: auto; padding-bottom: 10px;">
-                        <div class="panel-group" id="accordion">
-                            <div class="panel panel-default" ng-repeat="tc in modalData.tests | orderBy: 'statusName'">
-                                <div class="panel-heading" ng-click="in=(in==='in')?'':'in'" style="position:relative;">
+                <div class="chart-container">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: {{(feature.pass*100)/feature.total}}%">
+                            <span class="sr-only">{{(feature.pass*100)/feature.total}}% Complete (success)</span>
+                        </div>
+                        <div class="progress-bar progress-bar-warning" style="width: {{(feature.blocked*100)/feature.total}}%">
+                            <span class="sr-only">{{(feature.blocked*100)/feature.total}}% Blocked (warning)</span>
+                        </div>
+                        <div class="progress-bar progress-bar-danger" style="width: {{(feature.failed*100)/feature.total}}%">
+                            <span class="sr-only">{{(feature.failed*100)/feature.total}}% Failed (danger)</span>
+                        </div>
+                        <div class="progress-bar progress-bar-info" style="width: {{(feature.inprogress*100)/feature.total}}%">
+                            <span class="sr-only">{{(feature.inprogress*100)/feature.total}}% In Progress</span>
+                        </div>
+                        <div ng-if="feature.total == 0" class="no-test">No test found</div>
+                    </div>  
+                </div>
+                <div ng-show="feature.expand" class="panel-group" id="accordion">
+                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'statusName'" style="position:relative;">
+                                <div class="panel-heading" ng-click="$event.stopPropagation(); in=(in==='in')?'':'in'" style="position:relative;">
                                     <div ng-if="tc.statusId == 4" class="test-status-handle progress-bar-success" />
                                     <div ng-if="tc.statusId == 2" class="test-status-handle progress-bar-warning" />
                                     <div ng-if="tc.statusId == 3" class="test-status-handle progress-bar-danger" />
                                     <div ng-if="tc.statusId == 1" class="test-status-handle progress-bar-info" />
                                     <div ng-if="tc.statusId == 0" class="test-status-handle progress-bar-notrun" />
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" >
+                                    <h4 class="panel-title" style="padding-left: 16px;">
+                                        <i ng-show="tc.description || ((tc.actualResult) && (tc.statusId == 3 || tc.statusId == 2))" class="expand-feature fa fa-caret-{{(in !== 'in')?'right':'down';}}"></i>
+                                        <div data-toggle="collapse" data-parent="#accordion" ng-class="(tc.description || ((tc.actualResult) && (tc.statusId == 3 || tc.statusId == 2)))?'pointer':'';">
                                             {{tc.name}}
-                                        </a>
+                                        </div>
                                         <div ng-show="tc.automated == 1" title="Automated" class="btn btn-xs test-automated test-automated-{{tc.automated}}">A</div>
                                     </h4>
                                 </div>
                                 <div id="collapseOne" class="panel-collapse collapse {{in}}" >
-                                    <div ng-show="tc.actualResult" class="panel-body">
-                                        {{tc.actualResult}}
+                                    <div ng-show="tc.description" class="panel-body">
+                                        Desc: <div style="white-space:pre-wrap;">{{tc.description}}</div>
+                                    </div>
+                                    <div ng-show="tc.actualResult && (tc.statusId == 3 || tc.statusId == 2)" class="panel-body">
+                                        Last Run: <div style="white-space:pre-wrap;">{{tc.actualResult}}</div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="selectedGraph=null" data-dismiss="modal">Close</button>
-                </div>
             </div>
         </div>
     </div>
