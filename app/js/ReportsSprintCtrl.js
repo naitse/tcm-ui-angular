@@ -2,19 +2,50 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
     $scope.features = []
        $scope.exFullChart = [];
         $scope.exFullchartData = [];
+        $scope.iterations = $routeParams.sprintId.split(',').reverse()
     $scope.sprint = {
         id : $routeParams.sprintId
     }
 
+    $scope.overal = []
+
+    $scope.HOLA = false;
+
+    $scope.query = 5;
+
+
+    function getAutomationFeatures(iterId){
+        return tcm_model.metrics.AutomationRunLatestbyIterationId.query({iterId:iterId}).$promise
+    }
+
+    function getFeature(iterId){
+        return tcm_model.Features.query({iterationId:iterId}).$promise
+    }
+
     $scope.getFeatures = function(){
+        var promises = [];
 
+        for (var i = $scope.iterations.length - 1; i >= 0; i--) {
+            promises.push(getAutomationFeatures($scope.iterations[i]))
+            promises.push(getFeature($scope.iterations[i]))
+        };
 
-        $q.all({
-            automationDetails: tcm_model.metrics.AutomationRunLatestbyIterationId.query({iterId:$scope.sprint.id}).$promise,
-            features: tcm_model.Features.query({iterationId:$scope.sprint.id}).$promise
-        }).then(function(results){
-            $scope.features = results.features;
-            $scope.automationFeatures = results.automationDetails;
+        $q.all(promises).then(function(results){
+
+            $scope.features = [];
+            $scope.automationFeatures =[]
+
+            _.each(results, function(featureSet){
+                if(featureSet.length > 0){
+                    _.each(featureSet, function(feature){
+                        if(typeof feature.suite == 'undefined'){
+                            $scope.features.push(feature);
+                        }else{
+                            $scope.automationFeatures.push(feature);
+                        }
+                    })
+                }
+            })
             
             _.each($scope.features, function(feature){
                 feature.exChart = [];
@@ -209,67 +240,68 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
         $('#modal-showMetrics').modal();
     }
 
+    function getIterationExecuted(iteId){
+        return tcm_model.metrics.IterationExecuted.query({'releaseId': 0, 'iterId':iteId }).$promise
+    }
+
+    function getAutomationListener(iteId){
+        return tcm_model.metrics.AutomationRunSummaryLatestbyIterationId.query({'iterId':iteId}).$promise
+    }
+
+
     function drawFullExecutionChart(){
 
-        $q.all({
-            iterExecuted: tcm_model.metrics.IterationExecuted.query({'releaseId': 0, 'iterId':$scope.sprint.id }).$promise,
-            autoListener: tcm_model.metrics.AutomationRunSummaryLatestbyIterationId.query({'iterId':$scope.sprint.id}).$promise,
-            manualAutomation: tcm_model.metrics.ManualAutomation.query({'iterId':$scope.sprint.id}).$promise
-        }).then(function(results){
+        var promises = [];
+        var iterations = $scope.iterations;
+
+        for (var i = iterations.length - 1; i >= 0; i--) {
+            promises.push(getIterationExecuted(iterations[i]));
+            promises.push(getAutomationListener(iterations[i]));
+        };
+
+        $q.all(promises).then(function(results){
+            var data = {
+                notrun:0,
+                inprogress:0,
+                blocked:0,
+                failed:0,
+                pass:0,
+                total:0,
+                iterName:'QA Extended Report'
+            }
+            for (var i = results.length - 1; i >= 0; i--) {
+                if(typeof results[i][0].PASSED != 'undefined'){
+                    for (var j = results[i].length - 1; j >= 0; j--) {
+                        if(results[i][j].PASSED != null){
+                            $scope.dataAU = results[i];
+                            $scope.HOLA = false;
+                            data.notrun += results[i][j].NOTRUN                
+                            data.pass += results[i][j].PASSED               
+                            data.failed += results[i][j].FAILED
+                            data.total += results[i][j].TOTAL 
+                        }
+                    };
+                    
+                }else{
+                    data.blocked += results[i][0].blocked
+                    data.pass += results[i][0].pass
+                    data.inprogress += results[i][0].inprogress
+                    data.failed += results[i][0].failed
+                    data.notrun += results[i][0].notrun
+                    data.total += results[i][0].total
+                    
+                }
+            };
+
             $scope.HOLA = false;
-           $scope.exFullChart = [];
+            $scope.exFullChart = [];
             $scope.exFullchartData = [];
-            data = results.iterExecuted[0]
-            $scope.dataAU = dataAU = results.autoListener
-            $scope.manualAU = results.manualAutomation
 
             $scope.getFeatures();
  
             $scope.sprint.name = data.iterName;
-
-            if(typeof dataAU != 'undefined' && dataAU.length > 0){
-                if(dataAU[0].PASSED != null){
-                    $scope.HOLA = true;
-                }
-                
-                var atotal = 0;
-                var apass = 0;
-                var afailed = 0;
-                var anotrun = 0;
-
-                _.each($scope.dataAU, function(au){
-                    atotal += au.TOTAL
-                    apass += au.PASSED
-                    afailed += au.FAILED
-                    anotrun += au.NOTRUN
-                })
-
-                data.notrun += anotrun                
-                data.pass += apass               
-                data.failed += afailed
-                data.total += atotal                                  
-            }
-
-            if(typeof $scope.manualAU != 'undefined' && $scope.manualAU.length > 0){
-                $scope.HOLA = true;
-                var matotal = 0;
-                var mapass = 0;
-                var mafailed = 0;
-
-                _.each($scope.manualAU, function(mau){
-                    matotal += mau.total
-                    mapass += mau.pass
-                    mafailed += mau.failed
-                })
-
-                data.pass += mapass                
-                data.failed += mafailed
-                data.notrun += (matotal - (mapass + mafailed))
-                data.total += matotal
-
-            }
             
-
+            $scope.overal = data;
             _.each(data, function(value, key){
                 if( key === "notrun" ||
                     key === "inprogress"||

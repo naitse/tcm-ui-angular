@@ -71,9 +71,10 @@ display: -webkit-box;
 #sprint-metrics .feature-name{
     font-size: 17px;
     text-align: center;
-    width: 140px;
+    /*width: 140px;*/
     cursor:pointer;
     line-height: 1;
+      padding-left: 20;
 }
 
 #sprint-metrics .feature .feature-tests-details {
@@ -164,12 +165,15 @@ border-radius: 3px 0px 0px 3px;
     height: 100%;
 }
 .issues-column{
-    width: 640px;
+    /*width: 640px;*/
+    width: 100%;
     border-left: 1px solid #eee;
     overflow: hidden;
     overflow-y: auto; 
     display: inline-block;
     height: 100%;
+    position: absolute;
+  top: 230px;
 }
 .m-chart {
     width: 640px;
@@ -177,9 +181,14 @@ border-radius: 3px 0px 0px 3px;
     padding-left: 68px; 
 }
 .sprint-name{
-    font-size: 30px;
+    font-size: 35px;
     margin-bottom: 10px;
-    margin-top: 10px;
+    color: whitesmoke;
+    text-align: center;
+  border-bottom: 1px solid black;
+  border-top: 1px solid;
+  padding: 15;
+  background-color: #323031;
 }
 .expand-feature{
     opacity: 0.7;
@@ -190,15 +199,92 @@ border-radius: 3px 0px 0px 3px;
 .pointer {
     cursor: pointer;
 }
+
+.mule-logo {
+position: absolute;
+  top: 10px;
+  width: 200px;
+  left: 25px;
+}
+
+.overal-progress {
+
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100px;
+
+}
+
+.overal-progress .progress{
+    height: 50px;
+}
+
+.overal-progress table {
+    margin-left: auto;
+  margin-right: auto;
+    font-weight: normal;
+}
+
+.overal-progress table td{
+    text-align: center;
+}
+
+table { 
+    border-spacing: 10px;
+    border-collapse: separate;
+}
 </style>
 <div id="sprint-metrics">
+    <img class="mule-logo" src="https://www.mulesoft.com/sites/all/themes/muletheme/images/mule_logo.svg">
+    <div class="sprint-name">{{sprint.name}}</div>
+    <!-- <input type="text" ng-model="query"> -->
     <div class="m-conatiner">
-        <div class="m-chart">
-            <div class="sprint-name">{{sprint.name}}</div>
-            <highchart id="fullSprint" series="exFullChart[0].series" title="exFullChart[0].title" options="exFullChart[0].options"></highchart>
-        </div>
+        <!-- <div class="m-chart"> -->
+            <!-- <div class="sprint-name">{{sprint.name}}</div>
+            <highchart id="fullSprint" series="exFullChart[0].series" title="exFullChart[0].title" options="exFullChart[0].options"></highchart> -->
+        <!-- </div> -->
+<div class="overal-progress">
+
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: {{(overal.pass*100)/overal.total}}%">
+                            <span class="sr-only">{{(overal.pass*100)/overal.total}}% Complete (success)</span>
+                        </div>
+                        <div class="progress-bar progress-bar-warning" style="width: {{(overal.blocked*100)/overal.total}}%">
+                            <span class="sr-only">{{(overal.blocked*100)/overal.total}}% Blocked (warning)</span>
+                        </div>
+                        <div class="progress-bar progress-bar-danger" style="width: {{(overal.failed*100)/overal.total}}%">
+                            <span class="sr-only">{{(overal.failed*100)/overal.total}}% Failed (danger)</span>
+                        </div>
+                        <div class="progress-bar progress-bar-info" style="width: {{(overal.inprogress*100)/overal.total}}%">
+                            <span class="sr-only">{{(overal.inprogress*100)/overal.total}}% In Progress</span>
+                        </div>
+                        <div ng-if="feature.total == 0" class="no-test">No test found</div>
+                    </div>
+                    <table cellspacing="10">
+                        
+                                <th>PASS</th>
+                                <th>FAIL</th>
+                                <th>BLOCKED</th>
+                                <th>IN PROGRESS</th>
+                                <th>NOT RUN</th>
+                                <th>TOTAL</th>
+                            <tr>
+                                <td>{{overal.pass}}</td>
+                                <td>{{overal.failed}}</td>
+                                <td>{{overal.blocked}}</td>
+                                <td>{{overal.inprogress}}</td>
+                                <td>{{overal.notrun}}</td>
+                                <td>{{overal.total}}</td>
+                            </tr>
+                        
+                    </table>
+
+
+</div>  
+
         <div class="issues-column">
-            <h4 ng-show="HOLA"> Automation Suites</h4>
+            <h4 ng-show="HOLA == true"> Automation Suites</h4>
             <div ng-repeat="feature in features | filter: { featureType: 4 }" class="feature" ng-click="feature.expand = !feature.expand">
                 <i ng-if="feature.tests.length > 0" class="expand-feature fa fa-caret-{{(!feature.expand)?'right':'down';}}" style="font-size: 16px;top: 12px;"></i>
                 <div class="flex-container">
@@ -223,7 +309,7 @@ border-radius: 3px 0px 0px 3px;
                     </div>  
                 </div>
                 <div ng-show="feature.expand" class="panel-group" id="accordion">
-                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'statusName'" style="position:relative;">
+                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'status'" style="position:relative;">
                                 <div class="panel-heading" ng-click="$event.stopPropagation(); in=(in==='in')?'':'in'" style="position:relative;">
                                     <div ng-if="tc.statusId == 4" class="test-status-handle progress-bar-success" />
                                     <div ng-if="tc.statusId == 2" class="test-status-handle progress-bar-warning" />
@@ -250,8 +336,8 @@ border-radius: 3px 0px 0px 3px;
                             </div>
                         </div>
             </div>
-            <br>
-            <h4> Manual verification</h4>
+            <!-- <br>
+            <h4> Manual verification</h4> -->
             <div ng-repeat="feature in features | filter: { featureType: '!4' }" class="feature" ng-click="feature.expand = !feature.expand">
                 <i ng-if="feature.tests.length > 0" class="expand-feature fa fa-caret-{{(!feature.expand)?'right':'down';}}" style="font-size: 16px;top: 12px;"></i>
                 <div class="flex-container">
