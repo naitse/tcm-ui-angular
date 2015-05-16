@@ -39,6 +39,7 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
                 if(featureSet.length > 0){
                     _.each(featureSet, function(feature){
                         if(typeof feature.suite == 'undefined'){
+                            feature.loadingTests = false;
                             $scope.features.push(feature);
                         }else{
                             $scope.automationFeatures.push(feature);
@@ -92,6 +93,7 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
     }
 
     function getTestCases(feature, callback){
+        feature.loadingTests = true;
         tcm_model.TestCases.query({featureId: feature.featureId},function(data){
             feature.automated = 0;
             feature.tests = data;
@@ -101,6 +103,7 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
                     feature.automated++
                 }
             })
+            feature.loadingTests = false;
             //feature.automated = (feature.automated * 100) / feature.tests.length
             //drawExecutionChart(feature);
             // drawAutomatedChart(feature);

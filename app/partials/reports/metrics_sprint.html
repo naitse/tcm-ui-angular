@@ -173,7 +173,7 @@ border-radius: 3px 0px 0px 3px;
     display: inline-block;
     height: 100%;
     position: absolute;
-  top: 230px;
+    top: 230px;
 }
 .m-chart {
     width: 640px;
@@ -309,7 +309,7 @@ table {
                     </div>  
                 </div>
                 <div ng-show="feature.expand" class="panel-group" id="accordion">
-                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'status'" style="position:relative;">
+                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'statusId'" style="position:relative;">
                                 <div class="panel-heading" ng-click="$event.stopPropagation(); in=(in==='in')?'':'in'" style="position:relative;">
                                     <div ng-if="tc.statusId == 4" class="test-status-handle progress-bar-success" />
                                     <div ng-if="tc.statusId == 2" class="test-status-handle progress-bar-warning" />
@@ -340,6 +340,7 @@ table {
             <h4> Manual verification</h4> -->
             <div ng-repeat="feature in features | filter: { featureType: '!4' }" class="feature" ng-click="feature.expand = !feature.expand">
                 <i ng-if="feature.tests.length > 0" class="expand-feature fa fa-caret-{{(!feature.expand)?'right':'down';}}" style="font-size: 16px;top: 12px;"></i>
+                <div ng-show="feature.loadingTests" class="expand-feature loading-small" style="top: 12px;left: 10;"></div>
                 <div class="flex-container">
                     <div class="feature-name flex-center">{{feature.jiraKey}}</div>
                     <div class="flex-center">{{feature.featureName}}</div>
