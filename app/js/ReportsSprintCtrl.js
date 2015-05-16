@@ -11,8 +11,36 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
 
     $scope.HOLA = false;
 
-    $scope.query = 5;
+    $scope.statusFilter = 5;
 
+    $scope.filterFeaturebyTestsStatus = function(feature){
+        if(typeof feature.tests == 'undefined' || $scope.statusFilter == 5){
+            return true;
+        }
+        var found = false;
+        for (var i = feature.tests.length - 1; i >= 0; i--) {
+            if(feature.tests[i].statusId == $scope.statusFilter){
+                found = true;
+                break;
+            }
+        };
+
+        return found;
+    }
+
+    $scope.filterByTestsStatus = function(test){
+
+        if($scope.statusFilter == 5){
+            return true;
+        }
+
+        var found = false;
+        if(test.statusId == $scope.statusFilter){
+            return true;
+        }
+
+        return false;
+    }
 
     function getAutomationFeatures(iterId){
         return tcm_model.metrics.AutomationRunLatestbyIterationId.query({iterId:iterId}).$promise

@@ -181,6 +181,7 @@ border-radius: 3px 0px 0px 3px;
     padding-left: 68px; 
 }
 .sprint-name{
+    height: 82px;
     font-size: 35px;
     margin-bottom: 10px;
     color: whitesmoke;
@@ -230,15 +231,27 @@ position: absolute;
     text-align: center;
 }
 
+.overal-progress table tr td, .overal-progress table th{
+    cursor: pointer;
+}
+
 table { 
     border-spacing: 10px;
     border-collapse: separate;
 }
+
+.overal-progress table th{
+    border-bottom: 4px solid #ddd;
+}
+
+.selected {
+      border-bottom: 4px solid skyblue !important;
+}
+
 </style>
 <div id="sprint-metrics">
     <img class="mule-logo" src="https://www.mulesoft.com/sites/all/themes/muletheme/images/mule_logo.svg">
     <div class="sprint-name">{{sprint.name}}</div>
-    <!-- <input type="text" ng-model="query"> -->
     <div class="m-conatiner">
         <!-- <div class="m-chart"> -->
             <!-- <div class="sprint-name">{{sprint.name}}</div>
@@ -263,19 +276,19 @@ table {
                     </div>
                     <table cellspacing="10">
                         
-                                <th>PASS</th>
-                                <th>FAIL</th>
-                                <th>BLOCKED</th>
-                                <th>IN PROGRESS</th>
-                                <th>NOT RUN</th>
-                                <th>TOTAL</th>
+                                <th ng-click="statusFilter = 4" ng-class="{'selected': statusFilter == 4 }">PASS</th>
+                                <th ng-click="statusFilter = 3" ng-class="{'selected': statusFilter == 3 }">FAIL</th>
+                                <th ng-click="statusFilter = 2" ng-class="{'selected': statusFilter == 2 }">BLOCKED</th>
+                                <th ng-click="statusFilter = 1" ng-class="{'selected': statusFilter == 1 }">IN PROGRESS</th>
+                                <th ng-click="statusFilter = 0" ng-class="{'selected': statusFilter == 0 }">NOT RUN</th>
+                                <th ng-click="statusFilter = 5" ng-class="{'selected': statusFilter == 5 }">TOTAL</th>
                             <tr>
-                                <td>{{overal.pass}}</td>
-                                <td>{{overal.failed}}</td>
-                                <td>{{overal.blocked}}</td>
-                                <td>{{overal.inprogress}}</td>
-                                <td>{{overal.notrun}}</td>
-                                <td>{{overal.total}}</td>
+                                <td ng-click="statusFilter = 4">{{overal.pass}}</td>
+                                <td ng-click="statusFilter = 3">{{overal.failed}}</td>
+                                <td ng-click="statusFilter = 2">{{overal.blocked}}</td>
+                                <td ng-click="statusFilter = 1">{{overal.inprogress}}</td>
+                                <td ng-click="statusFilter = 0">{{overal.notrun}}</td>
+                                <td ng-click="statusFilter = 5">{{overal.total}}</td>
                             </tr>
                         
                     </table>
@@ -285,7 +298,7 @@ table {
 
         <div class="issues-column">
             <h4 ng-show="HOLA == true"> Automation Suites</h4>
-            <div ng-repeat="feature in features | filter: { featureType: 4 }" class="feature" ng-click="feature.expand = !feature.expand">
+            <div ng-repeat="feature in features | filter: { featureType: 4 } | filter: filterFeaturebyTestsStatus" class="feature" ng-click="feature.expand = !feature.expand">
                 <i ng-if="feature.tests.length > 0" class="expand-feature fa fa-caret-{{(!feature.expand)?'right':'down';}}" style="font-size: 16px;top: 12px;"></i>
                 <div class="flex-container">
                     <div class="feature-name flex-center">{{feature.jiraKey}}</div>
@@ -309,7 +322,7 @@ table {
                     </div>  
                 </div>
                 <div ng-show="feature.expand" class="panel-group" id="accordion">
-                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'statusId'" style="position:relative;">
+                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'statusId' | filter: filterByTestsStatus" style="position:relative;">
                                 <div class="panel-heading" ng-click="$event.stopPropagation(); in=(in==='in')?'':'in'" style="position:relative;">
                                     <div ng-if="tc.statusId == 4" class="test-status-handle progress-bar-success" />
                                     <div ng-if="tc.statusId == 2" class="test-status-handle progress-bar-warning" />
@@ -338,7 +351,7 @@ table {
             </div>
             <!-- <br>
             <h4> Manual verification</h4> -->
-            <div ng-repeat="feature in features | filter: { featureType: '!4' }" class="feature" ng-click="feature.expand = !feature.expand">
+            <div ng-repeat="feature in features | filter: { featureType: '!4' } | filter: filterFeaturebyTestsStatus" class="feature" ng-click="feature.expand = !feature.expand">
                 <i ng-if="feature.tests.length > 0" class="expand-feature fa fa-caret-{{(!feature.expand)?'right':'down';}}" style="font-size: 16px;top: 12px;"></i>
                 <div ng-show="feature.loadingTests" class="expand-feature loading-small" style="top: 12px;left: 10;"></div>
                 <div class="flex-container">
@@ -363,7 +376,7 @@ table {
                     </div>  
                 </div>
                 <div ng-show="feature.expand" class="panel-group" id="accordion">
-                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'statusName'" style="position:relative;">
+                            <div class="panel panel-default" ng-repeat="tc in feature.tests | orderBy: 'statusName' | filter: filterByTestsStatus "style="position:relative;">
                                 <div class="panel-heading" ng-click="$event.stopPropagation(); in=(in==='in')?'':'in'" style="position:relative;">
                                     <div ng-if="tc.statusId == 4" class="test-status-handle progress-bar-success" />
                                     <div ng-if="tc.statusId == 2" class="test-status-handle progress-bar-warning" />
