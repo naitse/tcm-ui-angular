@@ -281,7 +281,7 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
 
 
     function drawFullExecutionChart(){
-
+        $scope.dataAU = [];
         var promises = [];
         var iterations = $scope.iterations;
 
@@ -304,7 +304,7 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
                 if(typeof results[i][0].PASSED != 'undefined'){
                     for (var j = results[i].length - 1; j >= 0; j--) {
                         if(results[i][j].PASSED != null){
-                            $scope.dataAU = results[i];
+                            $scope.dataAU.concat(results[i]);
                             $scope.HOLA = false;
                             data.notrun += results[i][j].NOTRUN                
                             data.pass += results[i][j].PASSED               
