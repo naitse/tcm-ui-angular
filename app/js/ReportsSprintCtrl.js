@@ -304,8 +304,8 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
                 if(typeof results[i][0].PASSED != 'undefined'){
                     for (var j = results[i].length - 1; j >= 0; j--) {
                         if(results[i][j].PASSED != null){
-                            $scope.dataAU.concat(results[i]);
-                            $scope.HOLA = false;
+                            $scope.dataAU.push(results[i][j]);
+                            $scope.HOLA = true;
                             data.notrun += results[i][j].NOTRUN                
                             data.pass += results[i][j].PASSED               
                             data.failed += results[i][j].FAILED
