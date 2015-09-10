@@ -54,7 +54,7 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
         var promises = [];
 
         for (var i = $scope.iterations.length - 1; i >= 0; i--) {
-            promises.push(getAutomationFeatures($scope.iterations[i]))
+            //promises.push(getAutomationFeatures($scope.iterations[i]))
             promises.push(getFeature($scope.iterations[i]))
         };
 
@@ -287,7 +287,7 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
 
         for (var i = iterations.length - 1; i >= 0; i--) {
             promises.push(getIterationExecuted(iterations[i]));
-            promises.push(getAutomationListener(iterations[i]));
+            // promises.push(getAutomationListener(iterations[i]));
         };
 
         $q.all(promises).then(function(results){
