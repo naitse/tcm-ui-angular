@@ -1,5 +1,31 @@
 function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
+
+    $scope.displayByTag = 1;
+
+    $scope.automation = [{
+            data: [
+                {name:'Automated',y:0, dataLabels:{enabled:false}},
+                {name:'Manual',y:0,dataLabels:{enabled:false}}
+            ],
+            showInLegend: true
+        }]
+    $scope.progress = [{
+            data: [
+                {name:'Pass',y:0, dataLabels:{enabled:false}, color:'#5CB85C'},
+                {name:'Fail',y:0,dataLabels:{enabled:false}, color:'#D9534F'},
+                {name:'Blocked',y:0,dataLabels:{enabled:false}, color:'#F0AD4E'},
+                {name:'In Progress',y:0,dataLabels:{enabled:false}, color:'#5BC0DE'},
+                {name:'Not Run',y:0,dataLabels:{enabled:false}, color:'#5C5C61'}
+            ]
+        }]
     $scope.features = []
+    $scope.testCases = []
+    $scope.groups = []
+    $scope.taggedTests = [{name:'No Tagged', tests:[], pass:0, fail:0, blocked:0,inprogress:0, notRun:0, total:0}]
+    $scope.automatedCount = {
+        automated:0,
+        manual:0
+    }
        $scope.exFullChart = [];
         $scope.exFullchartData = [];
         $scope.iterations = $routeParams.sprintId.split(',').reverse()
@@ -7,11 +33,73 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
         id : $routeParams.sprintId
     }
 
+    $scope.$watch('automatedCount', function(newVal){
+        $scope.automation[0].data[0].y = newVal.automated
+        $scope.automation[0].data[1].y = newVal.manual
+    }, true);
+
+    $scope.$watch('overal', function(newVal){
+        $scope.progress[0].data[0].y = newVal.pass
+        $scope.progress[0].data[1].y = newVal.failed
+        $scope.progress[0].data[2].y = newVal.blocked
+        $scope.progress[0].data[3].y = newVal.inprogress
+        $scope.progress[0].data[4].y = newVal.notrun
+    }, true);
+    
+
     $scope.overal = []
 
     $scope.HOLA = false;
 
     $scope.statusFilter = 5;
+
+    $scope.highchartsNG = {
+        options: {
+            chart: {
+                type: 'pie',
+                width:200,
+                height:200
+            }
+        },
+        // series: [{
+        //     data: [
+        //         {name:'Automated',y:10},
+        //         {name:'Manual',y:20}
+        //     ]
+        // }],
+        plotOptions:{
+            showInLegend: true
+        },
+        title: {
+            text: ''
+        },
+        loading: false
+    }
+
+    $scope.highchartsauNG = {
+        options: {
+            chart: {
+                type: 'pie',
+                width:200,
+                height:200
+            }
+        },
+        // series: [{
+        //     data: [
+        //         {name:'Automated',y:10},
+        //         {name:'Manual',y:20}
+        //     ]
+        // }],
+        plotOptions:{
+            dataLabels:{
+                enabled:false
+            }
+        },
+        title: {
+            text: ''
+        },
+        loading: false
+    }
 
     $scope.filterFeaturebyTestsStatus = function(feature){
         if(typeof feature.tests == 'undefined' || $scope.statusFilter == 5){
@@ -42,6 +130,18 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
         return false;
     }
 
+    $scope.filterByGroup = function(test, group){
+        console.log(test, group)
+        if(typeof test.tags != 'undefined' && test.tags.length > 0){
+            var alreadyTracked = _.find(test.tags, function(tag){ return group == tag.name; });
+            if(typeof alreadyTracked != 'undefined'){
+                return true
+            }
+        }
+
+        return false;
+    }
+
     function getAutomationFeatures(iterId){
         return tcm_model.metrics.AutomationRunLatestbyIterationId.query({iterId:iterId}).$promise
     }
@@ -61,7 +161,14 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
         $q.all(promises).then(function(results){
 
             $scope.features = [];
-            $scope.automationFeatures =[]
+            _.each($scope.groups, function(group){
+                $scope.taggedTests.push({
+                    name:group, 
+                    tests: _.filter($scope.testCases, function(test) { 
+                        return typeof _.find(test.tags, function(tag){ return tag.name == group})
+                    })
+                })
+            })
 
             _.each(results, function(featureSet){
                 if(featureSet.length > 0){
@@ -82,43 +189,37 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
                 getTestCases(feature);
             })
 
-            var auTemp = []
             var temp = ''
-
-            _.each($scope.automationFeatures, function(auFeature){
-
-                if(auFeature.suite != temp){
-                    temp = auFeature.suite
-                    auTemp.push({
-                        featureType:4,
-                        jiraKey: auFeature.suite,
-                        total: _.findWhere($scope.dataAU, {suite:auFeature.suite}).TOTAL,
-                        pass: _.findWhere($scope.dataAU, {suite:auFeature.suite}).PASSED,
-                        failed: _.findWhere($scope.dataAU, {suite:auFeature.suite}).FAILED,
-                        notrun: _.findWhere($scope.dataAU, {suite:auFeature.suite}).NOTRUN,
-                        tests: []
-                    })
-                }
-                auTemp[auTemp.length -1].tests.push(
-                        {
-                            statusId: auFeature.status,
-                            name: auFeature.test,
-                            description: 'Build #' + auFeature.build
-                        }
-                )
-                
-
-            });
-
-            _.each(auTemp,function(lala){
-                $scope.features.push(lala);
-            })
-            
-
 
         })
 
     }
+
+function addTestToGroup(tag, test){
+    _.each($scope.taggedTests, function(groupedTests){
+        if(groupedTests.name == tag.name){
+            groupedTests.tests.push(test)
+            groupedTests.total++
+            switch(test.statusId){
+                case 4:
+                  groupedTests.pass++
+                  break; 
+                case 3:
+                  groupedTests.fail++
+                  break;
+                case 2:
+                  groupedTests.blocked++
+                  break;
+                case 1:
+                  groupedTests.inprogress++
+                  break;
+                case 0:
+                  groupedTests.notrun++
+                  break;
+            }
+        }
+    })
+}
 
     function getTestCases(feature, callback){
         feature.loadingTests = true;
@@ -126,9 +227,27 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
             feature.automated = 0;
             feature.tests = data;
             _.each(feature.tests, function(test){
+                $scope.testCases.push(test)
+                if(test.tags.length > 0){
+                    _.each(test.tags, function(tag){
+                        var alreadyTracked = _.find($scope.groups, function(grupo){ return grupo == tag.name; });
+                        if(typeof alreadyTracked == 'undefined'){
+                            $scope.groups.push(tag.name);
+                            $scope.taggedTests.unshift({name:tag.name, tests:[], pass:0, fail:0, blocked:0,inprogress:0, notRun:0, total:0});
+                            addTestToGroup(tag, test);
+                        }else{
+                            addTestToGroup(tag, test);
+                        }
+                    })
+                }else{
+                    addTestToGroup({name:'No Tagged'}, test);
+                }
                 test.expand = false;
                 if(test.automated == 1){
                     feature.automated++
+                    $scope.automatedCount.automated++
+                }else{
+                    $scope.automatedCount.manual++
                 }
             })
             feature.loadingTests = false;
@@ -214,17 +333,17 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
         });
 
     }
+drawAutomatedChart()
+    function drawAutomatedChart(){
+        var feature = [];
+        $scope.automation.auChart = [];
+        $scope.automation.auchartData = [];
 
-    function drawAutomatedChart(feature){
 
-        feature.auChart = [];
-        feature.auchartData = [];
+        $scope.automation.auchartData.push(new Array( 'Manual',     $scope.automatedCount.manual ));
+        $scope.automation.auchartData.push(new Array( 'Automated',  $scope.automatedCount.automated ));
 
-
-        feature.auchartData.push(new Array( 'debt', (feature.tests.length - feature.automated)));
-        feature.auchartData.push(new Array( 'Automated', feature.automated));
-
-        feature.auChart.push( {
+        $scope.automation.auChart.push( {
             options: {
                 chart: {
                     plotBackgroundColor: null,
@@ -275,9 +394,9 @@ function ReportsSprintCtrl( $scope, $routeParams, tcm_model, $q) {
         return tcm_model.metrics.IterationExecuted.query({'releaseId': 0, 'iterId':iteId }).$promise
     }
 
-    function getAutomationListener(iteId){
-        return tcm_model.metrics.AutomationRunSummaryLatestbyIterationId.query({'iterId':iteId}).$promise
-    }
+    // function getAutomationListener(iteId){
+    //     return tcm_model.metrics.AutomationRunSummaryLatestbyIterationId.query({'iterId':iteId}).$promise
+    // }
 
 
     function drawFullExecutionChart(){
